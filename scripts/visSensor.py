@@ -1,9 +1,4 @@
-"""
-ldr.py
-Display analog data from Arduino using Python (matplotlib)
-Author: Mahesh Venkitachalam
-Website: electronut.in
-"""
+#!/usr/local/bin/python
 
 import sys, serial, argparse
 import numpy as np
@@ -13,91 +8,94 @@ from collections import deque
 import matplotlib.pyplot as plt 
 import matplotlib.animation as animation
 
-    
-# plot class
-class AnalogPlot:
-  # constr
-  def __init__(self, strPort, maxLen):
-      # open serial port
-      self.ser = serial.Serial(strPort, 9600)
+class SensorPlot:
+    def __init__(self, strPort, numPoints, numSeries = 1):
+        # 
+        # Open serial port.
+        self.ser = serial.Serial(strPort, 115200)
+        self.numSeries = numSeries
+        self.numPoints = numPoints
+        # 
+        # Create the queues.
+        self.yax = [deque([0.0] * self.numPoints) for x in range(numSeries)]
+    # 
+    # Add to the time series.
+    def addToBuf(self, buf, val):
+        if len(buf) < self.numPoints:
+            buf.append(val)
+        else:
+            buf.pop()
+            buf.appendleft(val)
+    # 
+    # Fill objects.
+    def add(self, data):
+        axNum = 0
+        # 
+        # Skip the first index.
+        itrData = iter(data)
+        next(itrData)
+        # 
+        # Fill all axis.
+        for datum in itrData:
+            self.addToBuf(self.yax[axNum], datum)
+            axNum += 1
+    # 
+    # Update.
+    # def update(self, frameNum, a0, a1):
+    def update(self, frameNum, axList):
+        try:
+            line = self.ser.readline()
+            try:
+                data = [float(val) for val in line.split()]
+            except ValueError:
+                print(line)
+                return axList[0]
+            # 
+            # Create axis.
+            axNum = 0
+            if(len(data) == self.numSeries + 1):
+                self.add(data)
+                for ax in axList:
+                    ax.set_data(range(self.numPoints), self.yax[axNum])
+                    axNum += 1
+            else:
+                print('Unexpected length of data from serial exitting.')
+        except KeyboardInterrupt:
+            print('exiting')
 
-      self.ax = deque([0.0]*maxLen)
-      self.ay = deque([0.0]*maxLen)
-      self.maxLen = maxLen
+        return axList[0]
 
-  # add to buffer
-  def addToBuf(self, buf, val):
-      if len(buf) < self.maxLen:
-          buf.append(val)
-      else:
-          buf.pop()
-          buf.appendleft(val)
+    def close(self):
+          self.ser.flush()
+          self.ser.close()
 
-  # add data
-  def add(self, data):
-      assert(len(data) == 2)
-      self.addToBuf(self.ax, data[0])
-      self.addToBuf(self.ay, data[1])
+def getArgs():
+    parser = argparse.ArgumentParser(description="Plotter")
+    parser.add_argument('--port', dest = 'port', required = False, default = '/dev/cu.usbmodem1421')
+    parser.add_argument('--numPoints', dest = 'numPoints', required = False, default = 500, type = int)
+    parser.add_argument('--numAxis', dest = 'numAxis', required = False, default = 3, type = int)
+    parser.add_argument('--ymin', dest = 'ymin', required = False, default = -180, type = int)
+    parser.add_argument('--ymax', dest = 'ymax', required = False, default = 180, type = int)
+    args = parser.parse_args()
+    return args
 
-  # update plot
-  def update(self, frameNum, a0, a1):
-      try:
-          line = self.ser.readline()
-          data = [float(val) for val in line.split()]
-          # print data
-          if(len(data) == 2):
-              self.add(data)
-              a0.set_data(range(self.maxLen), self.ax)
-              a1.set_data(range(self.maxLen), self.ay)
-      except KeyboardInterrupt:
-          print('exiting')
-      
-      return a0, 
-
-  # clean up
-  def close(self):
-      # close serial
-      self.ser.flush()
-      self.ser.close()    
-
-# main() function
 def main():
-  # create parser
-  parser = argparse.ArgumentParser(description="LDR serial")
-  # add expected arguments
-  parser.add_argument('--port', dest='port', required=True)
 
-  # parse args
-  args = parser.parse_args()
-  
-  #strPort = '/dev/tty.usbserial-A7006Yqh'
-  strPort = args.port
+    args = getArgs()
+    strPort = args.port
+    # 
+    # Set animation callback.
+    fig = plt.figure()
+    ax = plt.axes(xlim=(0, args.numPoints), ylim=(args.ymin, args.ymax))
+    axList = []
+    for x in range(args.numAxis):
+        tempAx, = ax.plot([], [])
+        axList.append(tempAx)
+    anim = animation.FuncAnimation(fig, plot.update, 
+                                   fargs=([axList]), 
+                                   interval=50)
+    plt.show()
+    plot.close()
 
-  print('reading from serial port %s...' % strPort)
-
-  # plot parameters
-  analogPlot = AnalogPlot(strPort, 100)
-
-  print('plotting data...')
-
-  # set up animation
-  fig = plt.figure()
-  ax = plt.axes(xlim=(0, 100), ylim=(0, 1023))
-  a0, = ax.plot([], [])
-  a1, = ax.plot([], [])
-  anim = animation.FuncAnimation(fig, analogPlot.update, 
-                                 fargs=(a0, a1), 
-                                 interval=50)
-
-  # show plot
-  plt.show()
-  
-  # clean up
-  analogPlot.close()
-
-  print('exiting.')
-  
-
-# call main
 if __name__ == '__main__':
-  main()
+    main()
