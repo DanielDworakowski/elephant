@@ -85,6 +85,7 @@ def main():
     strPort = args.port
     # 
     # Set animation callback.
+    plot = SensorPlot(strPort, args.numPoints, args.numAxis)
     fig = plt.figure()
     ax = plt.axes(xlim=(0, args.numPoints), ylim=(args.ymin, args.ymax))
     axList = []
