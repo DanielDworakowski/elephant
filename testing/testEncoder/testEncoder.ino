@@ -17,7 +17,7 @@ void loop()
   Serial.print("\t");
   Serial.print(gRightEncoderTicks);
   Serial.print("\n");
- 
+
   delay(20);
 }
  

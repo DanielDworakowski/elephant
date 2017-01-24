@@ -2,12 +2,10 @@
 #define __PIN_DEFINITIONS_H__
 
 // Quadrature encoders
-#define LEFT_ENCODER_INTERRUPT_PIN 4
-#define LEFT_ENCODER_PIN_A 19
-#define LEFT_ENCODER_PIN_B 25
+#define LEFT_ENCODER_INTERRUPT_PIN 2 // A side of encoder
+#define LEFT_ENCODER_PIN_B 8
 // Right encoder
-#define RIGHT_ENCODER_INTERRUPT_PIN 5
-#define RIGHT_ENCODER_PIN_A 18
+#define RIGHT_ENCODER_INTERRUPT_PIN 5 // A side of encoder
 #define RIGHT_ENCODER_PIN_B 24
 
 #endif

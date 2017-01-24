@@ -32,16 +32,16 @@ void setupPins()
 {
     /*
      * Encoders */
-    pinMode(LEFT_ENCODER_PIN_A, INPUT);    
-    digitalWrite(LEFT_ENCODER_PIN_A, LOW);
     pinMode(LEFT_ENCODER_PIN_B, INPUT);
     digitalWrite(LEFT_ENCODER_PIN_B, LOW);
-    pinMode(RIGHT_ENCODER_PIN_A, INPUT);      
-    digitalWrite(RIGHT_ENCODER_PIN_A, LOW);
     pinMode(RIGHT_ENCODER_PIN_B, INPUT);
     digitalWrite(RIGHT_ENCODER_PIN_B, LOW);
-    attachInterrupt(RIGHT_ENCODER_INTERRUPT_PIN, HandleRightMotorInterruptA, RISING);
-    attachInterrupt(LEFT_ENCODER_INTERRUPT_PIN, HandleLeftMotorInterruptA, RISING);
+    pinMode(LEFT_ENCODER_INTERRUPT_PIN, INPUT);
+    pinMode(RIGHT_ENCODER_INTERRUPT_PIN, INPUT);
+    /*
+     * Attach all interrupts. */
+    attachInterrupt(digitalPinToInterrupt(LEFT_ENCODER_INTERRUPT_PIN), HandleLeftMotorInterruptA, RISING);
+    attachInterrupt(digitalPinToInterrupt(RIGHT_ENCODER_INTERRUPT_PIN), HandleRightMotorInterruptA, RISING);
 }
 
 #endif
