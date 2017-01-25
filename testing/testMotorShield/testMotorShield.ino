@@ -11,12 +11,13 @@ void setup()
 void loop()
 {
     int i;
-    Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
+    Adafruit_MotorShield AFMS = Adafruit_MotorShield();
+    AFMS.begin();
     Adafruit_DCMotor *myMotor = AFMS.getMotor(1);
     myMotor->setSpeed(200);
     myMotor->run(RELEASE);
-    myMotor->run(FORWARD);
     while (1) {
+        myMotor->run(FORWARD);
         for (i=0; i<255; i++) {
             myMotor->setSpeed(i);  
             delay(3);
@@ -26,6 +27,17 @@ void loop()
             myMotor->setSpeed(i);  
             delay(3);
         }
+        myMotor->run(BACKWARD);
+        for (i=0; i<255; i++) {
+            myMotor->setSpeed(i);  
+            delay(3);
+        }
+     
+        for (i=255; i!=0; i--) {
+            myMotor->setSpeed(i);  
+            delay(3);
+        }
+
     }
 }
  
