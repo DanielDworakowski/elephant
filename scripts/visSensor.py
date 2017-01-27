@@ -9,12 +9,14 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 class SensorPlot:
-    def __init__(self, strPort, numPoints, numSeries = 1):
+    def __init__(self, strPort, numPoints, hasTimestamp, numSeries = 1, verbose = False):
         # 
         # Open serial port.
         self.ser = serial.Serial(strPort, 115200)
         self.numSeries = numSeries
         self.numPoints = numPoints
+        self.hasTimestamp = hasTimestamp
+        self.verbose = verbose
         # 
         # Create the queues.
         self.yax = [deque([0.0] * self.numPoints) for x in range(numSeries)]
@@ -33,7 +35,8 @@ class SensorPlot:
         # 
         # Skip the first index.
         itrData = iter(data)
-        next(itrData)
+        if self.hasTimestamp:
+            next(itrData)
         # 
         # Fill all axis.
         for datum in itrData:
@@ -45,20 +48,24 @@ class SensorPlot:
     def update(self, frameNum, axList):
         try:
             line = self.ser.readline()
+            print(line)
             try:
-                data = [float(val) for val in line.split()]
+                data = [float(val) for val in line.split()]            
+                if self.verbose:
+                    print(data)
             except ValueError:
                 print(line)
                 return axList[0]
             # 
             # Create axis.
             axNum = 0
-            if(len(data) == self.numSeries + 1):
+            if(len(data) == self.numSeries + self.hasTimestamp):
                 self.add(data)
                 for ax in axList:
                     ax.set_data(range(self.numPoints), self.yax[axNum])
                     axNum += 1
             else:
+                print(data)
                 print('Unexpected length of data from serial exitting.')
         except KeyboardInterrupt:
             print('exiting')
@@ -76,6 +83,8 @@ def getArgs():
     parser.add_argument('--numAxis', dest = 'numAxis', required = False, default = 3, type = int)
     parser.add_argument('--ymin', dest = 'ymin', required = False, default = -180, type = int)
     parser.add_argument('--ymax', dest = 'ymax', required = False, default = 180, type = int)
+    parser.add_argument('--hasTimestamp', dest = 'hasTimestamp', required = False, default = 1, type = int)
+    parser.add_argument('-v', dest = 'verbose', required = False, action="store_true")
     args = parser.parse_args()
     return args
 
@@ -85,7 +94,7 @@ def main():
     strPort = args.port
     # 
     # Set animation callback.
-    plot = SensorPlot(strPort, args.numPoints, args.numAxis)
+    plot = SensorPlot(strPort, args.numPoints, args.hasTimestamp, args.numAxis, args.verbose)
     fig = plt.figure()
     ax = plt.axes(xlim=(0, args.numPoints), ylim=(args.ymin, args.ymax))
     axList = []
