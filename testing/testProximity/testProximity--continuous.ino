@@ -1,6 +1,39 @@
 #include "VL53L0X.h"
 #include <Wire.h>
 
+typedef struct {
+  double q; //process noise covariance
+  double r; //measurement noise covariance
+  double x; //value
+  double p; //estimation error covariance
+  double k; //kalman gain
+} kalman_state;
+
+kalman_state
+kalman_init(double q, double r, double p, double intial_value)
+{
+  kalman_state result;
+  result.q = q;
+  result.r = r;
+  result.p = p;
+  result.x = intial_value;
+
+  return result;
+}
+
+void
+kalman_update(kalman_state* state, double measurement)
+{
+  //prediction update
+  //omit x = x
+  state->p = state->p + state->q;
+
+  //measurement update
+  state->k = state->p / (state->p + state->r);
+  state->x = state->x + state->k * (measurement - state->x);
+  state->p = (1 - state->k) * state->p;
+}
+
 void setup()
 {
     Serial.begin(115200);
@@ -28,16 +61,23 @@ void loop()
     sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 14);
     //
     // Set the timing budget for higher accuracy. 
-    sensor.setMeasurementTimingBudget(50000);
+    sensor.setMeasurementTimingBudget(70000); // 70000 works well
     // 
     // Set continuous mode, therefore need to setup the interrupts.
     sensor.startContinuous();
 
+    kalman_state state = kalman_init(1, 2, 1, 0);
+
     attachInterrupt(digitalPinToInterrupt(2), HandleDistInterrupt, RISING);
 
+    float meas = 0;
     while(1) {
-        Serial.print(sensor.readRangeContinuousMillimeters());
-        Serial.print(" [mm]");
+        meas = sensor.readRangeContinuousMillimeters();
+        kalman_update(&state, meas);
+        Serial.print(state.x);
+        Serial.print(" ");
+        Serial.print(meas);
+        // Serial.print(" [mm]");
         if (sensor.timeoutOccurred()) { Serial.print(" TIMEOUT"); }
 
         Serial.println();

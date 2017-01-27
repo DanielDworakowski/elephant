@@ -2,6 +2,7 @@
 #define __ISR_H__
 
 #include "PinDefines.h"
+#include "digitalWriteFast.h"
 
 #define LeftEncoderIsReversed
 
