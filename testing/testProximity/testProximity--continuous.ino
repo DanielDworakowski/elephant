@@ -38,6 +38,7 @@ void setup()
 {
     Serial.begin(115200);
     Wire.begin();
+    Wire.setClock(400000); 
 }
 
 void HandleDistInterrupt()

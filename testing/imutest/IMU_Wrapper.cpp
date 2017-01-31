@@ -1,10 +1,11 @@
 #include "IMU_Wrapper.hpp"
+#include "PingDefines.h"
 
 // Indicate that there is data available on the IMU.
-volatile bool mpuInterrupt = false;     // indicates whether MPU interrupt pin has gone high
+volatile bool gMpuInterrupt = false;     // indicates whether MPU interrupt pin has gone high
 void dmpDataReady() 
 {
-    mpuInterrupt = true;
+    gMpuInterrupt = true;
 }
 
 IMU::IMU(uint32_t interPin) 
@@ -59,12 +60,12 @@ int IMU::read()
     VectorFloat gravity;    // [x, y, z].
     int16_t gyro[3];        // [x, y, z].
 
-    while (!mpuInterrupt && fifoCount_ < packetSize_) {
+    while (!gMpuInterrupt && fifoCount_ < packetSize_) {
 
     }
 
     // Reset interrupt flag and get status.
-    mpuInterrupt = false;
+    gMpuInterrupt = false;
     mpuIntStatus = mpu_.getIntStatus();
     fifoCount_ = mpu_.getFIFOCount();
 

@@ -2,7 +2,7 @@
 // for both classes must be in the include path of your project
 template<class T> inline Print &operator <<(Print &obj, T arg) { obj.print(arg); return obj; }
 #include "IMU_Wrapper.hpp"
-#define IMU_INTERRUPT_PIN 2
+#define IMU_INTERRUPT_PIN 18
 
 void setup() {
     #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
