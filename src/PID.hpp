@@ -5,14 +5,14 @@
 
 class PID {
     public:
-        PID(float p, float i, float d, float min, float max);
+        PID(float p, float i, float d);
         ~PID();
         // 
         // Error function.
         float getError(float ref, float meas);
 
     private:
-        float p_, i_, d_, min_, max_;
+        float p_, i_, d_;
         float lastErr_;
         uint32_t lastTime_;
 
