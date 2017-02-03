@@ -4,7 +4,7 @@
 #define __ISR_H__
 
 
-#define LeftEncoderIsReversed
+// #define LeftEncoderIsReversed
 
 volatile long gLeftEncoderTicks;
 volatile long gRightEncoderTicks;

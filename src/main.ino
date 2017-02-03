@@ -7,6 +7,7 @@
 #include "IMU_Wrapper.hpp"
 #include "Adafruit_MotorShield.h"
 #include "Adafruit_MS_PWMServoDriver.h"
+#include "Drive.hpp"
 
 void setupProximity(VL53L0X &sensor) 
 {
@@ -37,7 +38,8 @@ void loop()
     VL53L0X prox;
     Adafruit_MotorShield motorShield = Adafruit_MotorShield();
     IMU imu(IMU_INTERRUPT_PIN);
-    Adafruit_DCMotor *testMotor = motorShield.getMotor(1);
+    Drive drive(&gRightEncoderTicks, &gLeftEncoderTicks, motorShield.getMotor(2), motorShield.getMotor(1));
+    drive.setReference(0.5,0);
     // 
     // Begin sensing.
     setupProximity(prox);
@@ -45,28 +47,29 @@ void loop()
     motorShield.begin();
     // 
     // Set the motor to move forwards for testing.
-    testMotor->setSpeed(200);
-    testMotor->run(FORWARD);
     float meas = 0;
 
     while (1) {
         //
         // Print data. 
-        Serial.println("Encoder");
-        Serial.print(gLeftEncoderTicks);
-        Serial.print("\t");
-        Serial.print(gRightEncoderTicks);
-        Serial.print("\n");
-        // 
-        // Proximity.
-        meas = prox.readRangeContinuousMillimeters();
-        if (prox.timeoutOccurred()) { Serial.print(" TIMEOUT"); }
-        Serial.println("Proximity");
-        Serial.println(meas);
-        // 
-        // IMU.
-        Serial.println("IMU");
-        imu.read();
+        // Serial.println("Encoder");
+        // Serial.print(gLeftEncoderTicks);
+        // Serial.print("\t");
+        // Serial.print(gRightEncoderTicks);
+        // Serial.print("\n");
+        drive.update();
+        delay(30);
+
+        // // 
+        // // Proximity.
+        // meas = prox.readRangeContinuousMillimeters();
+        // if (prox.timeoutOccurred()) { Serial.print(" TIMEOUT"); }
+        // Serial.println("Proximity");
+        // Serial.println(meas);
+        // // 
+        // // IMU.
+        // Serial.println("IMU");
+        // imu.read();
     }
 }
  

@@ -6,10 +6,13 @@
 #ifndef __DRIVE__
 #define __DRIVE__
 
+#define DRIVE_DEBUG 1
+template<class T> inline Print &operator <<(Print &obj, T arg) { obj.print(arg); return obj; } 
+
 // 
 // Left motor tuning.
-#define LEFT_MOTOR_P 0.0
-#define LEFT_MOTOR_I 0.0
+#define LEFT_MOTOR_P 9.0 //7
+#define LEFT_MOTOR_I 0.3
 #define LEFT_MOTOR_D 0.0
 // 
 // Right motor tuning.
@@ -22,10 +25,15 @@
 #define MIN_SPEED -255
 // 
 // The radius of the wheels.
-#define WHEEL_RADIUS 0.1524
-#define WHEEL_DIAMETER (2 * 0.1524)
+#define WHEEL_RADIUS (0.1524f)
+#define WHEEL_DIAMETER (2 * 0.1524f)
+#define WHEEL_CIRCUMFRENCE (M_PI * WHEEL_DIAMETER)
 #pragma message("Fix this length")
 #define CHASIS_LENGTH (0.3) 
+// 
+// Conversion factors from ticks to linear velocity.
+#define TICKS_PER_REVOLUTION (12.0f * 47.0f)
+#define TO_DISTANCE(ticks) ((ticks) / TICKS_PER_REVOLUTION * 2.0f * M_PI)
 
 // Input velocity and angle?
 // https://youtu.be/aLOjNfgRdhw?t=464
@@ -55,7 +63,7 @@ class Drive {
         // PIDs for motors.
         PID lVelocity_;
         PID rVelocity_;
-        int16_t lMotorCommand_, rMotorCommand_;
+        float lMotorCommand_, rMotorCommand_;
         Adafruit_DCMotor *rMotor_, *lMotor_;
 };
 
