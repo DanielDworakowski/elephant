@@ -47,8 +47,11 @@ class SensorPlot:
     # def update(self, frameNum, a0, a1):
     def update(self, frameNum, axList):
         try:
-            line = self.ser.readline()
-            print(line)
+            line = ''
+            # 
+            # Get the latest serial data.
+            while self.ser.in_waiting > 0:
+                line = self.ser.readline()
             try:
                 data = [float(val) for val in line.split()]            
                 if self.verbose:
@@ -66,10 +69,9 @@ class SensorPlot:
                     axNum += 1
             else:
                 print(data)
-                print('Unexpected length of data from serial exitting.')
+                print('Unexpected length of data from serial.')
         except KeyboardInterrupt:
             print('exiting')
-
         return axList[0]
 
     def close(self):
