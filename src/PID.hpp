@@ -5,7 +5,7 @@
 
 class PID {
     public:
-        PID(float p, float i, float d);
+        PID(float p, float i, float d, float max, float min);
         ~PID();
         // 
         // Error function.
@@ -15,6 +15,8 @@ class PID {
         float p_, i_, d_;
         float lastErr_;
         uint32_t lastTime_;
+        float integralErr_;
+        float max_, min_;
 
 };
 

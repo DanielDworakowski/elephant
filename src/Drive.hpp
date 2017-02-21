@@ -5,20 +5,16 @@
 
 #ifndef __DRIVE__
 #define __DRIVE__
-
-#define DRIVE_DEBUG 1
-template<class T> inline Print &operator <<(Print &obj, T arg) { obj.print(arg); return obj; } 
-
 // 
 // Left motor tuning.
-#define LEFT_MOTOR_P 9.0 //7
-#define LEFT_MOTOR_I 0.3
-#define LEFT_MOTOR_D 0.0
+#define LEFT_MOTOR_P 54.0f //7
+#define LEFT_MOTOR_I 60.0f
+#define LEFT_MOTOR_D 0.0f
 // 
 // Right motor tuning.
-#define RIGHT_MOTOR_P 0.0
-#define RIGHT_MOTOR_I 0.0
-#define RIGHT_MOTOR_D 0.0
+#define RIGHT_MOTOR_P 0.0f
+#define RIGHT_MOTOR_I 0.0f
+#define RIGHT_MOTOR_D 0.0f
 // 
 // The maximum and minimum motor speeds.
 #define MAX_SPEED 255
@@ -29,11 +25,11 @@ template<class T> inline Print &operator <<(Print &obj, T arg) { obj.print(arg);
 #define WHEEL_DIAMETER (2 * 0.1524f)
 #define WHEEL_CIRCUMFRENCE (M_PI * WHEEL_DIAMETER)
 #pragma message("Fix this length")
-#define CHASIS_LENGTH (0.3) 
+#define CHASIS_LENGTH (0.3f) 
 // 
 // Conversion factors from ticks to linear velocity.
 #define TICKS_PER_REVOLUTION (12.0f * 47.0f)
-#define TO_DISTANCE(ticks) ((ticks) / TICKS_PER_REVOLUTION * 2.0f * M_PI)
+#define TO_OMEGA(ticks) ((ticks) / TICKS_PER_REVOLUTION * 2.0f * M_PI)
 
 // Input velocity and angle?
 // https://youtu.be/aLOjNfgRdhw?t=464

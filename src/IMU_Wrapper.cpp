@@ -12,23 +12,23 @@ IMU::IMU(uint32_t interPin)
 {
     bool dmpReady = false;
     uint8_t devStatus;
-
+    // 
     // Force pin to be in interrupt. 
     pinMode(interPin, INPUT);
     mpu_.initialize();
-
+    // 
     // Verify connection.
     Serial.println(mpu_.testConnection() ? F("MPU6050 connection successful") : F("MPU6050 connection failed"));
     delay(2);
     devStatus = mpu_.dmpInitialize();
-
+    // 
     // Set calibrations.
     mpu_.setXGyroOffset(-1);
     mpu_.setYGyroOffset(-1);
     mpu_.setZGyroOffset(-1);
     mpu_.setZAccelOffset(1788);
-
-    // make sure it worked (returns 0 if so)
+    // 
+    // Make sure it worked (returns 0 if so).
     if (devStatus == 0) {
         mpu_.setDMPEnabled(true);
         attachInterrupt(digitalPinToInterrupt(interPin), dmpDataReady, RISING);
@@ -36,7 +36,7 @@ IMU::IMU(uint32_t interPin)
         packetSize_ = mpu_.dmpGetFIFOPacketSize();
     } 
     else {
-
+        // 
         // 1 = initial memory load failed.
         // 2 = DMP configuration updates failed.
         Serial.print(F("DMP Initialization failed (code "));
@@ -51,7 +51,6 @@ IMU::IMU(uint32_t interPin)
 
 IMU::~IMU() 
 {
-
 }
 
 int IMU::read() 

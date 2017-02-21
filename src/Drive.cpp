@@ -9,8 +9,8 @@ Drive::Drive(int32_t *rEncoderCount, int32_t *lEncoderCount, Adafruit_DCMotor *r
     , lastTime_(millis())
     , v_r_(0.0f)
     , v_l_(0.0f)
-    , lVelocity_(LEFT_MOTOR_P, LEFT_MOTOR_I, LEFT_MOTOR_D)
-    , rVelocity_(RIGHT_MOTOR_P, RIGHT_MOTOR_I, RIGHT_MOTOR_D)
+    , lVelocity_(LEFT_MOTOR_P, LEFT_MOTOR_I, LEFT_MOTOR_D, MAX_SPEED, MIN_SPEED)
+    , rVelocity_(RIGHT_MOTOR_P, RIGHT_MOTOR_I, RIGHT_MOTOR_D, MAX_SPEED, MIN_SPEED)
     , lMotorCommand_(0.0)
     , rMotorCommand_(0.0)
     , rMotor_(rMotor)
@@ -30,13 +30,10 @@ int Drive::update()
     if (deltaT <= 0) {
         return -1;
     }
-
-#pragma message ("v_r and v_l are angular velocities")
-
     // 
     // Calculate the current speed.
-    calcL = TO_DISTANCE(*lEncoderCount_ - lastL_) / (deltaT);
-    calcR = TO_DISTANCE(*rEncoderCount_ - lastR_) / (deltaT);
+    calcL = TO_OMEGA(*lEncoderCount_ - lastL_) / (deltaT);
+    calcR = TO_OMEGA(*rEncoderCount_ - lastR_) / (deltaT);
     // 
     // Update state variables.
     lastL_ = *lEncoderCount_;
@@ -44,12 +41,8 @@ int Drive::update()
     lastTime_ = curTime;
     // 
     // Calculate the commands for the speed control.
-    rMotorCommand_ += rVelocity_.getError(v_r_, calcR);
-    lMotorCommand_ += lVelocity_.getError(v_l_, calcL);
-    // 
-    // Clamp commands.
-    rMotorCommand_ = min(max(rMotorCommand_, MIN_SPEED), MAX_SPEED);
-    lMotorCommand_ = min(max(lMotorCommand_, MIN_SPEED), MAX_SPEED);
+    rMotorCommand_ = rVelocity_.getError(v_r_, calcR);
+    lMotorCommand_ = lVelocity_.getError(v_l_, calcL);
     // 
     // Set commands.
     if (lMotorCommand_ < 0) {
@@ -66,21 +59,6 @@ int Drive::update()
     }
     lMotor_->setSpeed(lMotorCommand_);
     rMotor_->setSpeed(rMotorCommand_);
-
-#if DRIVE_DEBUG
-    Serial.print(calcL);
-    Serial.print(" ");
-    // Serial.print(calcR);
-    // Serial.print(" ");
-    Serial.print(lMotorCommand_ / 255.0f);
-    Serial.print(" ");
-    Serial.print(v_r_);
-
-    // Serial.print(" ");
-    // Serial.print(rMotorCommand_ / 255.0f);
-    Serial.println("");
-#endif
-
     return 0;
 }
 
