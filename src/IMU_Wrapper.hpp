@@ -14,8 +14,14 @@ class IMU {
     public:
         IMU(uint32_t interPin);
         ~IMU();
-
+        // 
+        // Read data from the IMU.
         int read();
+        // 
+        // Get functions for yaw pitch and roll.
+        float getYaw();
+        float getPitch();
+        float getRoll();
 
     private:
         MPU6050 mpu_;
@@ -27,7 +33,7 @@ class IMU {
 
         // Pose.
         Quaternion q_;           // [w, x, y, z]         quaternion container
-        float ypr_[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
+        float ypr_[3] = {};           // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
 
 };
 

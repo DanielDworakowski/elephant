@@ -92,24 +92,25 @@ int IMU::read()
         mpu_.dmpGetGyro(gyro, fifoBuffer_);
         mpu_.dmpGetGravity(&gravity, &q_);
         mpu_.dmpGetYawPitchRoll(ypr_, &q_, &gravity);
-
-        Serial.print(millis());
-        Serial.print(" ");
-        Serial.print(ypr_[0] * 180/M_PI);
-        Serial.print(" ");
-        Serial.print(ypr_[1] * 180/M_PI);
-        Serial.print(" ");
-        Serial.print(ypr_[2] * 180/M_PI);
-        Serial.print("\n");
     }
 
     return 0;
 }
 
+float IMU::getYaw() 
+{
+    return ypr_[0] * 180/M_PI;
+}
 
+float IMU::getPitch() 
+{
+    return ypr_[1] * 180/M_PI;
+}
 
-
-
+float IMU::getRoll() 
+{
+    return ypr_[2] * 180/M_PI;
+}
 
 
 

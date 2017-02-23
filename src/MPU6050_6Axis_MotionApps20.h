@@ -302,7 +302,7 @@ const unsigned char dmpConfig[MPU6050_DMP_CONFIG_SIZE] PROGMEM = {
     0x07,   0x46,   0x01,   0x9A,                     // CFG_GYRO_SOURCE inv_send_gyro
     0x07,   0x47,   0x04,   0xF1, 0x28, 0x30, 0x38,   // CFG_9 inv_send_gyro -> inv_construct3_fifo
     0x07,   0x6C,   0x04,   0xF1, 0x28, 0x30, 0x38,   // CFG_12 inv_send_accel -> inv_construct3_fifo
-    0x02,   0x16,   0x02,   0x00, 0x02               //(0x07 -> 16Mhz) D_0_22 inv_set_fifo_rate (0x06 for first 8mhz board) (0x09 for 8Mhz board from Binoy)
+    0x02,   0x16,   0x02,   0x00, 0x02 //0x02 -> 66hz              //(0x07 -> 16Mhz) D_0_22 inv_set_fifo_rate (0x06 for first 8mhz board) (0x09 for 8Mhz board from Binoy)
 
     // This very last 0x01 WAS a 0x09, which drops the FIFO rate down to 20 Hz. 0x07 is 25 Hz,
     // 0x01 is 100Hz. Going faster than 100Hz (0x00=200Hz) tends to result in very noisy data.
@@ -580,9 +580,9 @@ inline bool MPU6050::dmpPacketAvailable() {
 inline uint8_t MPU6050::dmpGetAccel(int32_t *data, const uint8_t* packet) {
     // TODO: accommodate different arrangements of sent data (ONLY default supported now)
     if (packet == 0) packet = dmpPacketBuffer;
-    data[0] = ((packet[28] << 24) + (packet[29] << 16) + (packet[30] << 8) + packet[31]);
-    data[1] = ((packet[32] << 24) + (packet[33] << 16) + (packet[34] << 8) + packet[35]);
-    data[2] = ((packet[36] << 24) + (packet[37] << 16) + (packet[38] << 8) + packet[39]);
+    data[0] = ((static_cast<int32_t>(packet[28]) << 24) + (static_cast<int32_t>(packet[29]) << 16) + (packet[30] << 8) + packet[31]);
+    data[1] = ((static_cast<int32_t>(packet[32]) << 24) + (static_cast<int32_t>(packet[33]) << 16) + (packet[34] << 8) + packet[35]);
+    data[2] = ((static_cast<int32_t>(packet[36]) << 24) + (static_cast<int32_t>(packet[37]) << 16) + (packet[38] << 8) + packet[39]);
     return 0;
 }
 inline uint8_t MPU6050::dmpGetAccel(int16_t *data, const uint8_t* packet) {
@@ -604,10 +604,10 @@ inline uint8_t MPU6050::dmpGetAccel(VectorInt16 *v, const uint8_t* packet) {
 inline uint8_t MPU6050::dmpGetQuaternion(int32_t *data, const uint8_t* packet) {
     // TODO: accommodate different arrangements of sent data (ONLY default supported now)
     if (packet == 0) packet = dmpPacketBuffer;
-    data[0] = ((packet[0] << 24) + (packet[1] << 16) + (packet[2] << 8) + packet[3]);
-    data[1] = ((packet[4] << 24) + (packet[5] << 16) + (packet[6] << 8) + packet[7]);
-    data[2] = ((packet[8] << 24) + (packet[9] << 16) + (packet[10] << 8) + packet[11]);
-    data[3] = ((packet[12] << 24) + (packet[13] << 16) + (packet[14] << 8) + packet[15]);
+    data[0] = ((static_cast<int32_t>(packet[0]) << 24) + (static_cast<int32_t>(packet[1]) << 16) + (packet[2] << 8) + packet[3]);
+    data[1] = ((static_cast<int32_t>(packet[4]) << 24) + (static_cast<int32_t>(packet[5]) << 16) + (packet[6] << 8) + packet[7]);
+    data[2] = ((static_cast<int32_t>(packet[8]) << 24) + (static_cast<int32_t>(packet[9]) << 16) + (packet[10] << 8) + packet[11]);
+    data[3] = ((static_cast<int32_t>(packet[12]) << 24) + (static_cast<int32_t>(packet[13]) << 16) + (packet[14] << 8) + packet[15]);
     return 0;
 }
 inline uint8_t MPU6050::dmpGetQuaternion(int16_t *data, const uint8_t* packet) {
@@ -637,9 +637,9 @@ inline uint8_t MPU6050::dmpGetQuaternion(Quaternion *q, const uint8_t* packet) {
 inline uint8_t MPU6050::dmpGetGyro(int32_t *data, const uint8_t* packet) {
     // TODO: accommodate different arrangements of sent data (ONLY default supported now)
     if (packet == 0) packet = dmpPacketBuffer;
-    data[0] = ((packet[16] << 24) + (packet[17] << 16) + (packet[18] << 8) + packet[19]);
-    data[1] = ((packet[20] << 24) + (packet[21] << 16) + (packet[22] << 8) + packet[23]);
-    data[2] = ((packet[24] << 24) + (packet[25] << 16) + (packet[26] << 8) + packet[27]);
+    data[0] = ((static_cast<int32_t>(packet[16]) << 24) + (static_cast<int32_t>(packet[17]) << 16) + (packet[18] << 8) + packet[19]);
+    data[1] = ((static_cast<int32_t>(packet[20]) << 24) + (static_cast<int32_t>(packet[21]) << 16) + (packet[22] << 8) + packet[23]);
+    data[2] = ((static_cast<int32_t>(packet[24]) << 24) + (static_cast<int32_t>(packet[25]) << 16) + (packet[26] << 8) + packet[27]);
     return 0;
 }
 inline uint8_t MPU6050::dmpGetGyro(int16_t *data, const uint8_t* packet) {
@@ -713,22 +713,22 @@ inline uint8_t MPU6050::dmpProcessFIFOPacket(const unsigned char *dmpData) {
     (void) dmpData;
     return 0;
 }
-inline uint8_t MPU6050::dmpReadAndProcessFIFOPacket(uint8_t numPackets, uint8_t *processed) {
-    uint8_t status;
-    uint8_t buf[dmpPacketSize];
+// inline uint8_t MPU6050::dmpReadAndProcessFIFOPacket(uint8_t numPackets, uint8_t *processed) {
+//     uint8_t status;
+//     uint8_t buf[dmpPacketSize];
 
-    for (uint8_t i = 0; i < numPackets; i++) {
-        // read packet from FIFO
-        getFIFOBytes(buf, dmpPacketSize);
+//     for (uint8_t i = 0; i < numPackets; i++) {
+//         // read packet from FIFO
+//         getFIFOBytes(buf, dmpPacketSize);
 
-        // process packet
-        if ((status = dmpProcessFIFOPacket(buf)) > 0) return status;
+//         // process packet
+//         if ((status = dmpProcessFIFOPacket(buf)) > 0) return status;
         
-        // increment external process count variable, if supplied
-        if (processed != 0) *processed++;
-    }
-    return 0;
-}
+//         // increment external process count variable, if supplied
+//         if (processed != 0) *processed++;
+//     }
+//     return 0;
+// }
 
 // uint8_t MPU6050::dmpSetFIFOProcessedCallback(void (*func) (void));
 
