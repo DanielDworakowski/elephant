@@ -42,6 +42,9 @@ void setupPins()
     // Attach all interrupts. 
     attachInterrupt(digitalPinToInterrupt(LEFT_ENCODER_INTERRUPT_PIN), HandleLeftMotorInterruptA, RISING);
     attachInterrupt(digitalPinToInterrupt(RIGHT_ENCODER_INTERRUPT_PIN), HandleRightMotorInterruptA, RISING);
+    //
+    // Start Button
+    pinMode(START_BUTTON_PIN, INPUT);
 }
 
 #endif
