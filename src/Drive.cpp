@@ -1,7 +1,7 @@
 #include "Drive.hpp"
 #include "arduino.h"
 
-Drive::Drive(int32_t *rEncoderCount, int32_t *lEncoderCount, Adafruit_DCMotor *rMotor, Adafruit_DCMotor *lMotor)
+Drive::Drive(volatile int32_t *rEncoderCount, volatile int32_t *lEncoderCount, Adafruit_DCMotor *rMotor, Adafruit_DCMotor *lMotor)
     : rEncoderCount_(rEncoderCount)
     , lEncoderCount_(lEncoderCount)
     , lastR_(0)

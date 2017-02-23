@@ -5,8 +5,8 @@
 
 // #define LeftEncoderIsReversed
 
-volatile long gLeftEncoderTicks;
-volatile long gRightEncoderTicks;
+volatile int32_t gLeftEncoderTicks;
+volatile int32_t gRightEncoderTicks;
 
 void HandleLeftMotorInterruptA()
 {

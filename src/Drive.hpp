@@ -41,7 +41,7 @@
 // v_l = (2(v_desired) - omega_desiged*L) / 2r
 class Drive {
     public:
-        Drive(int32_t *rEncoderCount, int32_t *lEncoderCount, Adafruit_DCMotor *rMotor, Adafruit_DCMotor *lMotor);
+        Drive(volatile int32_t *rEncoderCount, volatile int32_t *lEncoderCount, Adafruit_DCMotor *rMotor, Adafruit_DCMotor *lMotor);
         ~Drive();
         // 
         // Manage PID loops.
@@ -59,7 +59,7 @@ class Drive {
         int updatePos(float omegal, float omegar, float dt);
         // 
         // State variables. 
-        int32_t *rEncoderCount_, *lEncoderCount_;
+        volatile int32_t *rEncoderCount_, *lEncoderCount_;
         int32_t lastR_, lastL_;
         int32_t lastTime_;
         float v_r_, v_l_;

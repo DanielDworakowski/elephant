@@ -8,6 +8,7 @@
 #include "Adafruit_MotorShield.h"
 #include "Adafruit_MS_PWMServoDriver.h"
 #include "Drive.hpp"
+#include "StateFunctions.hpp"
 
 void setupProximity(VL53L0X &sensor) 
 {
@@ -45,9 +46,6 @@ void loop()
     setupProximity(prox);
     prox.startContinuous();
     motorShield.begin();
-    // 
-    // Set the motor to move forwards for testing.
-    float meas = 0;
 
     while (1) {
         //
