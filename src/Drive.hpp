@@ -50,6 +50,9 @@ class Drive {
         // Change the reference values desired.
         int setReference(float setSpeed, float setOmega);
         // 
+        // Stop the robot.
+        int stop();
+        // 
         // Reset the position vector's origin.
         int resetOrigin();
 

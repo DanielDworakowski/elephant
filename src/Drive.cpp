@@ -60,8 +60,8 @@ int Drive::update()
     else {
         rMotor_->run(FORWARD);
     }
-    lMotor_->setSpeed(lMotorCommand_);
-    rMotor_->setSpeed(rMotorCommand_);
+    lMotor_->setSpeed(abs(lMotorCommand_));
+    rMotor_->setSpeed(abs(rMotorCommand_));
     return 0;
 }
 
@@ -69,6 +69,14 @@ int Drive::setReference(float setSpeed, float setOmega)
 {
     v_r_ = (2 * setSpeed + setOmega * CHASIS_LENGTH) / WHEEL_DIAMETER;
     v_l_ = (2 * setSpeed - setOmega * CHASIS_LENGTH) / WHEEL_DIAMETER;
+    return 0;
+}
+
+int Drive::stop()
+{
+    lMotor_->setSpeed(0);
+    rMotor_->setSpeed(0);
+    setReference(0,0);
     return 0;
 }
 
