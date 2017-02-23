@@ -14,5 +14,8 @@
 // Proximity sensor interrupt pins.
 #define TOF_STAGE1_INTERRUPT_PIN 0
 #define TOF_STAGE2_INTERRUPT_PIN 0
+//
+// Start button pin
+#define START_BUTTON_PIN 31
 
 #endif
