@@ -7,13 +7,13 @@
 #define __DRIVE__
 // 
 // Left motor tuning.
-#define LEFT_MOTOR_P 54.0f //7
+#define LEFT_MOTOR_P 54.0f
 #define LEFT_MOTOR_I 60.0f
 #define LEFT_MOTOR_D 0.0f
 // 
 // Right motor tuning.
-#define RIGHT_MOTOR_P 0.0f
-#define RIGHT_MOTOR_I 0.0f
+#define RIGHT_MOTOR_P 54.0f
+#define RIGHT_MOTOR_I 60.0f
 #define RIGHT_MOTOR_D 0.0f
 // 
 // The maximum and minimum motor speeds.
@@ -49,8 +49,16 @@ class Drive {
         // 
         // Change the reference values desired.
         int setReference(float setSpeed, float setOmega);
+        // 
+        // Reset the position vector's origin.
+        int resetOrigin();
 
     private:
+        // 
+        // Using the actual velocity update the position vector.
+        int updatePos(float omegal, float omegar, float dt);
+        // 
+        // State variables. 
         int32_t *rEncoderCount_, *lEncoderCount_;
         int32_t lastR_, lastL_;
         int32_t lastTime_;
@@ -61,6 +69,9 @@ class Drive {
         PID rVelocity_;
         float lMotorCommand_, rMotorCommand_;
         Adafruit_DCMotor *rMotor_, *lMotor_;
+        // 
+        // The position of the robot from encoder counts
+        float xComp_, yComp_, yaw_;
 };
 
 #endif /* _DRIVE_H_ */

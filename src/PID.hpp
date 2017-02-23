@@ -9,7 +9,7 @@ class PID {
         ~PID();
         // 
         // Error function.
-        float getError(float ref, float meas);
+        float getCmd(float ref, float meas);
 
     private:
         float p_, i_, d_;

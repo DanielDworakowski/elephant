@@ -17,7 +17,7 @@ PID::~PID()
 {
 }
 
-float PID::getError(float ref, float meas)
+float PID::getCmd(float ref, float meas)
 {
     float err = ref - meas;
     float curTime = millis();
