@@ -24,7 +24,7 @@ int StateFunctions::approachState(Drive *drive, VL53L0X* prox)
     return 0;
 }
 
-int waitForStartButton()
+int StateFunctions::waitForStartButton()
 {
     while (!digitalRead(START_BUTTON_PIN)) {
         delay(10);
@@ -33,7 +33,7 @@ int waitForStartButton()
     return 0;
 }
 
-int getOffPlateform(Drive *drive)
+int StateFunctions::getOffPlateform(Drive *drive)
 {
     float curTime = millis();
     while (millis()-curTime < 1000) {

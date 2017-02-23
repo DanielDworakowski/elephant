@@ -8,7 +8,7 @@
 #include "Adafruit_MotorShield.h"
 #include "Adafruit_MS_PWMServoDriver.h"
 #include "Drive.hpp"
-//#include "StateFunctions.hpp"
+#include "StateFunctions.hpp"
 
 void setupProximity(VL53L0X &sensor) 
 {
@@ -143,15 +143,15 @@ void loop()
     motorShield.begin();
 
     while (1) {
+        // StateFunctions::waitForStartButton();
         // StateFunctions::approachState(&drive, &prox);
-        
         // 
         // Temporary.
         imu.read();
         meas = prox.readRangeContinuousMillimeters();
         // readRangeSingleMillimeters
         if (prox.timeoutOccurred()) {
-            Serial.println("-----------");
+            // Serial.println("-----------");
             prox.stopContinuous();
             prox.startContinuous();
         }
