@@ -23,3 +23,24 @@ int StateFunctions::approachState(Drive *drive, VL53L0X* prox)
     } while (abs(meas - WALL_SET_DIST) > WALL_DIST_TOL);
     return 0;
 }
+
+int waitForStartButton()
+{
+    while (!digitalRead(START_BUTTON_PIN)) {
+        delay(10);
+    }
+    delay(1000);
+    return 0;
+}
+
+int getOffPlateform(Drive *drive)
+{
+    float curTime = millis();
+    while (millis()-curTime < 1000) {
+        drive->setReference(SPEED_MAX, 0.0f);
+        drive->update();
+    }
+    return 0;
+    //
+    // Does not have drive->stop to ensure a fast transition discussion needed (DN)
+}

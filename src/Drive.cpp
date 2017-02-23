@@ -1,5 +1,5 @@
 #include "Drive.hpp"
-#include "arduino.h"
+#include "Arduino.h"
 
 Drive::Drive(volatile int32_t *rEncoderCount, volatile int32_t *lEncoderCount, Adafruit_DCMotor *rMotor, Adafruit_DCMotor *lMotor)
     : rEncoderCount_(rEncoderCount)

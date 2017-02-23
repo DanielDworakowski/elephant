@@ -1,5 +1,5 @@
 #include "PID.hpp"
-#include "arduino.h"
+#include "Arduino.h"
 
 PID::PID(float p, float i, float d, float max, float min)
     : p_(p)
