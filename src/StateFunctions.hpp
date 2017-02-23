@@ -2,6 +2,7 @@
 #include "VL53L0X.h"
 #include "Drive.hpp"
 #include "PID.hpp"
+#include "PinDefines.h"
 
 #ifndef __STATE_FUNCTIONS__
 #define __STATE_FUNCTIONS__
@@ -23,6 +24,12 @@ namespace StateFunctions
     //
     // State that approaches the wall of the arena.
     int approachState(Drive* drive, VL53L0X* prox);
+    //
+    // State that waits for the start button to be pressed.
+    int waitForStartButton();
+    //
+    // State to get off the starting platform.
+    int getOffPlateform(Drive* drive);
 }
 
 #endif /* __STATE_FUNCTIONS__ */
