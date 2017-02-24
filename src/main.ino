@@ -132,7 +132,7 @@ void loop()
     // Define objects.
     VL53L0X prox;
     Adafruit_MotorShield motorShield;// = Adafruit_MotorShield();
-    IMU imu(IMU_INTERRUPT_PIN);
+    IMU imu(PIN::imuInterruptPin);
     Drive drive(&gRightEncoderTicks, &gLeftEncoderTicks, motorShield.getMotor(2), motorShield.getMotor(1));
     drive.setReference(1,0);
     float meas = 0;

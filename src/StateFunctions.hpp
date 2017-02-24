@@ -18,6 +18,9 @@
 // The set distance desired to the wall.
 #define WALL_SET_DIST 100.0f
 #define WALL_DIST_TOL 10.0f
+//
+// Time in ms to get off the platform
+#define DRIVE_OFF_PLATFORM_TIME 500
 
 namespace StateFunctions 
 {

@@ -11,18 +11,18 @@ volatile int32_t gRightEncoderTicks;
 void HandleLeftMotorInterruptA()
 {
 #ifdef LeftEncoderIsReversed
-    gLeftEncoderTicks -= digitalReadFast(LEFT_ENCODER_PIN_B) ? -1 : +1;
+    gLeftEncoderTicks -= digitalReadFast(PIN::leftEncoderPinB) ? -1 : +1;
 #else
-    gLeftEncoderTicks += digitalReadFast(LEFT_ENCODER_PIN_B) ? -1 : +1;
+    gLeftEncoderTicks += digitalReadFast(PIN::leftEncoderPinB) ? -1 : +1;
 #endif
 }
  
 void HandleRightMotorInterruptA()
 {
 #ifdef RightEncoderIsReversed
-    gRightEncoderTicks -= digitalReadFast(RIGHT_ENCODER_PIN_B) ? -1 : +1;
+    gRightEncoderTicks -= digitalReadFast(PIN::rightEncoderPinB) ? -1 : +1;
 #else
-    gRightEncoderTicks += digitalReadFast(RIGHT_ENCODER_PIN_B) ? -1 : +1;
+    gRightEncoderTicks += digitalReadFast(PIN::rightEncoderPinB) ? -1 : +1;
 #endif
 }
 
@@ -32,19 +32,19 @@ void setupPins()
 {
     // 
     // Encoders.
-    pinMode(LEFT_ENCODER_PIN_B, INPUT);
-    digitalWrite(LEFT_ENCODER_PIN_B, LOW);
-    pinMode(RIGHT_ENCODER_PIN_B, INPUT);
-    digitalWrite(RIGHT_ENCODER_PIN_B, LOW);
-    pinMode(LEFT_ENCODER_INTERRUPT_PIN, INPUT);
-    pinMode(RIGHT_ENCODER_INTERRUPT_PIN, INPUT);
+    pinMode(PIN::leftEncoderPinB, INPUT);
+    digitalWrite(PIN::leftEncoderPinB, LOW);
+    pinMode(PIN::rightEncoderPinB, INPUT);
+    digitalWrite(PIN::rightEncoderPinB, LOW);
+    pinMode(PIN::leftEncoderInterruptPin, INPUT);
+    pinMode(PIN::rightEncoderInterruptPin, INPUT);
     // 
     // Attach all interrupts. 
-    attachInterrupt(digitalPinToInterrupt(LEFT_ENCODER_INTERRUPT_PIN), HandleLeftMotorInterruptA, RISING);
-    attachInterrupt(digitalPinToInterrupt(RIGHT_ENCODER_INTERRUPT_PIN), HandleRightMotorInterruptA, RISING);
-    //
+    attachInterrupt(digitalPinToInterrupt(PIN::leftEncoderInterruptPin), HandleLeftMotorInterruptA, RISING);
+    attachInterrupt(digitalPinToInterrupt(PIN::rightEncoderInterruptPin), HandleRightMotorInterruptA, RISING);
+    // 
     // Start Button
-    pinMode(START_BUTTON_PIN, INPUT);
+    pinMode(PIN::startButtonPin, INPUT);
 }
 
 #endif
