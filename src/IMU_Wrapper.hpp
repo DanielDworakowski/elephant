@@ -22,6 +22,7 @@ class IMU {
         float getYaw();
         float getPitch();
         float getRoll();
+        float getGlobalZ(); // in G.
 
     private:
         MPU6050 mpu_;
@@ -33,8 +34,11 @@ class IMU {
 
         // Pose.
         Quaternion q_;           // [w, x, y, z]         quaternion container
-        float ypr_[3] = {};           // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
-
+        float ypr_[3] = {};      // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
+        VectorInt16 acelLocal_ = {};
+        VectorInt16 acelWorld_ = {};
+        VectorInt16 acel_ = {};
+        float accScale_;
 };
 
 #endif /* _IMU_WRAPPER_H_ */

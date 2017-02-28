@@ -47,6 +47,22 @@ IMU::IMU(uint32_t interPin)
     while (!dmpReady) {
         Serial.println("UNABLE TO START IMU! WILL NOT CONTINUE\n");
     }
+    // 
+    // Read the full scale range of the accelerometer. 
+    switch (mpu_.getFullScaleAccelRange()) {
+        case 0:
+            accScale_ = 8192.0f;
+            break;
+        case 1:
+            accScale_ = 4096.0f;
+            break;
+        case 2:
+            accScale_ = 2048.0f;
+            break;
+        case 3:
+            accScale_ = 1024.0f;
+            break;
+    }
 }
 
 IMU::~IMU() 
@@ -57,7 +73,6 @@ int IMU::read()
 {
     uint8_t mpuIntStatus;
     VectorFloat gravity;    // [x, y, z].
-    int16_t gyro[3];        // [x, y, z].
 
     while (!gMpuInterrupt && fifoCount_ < packetSize_) {
 
@@ -89,9 +104,11 @@ int IMU::read()
         } while (fifoCount_ > 2 * packetSize_);
 
         mpu_.dmpGetQuaternion(&q_, fifoBuffer_);
-        mpu_.dmpGetGyro(gyro, fifoBuffer_);
         mpu_.dmpGetGravity(&gravity, &q_);
         mpu_.dmpGetYawPitchRoll(ypr_, &q_, &gravity);
+        mpu_.dmpGetAccel(&acel_, fifoBuffer_);
+        mpu_.dmpGetLinearAccel(&acelLocal_, &acel_, &gravity);
+        mpu_.dmpGetLinearAccelInWorld(&acelWorld_, &acelLocal_, &q_);
     }
 
     return 0;
@@ -112,6 +129,10 @@ float IMU::getRoll()
     return ypr_[2] * 180/M_PI;
 }
 
+float IMU::getGlobalZ()
+{
+    return acelWorld_.z / accScale_;
+}
 
 
 
