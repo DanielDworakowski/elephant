@@ -7,8 +7,8 @@ enum PIN: byte
 	// Quadrature encoders.
 	leftEncoderInterruptPin = 19, // A side of encoder
 	leftEncoderPinB = 17,
-	rightEncoderInterruptPin =  5, // A side of encoder
-	rightEncoderPinB =  24,
+	rightEncoderInterruptPin =  2, // A side of encoder
+	rightEncoderPinB =  16,
 	// 
 	// IMU interrupt pin.
 	imuInterruptPin = 18,
@@ -18,7 +18,7 @@ enum PIN: byte
 	tofStage2InterruptPin = 0,
 	//
 	// Start button pin
-	startButtonPin = 31,
+	startButtonPin = 52,
 };
 
 #endif

@@ -20,6 +20,10 @@
 #define MAX_SPEED 255
 #define MIN_SPEED -255
 // 
+// The maximum and miminmum robot velocity.
+#define ROBOT_SPEED_MAX 4.0f
+#define ROBOT_SPEED_MIN -4.0f
+// 
 // The radius of the wheels.
 #define WHEEL_RADIUS (0.1524f)
 #define WHEEL_DIAMETER (2 * 0.1524f)

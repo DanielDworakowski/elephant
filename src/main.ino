@@ -135,7 +135,6 @@ void loop()
     IMU imu(PIN::imuInterruptPin);
     Drive drive(&gRightEncoderTicks, &gLeftEncoderTicks, motorShield.getMotor(2), motorShield.getMotor(1));
     drive.setReference(1,0);
-    float meas = 0;
     // 
     // Begin sensing.
     setupProximity(prox);
@@ -144,24 +143,30 @@ void loop()
 
     while (1) {
         // StateFunctions::waitForStartButton();
-        // StateFunctions::approachState(&drive, &prox);
-        // 
-        // Temporary.
-        imu.read();
-        meas = prox.readRangeContinuousMillimeters();
-        // readRangeSingleMillimeters
-        if (prox.timeoutOccurred()) {
-            // Serial.println("-----------");
-            prox.stopContinuous();
-            prox.startContinuous();
-        }
-        Serial.print(imu.getYaw());
-        Serial.print("\t");
-        Serial.print(imu.getPitch());
-        Serial.print("\t");
-        Serial.print(imu.getRoll());
-        Serial.print("\t");
-        Serial.println(meas);
+        // StateFunctions::getOffPlatform(&drive);
+        StateFunctions::approach(&drive, &prox);
+        // StateFunctions::jump(motorShield.getMotor(2), &imu);
+        // StateFunctions::inAir(&drive, &imu);
+        // StateFunctions::orientForward(&drive, &imu, /* orientation */);
+        // // 
+        // // Temporary.
+        // imu.read();
+        // meas = prox.readRangeContinuousMillimeters();
+        // // readRangeSingleMillimeters
+        // if (prox.timeoutOccurred()) {
+        //     // Serial.println("-----------");
+        //     prox.stopContinuous();
+        //     prox.startContinuous();
+        // }
+        // Serial.print(imu.getYaw());
+        // Serial.print("\t");
+        // Serial.print(imu.getPitch());
+        // Serial.print("\t");
+        // Serial.print(imu.getRoll());
+        // Serial.print("\t");
+        // Serial.print(imu.getGlobalZ());
+        // Serial.print("\t");
+        // Serial.println(meas);
     }
 }
  
