@@ -131,42 +131,47 @@ void loop()
     // 
     // Define objects.
     VL53L0X prox;
-    Adafruit_MotorShield motorShield;// = Adafruit_MotorShield();
-    IMU imu(PIN::imuInterruptPin);
+    Adafruit_MotorShield motorShield;
+    // IMU imu(PIN::imuInterruptPin);
     Drive drive(&gRightEncoderTicks, &gLeftEncoderTicks, motorShield.getMotor(2), motorShield.getMotor(1));
-    drive.setReference(1,0);
+    float yawRef = 0;
     // 
     // Begin sensing.
     setupProximity(prox);
     prox.startContinuous();
     motorShield.begin();
 
-    while (1) {
-        // StateFunctions::waitForStartButton();
-        // StateFunctions::getOffPlatform(&drive);
+    int time = millis();
+    static int count = 0;
+
+    // drive.setReference(ROBOT_SPEED_MAX / 2, 0);
+
+    // if (count == 0) {
+    //     do {
+    //         drive.update();
+    //         delay(100);
+    //     } while ((millis() - time ) < 5000);
+    //     count ++;
+    // }
+    // drive.stop();
+
+
+    if (count == 0) {
         StateFunctions::approach(&drive, &prox);
-        // StateFunctions::jump(motorShield.getMotor(2), &imu);
-        // StateFunctions::inAir(&drive, &imu);
-        // StateFunctions::orientForward(&drive, &imu, /* orientation */);
-        // // 
-        // // Temporary.
-        // imu.read();
-        // meas = prox.readRangeContinuousMillimeters();
-        // // readRangeSingleMillimeters
-        // if (prox.timeoutOccurred()) {
-        //     // Serial.println("-----------");
-        //     prox.stopContinuous();
-        //     prox.startContinuous();
-        // }
-        // Serial.print(imu.getYaw());
-        // Serial.print("\t");
-        // Serial.print(imu.getPitch());
-        // Serial.print("\t");
-        // Serial.print(imu.getRoll());
-        // Serial.print("\t");
-        // Serial.print(imu.getGlobalZ());
-        // Serial.print("\t");
-        // Serial.println(meas);
+        count ++;
     }
+    drive.stop();
+    
+
+    // // 
+    // // Begin the state machine.
+    // while (1) {
+    //     // StateFunctions::waitForStartButton(&imu, yawRef);
+    //     StateFunctions::getOffPlatform(&drive);
+    //     // StateFunctions::approach(&drive, &prox);
+    //     // StateFunctions::jump(motorShield.getMotor(2), &imu);
+    //     // StateFunctions::inAir(&drive, &imu);
+    //     // StateFunctions::orientForward(&drive, &imu, yawRef);
+    // }
 }
  

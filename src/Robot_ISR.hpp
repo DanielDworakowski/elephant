@@ -3,10 +3,11 @@
 #ifndef __ISR_H__
 #define __ISR_H__
 
-#define LeftEncoderIsReversed
-
 volatile int32_t gLeftEncoderTicks;
 volatile int32_t gRightEncoderTicks;
+
+#define LeftEncoderIsReversed
+// #define RightEncoderIsReversed
 
 void HandleLeftMotorInterruptA()
 {

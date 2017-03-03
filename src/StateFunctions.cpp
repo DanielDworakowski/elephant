@@ -2,16 +2,23 @@
 
 int StateFunctions::waitForStartButton(IMU *imu, float &yaw)
 {
-    (void) imu;
-    (void) yaw;
+    uint16_t cnt;
+    const uint16_t avgNum = 15;
     while (!digitalRead(PIN::startButtonPin)) {
         delay(100);
     }
+    // 
+    // Average the current yaw.
+    for (cnt = 0; cnt < avgNum; ++cnt) {
+        imu->read();
+        yaw += imu->getYaw();
+    }
+    yaw /= avgNum;
     delay(1000);
     return 0;
 }
 
-int StateFunctions::getOffPlateform(Drive *drive)
+int StateFunctions::getOffPlatform(Drive *drive)
 {
     float startTime = millis();
     while (millis()-startTime < DRIVE_OFF_PLATFORM_TIME) {
@@ -23,7 +30,7 @@ int StateFunctions::getOffPlateform(Drive *drive)
 
 int StateFunctions::approach(Drive *drive, VL53L0X* prox) 
 {
-    PID acc(ACC_P, ACC_I, ACC_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);
+    PID acc(ACC_P, ACC_I, ACC_D, ROBOT_SPEED_MAX / 4.0f, ROBOT_SPEED_MIN / 4.0f);
     float meas = 0, cmd = 0;
     // 
     // Monitor and control the speed using the PID and 
@@ -33,6 +40,7 @@ int StateFunctions::approach(Drive *drive, VL53L0X* prox)
             cmd = -1.0f * acc.getCmd(WALL_SET_DIST, meas);
             drive->setReference(cmd, 0.0f);
             drive->update();
+            delay(70);
         } while (abs(meas - WALL_SET_DIST) > WALL_DIST_TOL);
         // 
         // Stop and ensure no drift. 
@@ -68,9 +76,6 @@ int StateFunctions::inAir(Drive *drive, IMU *imu)
         cmd = pid.getCmd(0, imu->getPitch());
         drive->setReference(cmd, 0);
         drive->update();
-        Serial.print(imu->getPitch());
-        Serial.print("\t");
-        Serial.println(cmd);
     } while(imu->getGlobalZ() < JUMP_THRESHOLD);
     // 
     // Stop the motors.
@@ -78,11 +83,19 @@ int StateFunctions::inAir(Drive *drive, IMU *imu)
     return 0;
 }
 
-int StateFunctions::orientForward(Drive *drive, IMU *imu, float yaw)
+int StateFunctions::orientForward(Drive *drive, IMU *imu, float refYaw)
 {
-    (void) drive;
-    (void) imu;
-    (void) yaw;
+    float cmd = 0.0;
+    float curYaw = 0.0;
+    PID pid(ORIENT_P, ORIENT_I, ORIENT_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);
+    do {
+        imu->read();
+        curYaw = imu->getYaw();
+        cmd = pid.getCmd(refYaw, curYaw);
+        drive->setReference(0, cmd);
+        drive->update();
+    } while (abs(curYaw - refYaw) > YAW_TOL); // Not sure if sufficient.
+    drive->stop();
     return 0;
 }
 

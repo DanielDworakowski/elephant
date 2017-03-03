@@ -7,8 +7,8 @@ Drive::Drive(volatile int32_t *rEncoderCount, volatile int32_t *lEncoderCount, A
     , lastR_(0)
     , lastL_(0)
     , lastTime_(millis())
-    , v_r_(0.0f)
-    , v_l_(0.0f)
+    , w_r_(0.0f)
+    , w_l_(0.0f)
     , lVelocity_(LEFT_MOTOR_P, LEFT_MOTOR_I, LEFT_MOTOR_D, MAX_SPEED, MIN_SPEED)
     , rVelocity_(RIGHT_MOTOR_P, RIGHT_MOTOR_I, RIGHT_MOTOR_D, MAX_SPEED, MIN_SPEED)
     , lMotorCommand_(0.0f)
@@ -44,8 +44,11 @@ int Drive::update()
     lastTime_ = curTime;
     // 
     // Calculate the commands for the speed control.
-    rMotorCommand_ = rVelocity_.getCmd(v_r_, calcR);
-    lMotorCommand_ = lVelocity_.getCmd(v_l_, calcL);
+    rMotorCommand_ = -1 * rVelocity_.getCmd(w_r_, calcR);
+    lMotorCommand_ = -1 * lVelocity_.getCmd(w_l_, calcL);
+    Serial.print(calcL);
+    Serial.print("\t");
+    Serial.println(calcR);
     // 
     // Set commands.
     if (lMotorCommand_ < 0) {
@@ -67,8 +70,8 @@ int Drive::update()
 
 int Drive::setReference(float setSpeed, float setOmega) 
 {
-    v_r_ = (2 * setSpeed + setOmega * CHASIS_LENGTH) / WHEEL_DIAMETER;
-    v_l_ = (2 * setSpeed - setOmega * CHASIS_LENGTH) / WHEEL_DIAMETER;
+    w_r_ = (2 * setSpeed + setOmega * CHASIS_LENGTH) / WHEEL_DIAMETER;
+    w_l_ = (2 * setSpeed - setOmega * CHASIS_LENGTH) / WHEEL_DIAMETER;
     return 0;
 }
 

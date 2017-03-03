@@ -7,18 +7,19 @@
 #define __DRIVE__
 // 
 // Left motor tuning.
-#define LEFT_MOTOR_P 54.0f
-#define LEFT_MOTOR_I 60.0f
+#define LEFT_MOTOR_P 15.0f
+#define LEFT_MOTOR_I 0.0f
 #define LEFT_MOTOR_D 0.0f
 // 
 // Right motor tuning.
-#define RIGHT_MOTOR_P 54.0f
-#define RIGHT_MOTOR_I 60.0f
+#define RIGHT_MOTOR_P 15.0f
+#define RIGHT_MOTOR_I 0.0f
 #define RIGHT_MOTOR_D 0.0f
 // 
 // The maximum and minimum motor speeds.
-#define MAX_SPEED 255
-#define MIN_SPEED -255
+// Given we have a 11.1V LiPo divide 255 max by 2.
+#define MAX_SPEED /*255*/(255 / 2.0f)
+#define MIN_SPEED /*-255*/(-255 / 2.0f)
 // 
 // The maximum and miminmum robot velocity.
 #define ROBOT_SPEED_MAX 4.0f
@@ -34,9 +35,7 @@
 // Conversion factors from ticks to linear velocity.
 #define TICKS_PER_REVOLUTION (12.0f * 47.0f)
 #define TO_OMEGA(ticks) ((ticks) / TICKS_PER_REVOLUTION * 2.0f * M_PI)
-
-// Input velocity and angle?
-// https://youtu.be/aLOjNfgRdhw?t=464
+// 
 // x_dot = r/2(v_r + v_l)cos(phi)
 // y_dot = "            "sin(phi)
 // phi_dot = R/L(v_r - v_l)
@@ -69,7 +68,7 @@ class Drive {
         volatile int32_t *rEncoderCount_, *lEncoderCount_;
         int32_t lastR_, lastL_;
         int32_t lastTime_;
-        float v_r_, v_l_;
+        float w_r_, w_l_;
         //
         // PIDs for motors.
         PID lVelocity_;

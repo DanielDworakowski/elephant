@@ -7,11 +7,11 @@ enum PIN: byte
 	// Quadrature encoders.
 	leftEncoderInterruptPin = 19, // A side of encoder
 	leftEncoderPinB = 17,
-	rightEncoderInterruptPin =  2, // A side of encoder
+	rightEncoderInterruptPin =  18, // A side of encoder
 	rightEncoderPinB =  16,
 	// 
 	// IMU interrupt pin.
-	imuInterruptPin = 18,
+	imuInterruptPin = 2,
 	// 
 	// Proximity sensor interrupt pins.
 	tofStage1InterruptPin = 0,
