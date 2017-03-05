@@ -5,14 +5,19 @@ int StateFunctions::waitForStartButton(IMU *imu, float &yaw)
     uint16_t cnt;
     const uint16_t avgNum = 15;
     while (!digitalRead(PIN::startButtonPin)) {
+        Serial.println("Waiting for button!");
         delay(100);
     }
+    Serial.println("Button was pressed!");
     // 
     // Average the current yaw.
     for (cnt = 0; cnt < avgNum; ++cnt) {
+    Serial.println("read imu for avg");
         imu->read();
         yaw += imu->getYaw();
+        delay(40);
     }
+    Serial.println("Done averaging");
     yaw /= avgNum;
     delay(1000);
     return 0;

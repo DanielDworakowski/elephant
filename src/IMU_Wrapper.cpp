@@ -75,7 +75,7 @@ int IMU::read()
     VectorFloat gravity;    // [x, y, z].
 
     while (!gMpuInterrupt && fifoCount_ < packetSize_) {
-
+        fifoCount_ = mpu_.getFIFOCount();
     }
 
     // Reset interrupt flag and get status.

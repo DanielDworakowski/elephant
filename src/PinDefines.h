@@ -18,7 +18,7 @@ enum PIN: byte
 	tofStage2InterruptPin = 0,
 	//
 	// Start button pin
-	startButtonPin = 52,
+	startButtonPin = 8,
 };
 
 #endif
