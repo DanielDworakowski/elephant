@@ -132,7 +132,7 @@ void loop()
     // Define objects.
     VL53L0X prox;
     Adafruit_MotorShield motorShield;
-    // IMU imu(PIN::imuInterruptPin);
+    IMU imu(PIN::imuInterruptPin);
     Drive drive(&gRightEncoderTicks, &gLeftEncoderTicks, motorShield.getMotor(2), motorShield.getMotor(1));
     float yawRef = 0;
     // 
@@ -140,38 +140,23 @@ void loop()
     setupProximity(prox);
     prox.startContinuous();
     motorShield.begin();
-
+    // 
+    // Temp variables for some tests.
     int time = millis();
     static int count = 0;
-
-    // drive.setReference(ROBOT_SPEED_MAX / 2, 0);
-
-    // if (count == 0) {
-    //     do {
-    //         drive.update();
-    //         delay(100);
-    //     } while ((millis() - time ) < 5000);
-    //     count ++;
-    // }
-    // drive.stop();
-
-
-    if (count == 0) {
-        StateFunctions::approach(&drive, &prox);
-        count ++;
+    // 
+    // Initial read of IMU.
+    imu.read();
+    // 
+    // Begin the state machine.
+    while (1) {
+        yawRef = 0; // Reset.
+        StateFunctions::waitForStartButton(&imu, yawRef);
+        // StateFunctions::getOffPlatform(&drive);
+        // StateFunctions::approach(&drive, &prox);
+        // StateFunctions::jump(motorShield.getMotor(2), &imu);
+        // StateFunctions::inAir(&drive, &imu);
+        StateFunctions::orientForward(&drive, &imu, yawRef);
     }
-    drive.stop();
-    
-
-    // // 
-    // // Begin the state machine.
-    // while (1) {
-    //     // StateFunctions::waitForStartButton(&imu, yawRef);
-    //     StateFunctions::getOffPlatform(&drive);
-    //     // StateFunctions::approach(&drive, &prox);
-    //     // StateFunctions::jump(motorShield.getMotor(2), &imu);
-    //     // StateFunctions::inAir(&drive, &imu);
-    //     // StateFunctions::orientForward(&drive, &imu, yawRef);
-    // }
 }
  

@@ -116,16 +116,25 @@ int IMU::read()
 
 float IMU::getYaw() 
 {
+    if (ypr_[0] < 0) {
+        return 360 + (ypr_[0] * 180/M_PI);
+    }
     return ypr_[0] * 180/M_PI;
 }
 
 float IMU::getPitch() 
 {
+    if (ypr_[1] < 0) {
+        return 360 + (ypr_[1] * 180/M_PI);
+    }
     return ypr_[1] * 180/M_PI;
 }
 
 float IMU::getRoll() 
 {
+    if (ypr_[2] < 0) {
+        return 360 + (ypr_[2] * 180/M_PI);
+    }
     return ypr_[2] * 180/M_PI;
 }
 

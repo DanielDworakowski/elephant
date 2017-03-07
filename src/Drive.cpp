@@ -46,9 +46,9 @@ int Drive::update()
     // Calculate the commands for the speed control.
     rMotorCommand_ = -1 * rVelocity_.getCmd(w_r_, calcR);
     lMotorCommand_ = -1 * lVelocity_.getCmd(w_l_, calcL);
-    Serial.print(calcL);
-    Serial.print("\t");
-    Serial.println(calcR);
+    // Serial.print(calcL);
+    // Serial.print("\t");
+    // Serial.println(calcR);
     // 
     // Set commands.
     if (lMotorCommand_ < 0) {

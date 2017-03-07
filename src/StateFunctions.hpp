@@ -20,7 +20,7 @@
 #define AIR_D 1.0f
 // 
 // PID parameters for orientation control.
-#define ORIENT_P 1.0f
+#define ORIENT_P 5.0f
 #define ORIENT_I 0.0f
 #define ORIENT_D 0.0f
 // 
@@ -35,7 +35,7 @@
 #define JUMP_THRESHOLD 0.5f
 // 
 // The tolerance for yaw re-orientation.
-#define YAW_TOL 1.0f
+#define YAW_TOL 3.0f
 // 
 // Functions in the state machine.
 namespace StateFunctions 

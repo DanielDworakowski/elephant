@@ -12,9 +12,12 @@ int StateFunctions::waitForStartButton(IMU *imu, float &yaw)
     // 
     // Average the current yaw.
     for (cnt = 0; cnt < avgNum; ++cnt) {
-    Serial.println("read imu for avg");
-        imu->read();
+        if (imu->read() < 0) {
+            --cnt;
+            continue;
+        }
         yaw += imu->getYaw();
+        Serial.println(imu->getYaw());
         delay(40);
     }
     Serial.println("Done averaging");
@@ -29,6 +32,7 @@ int StateFunctions::getOffPlatform(Drive *drive)
     while (millis()-startTime < DRIVE_OFF_PLATFORM_TIME) {
         drive->setReference(ROBOT_SPEED_MAX, 0.0f);
         drive->update();
+        delay(20);
     }
     return 0;
 }
@@ -97,8 +101,12 @@ int StateFunctions::orientForward(Drive *drive, IMU *imu, float refYaw)
         imu->read();
         curYaw = imu->getYaw();
         cmd = pid.getCmd(refYaw, curYaw);
-        drive->setReference(0, cmd);
+        drive->setReference(0, -cmd);
         drive->update();
+        delay(10);
+        Serial.print(curYaw);
+        Serial.print('\t');
+        Serial.println(refYaw);
     } while (abs(curYaw - refYaw) > YAW_TOL); // Not sure if sufficient.
     drive->stop();
     return 0;
