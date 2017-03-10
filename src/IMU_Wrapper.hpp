@@ -22,7 +22,13 @@ class IMU {
         float getYaw();
         float getPitch();
         float getRoll();
+        // 
+        // Accelerometer information.
         float getGlobalZ(); // in G.
+        bool isUpsideDown(); // Return if the robot is upside down.
+        float getGravityX();
+        float getGravityY();
+        float getGravityZ();
 
     private:
         MPU6050 mpu_;
@@ -35,6 +41,7 @@ class IMU {
         // Pose.
         Quaternion q_;           // [w, x, y, z]         quaternion container
         float ypr_[3] = {};      // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
+        VectorFloat gravity_;  // [x, y, z]
         VectorInt16 acelLocal_ = {};
         VectorInt16 acelWorld_ = {};
         VectorInt16 acel_ = {};

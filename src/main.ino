@@ -135,6 +135,7 @@ void loop()
     IMU imu(PIN::imuInterruptPin);
     Drive drive(&gRightEncoderTicks, &gLeftEncoderTicks, motorShield.getMotor(2), motorShield.getMotor(1));
     float yawRef = 0;
+    float temp;
     // 
     // Begin sensing.
     setupProximity(prox);
@@ -146,12 +147,13 @@ void loop()
     static int count = 0;
     // 
     // Initial read of IMU.
-    imu.read();
+    StateFunctions::waitForStartButton(&imu, yawRef);
     // 
     // Begin the state machine.
     while (1) {
-        yawRef = 0; // Reset.
-        StateFunctions::waitForStartButton(&imu, yawRef);
+        // yawRef = 0; // Reset.
+        StateFunctions::waitForStartButton(&imu, temp);
+        // yawRef = (static_cast<uint32_t>(yawRef) % 360);
         // StateFunctions::getOffPlatform(&drive);
         // StateFunctions::approach(&drive, &prox);
         // StateFunctions::jump(motorShield.getMotor(2), &imu);

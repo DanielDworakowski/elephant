@@ -5,14 +5,20 @@ int StateFunctions::waitForStartButton(IMU *imu, float &yaw)
     uint16_t cnt;
     const uint16_t avgNum = 15;
     while (!digitalRead(PIN::startButtonPin)) {
-        Serial.println("Waiting for button!");
-        delay(100);
+        imu->read();
+        Serial.print(imu->getYaw());
+        Serial.print('\t');
+        Serial.print(imu->getPitch());
+        Serial.print('\t');
+        Serial.print(imu->getRoll());
+        Serial.println('\t');
+        // delay(100);
     }
     Serial.println("Button was pressed!");
     // 
     // Average the current yaw.
     for (cnt = 0; cnt < avgNum; ++cnt) {
-        if (imu->read() < 0) {
+        if (imu->read() < 0) { // Time out may be needed.
             --cnt;
             continue;
         }
@@ -95,19 +101,27 @@ int StateFunctions::inAir(Drive *drive, IMU *imu)
 int StateFunctions::orientForward(Drive *drive, IMU *imu, float refYaw)
 {
     float cmd = 0.0;
-    float curYaw = 0.0;
+    imu->read();
+    float curYaw = imu->getYaw();
     PID pid(ORIENT_P, ORIENT_I, ORIENT_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);
-    do {
+    while (abs(curYaw - refYaw) > YAW_TOL) {
         imu->read();
         curYaw = imu->getYaw();
         cmd = pid.getCmd(refYaw, curYaw);
-        drive->setReference(0, -cmd);
+        drive->setReference(0, imu->isUpsideDown() ? cmd : -cmd);
         drive->update();
         delay(10);
         Serial.print(curYaw);
         Serial.print('\t');
-        Serial.println(refYaw);
-    } while (abs(curYaw - refYaw) > YAW_TOL); // Not sure if sufficient.
+        Serial.print(refYaw);
+        Serial.print('\t');
+        Serial.print(imu->getYaw());
+        Serial.print('\t');
+        Serial.print(imu->getPitch());
+        Serial.print('\t');
+        Serial.print(imu->getRoll());
+        Serial.println('\t');
+    } 
     drive->stop();
     return 0;
 }
