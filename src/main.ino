@@ -138,32 +138,35 @@ void loop()
     Ultrasonic ultrasonicRight(PIN::rightUltrasonicPin);
     Drive drive(&gRightEncoderTicks, &gLeftEncoderTicks, motorShield.getMotor(2), motorShield.getMotor(1));
     float yawRef = 0;
-    float temp;
     // 
     // Begin sensing.
     setupProximity(prox);
     prox.startContinuous();
     motorShield.begin();
     // 
-    // Temp variables for some tests.
-    int time = millis();
-    static int count = 0;
-    // 
-    // Initial read of IMU.
-    StateFunctions::waitForStartButton(&imu, yawRef);
-    // 
     // Begin the state machine.
     while (1) {
-        // yawRef = 0; // Reset.
-        StateFunctions::waitForStartButton(&imu, temp);
-        // yawRef = (static_cast<uint32_t>(yawRef) % 360);
-        // StateFunctions::getOffPlatform(&drive);
-        // StateFunctions::approach(&drive, &prox);
-        // StateFunctions::jump(motorShield.getMotor(2), &imu);
-        // StateFunctions::inAir(&drive, &imu);
-        StateFunctions::orientForward(&drive, &imu, yawRef);
-        // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight);
-        // StateFunctions::driveToDest(&drive, &imu);
+        yawRef = 0; // Reset.
+        StateFunctions::waitForStartButton(&imu, yawRef);
+        delay(4000);
+        StateFunctions::jump(motorShield.getMotor(3), &imu);
     }
+
+
+    // float temp;
+    // StateFunctions::waitForStartButton(&imu, yawRef);
+    // // 
+    // // Begin the state machine.
+    // while (1) {
+    //     // yawRef = 0; // Reset.
+    //     StateFunctions::waitForStartButton(&imu, temp);
+    //     // StateFunctions::getOffPlatform(&drive);
+    //     // StateFunctions::approach(&drive, &prox);
+    //     // StateFunctions::jump(motorShield.getMotor(3), &imu);
+    //     // StateFunctions::inAir(&drive, &imu);
+        // StateFunctions::orientForward(&drive, &imu, yawRef);
+    //     // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight);
+    //     // StateFunctions::driveToDest(&drive, &imu);
+    // }
 }
  

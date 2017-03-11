@@ -35,8 +35,8 @@ int StateFunctions::waitForStartButton(IMU *imu, float &yaw)
 int StateFunctions::getOffPlatform(Drive *drive)
 {
     float startTime = millis();
-    while (millis()-startTime < DRIVE_OFF_PLATFORM_TIME) {
-        drive->setReference(ROBOT_SPEED_MAX, 0.0f);
+    while (millis() - startTime < DRIVE_OFF_PLATFORM_TIME) {
+        drive->setReference(-1.0 * ROBOT_SPEED_MAX, 0.0f);
         drive->update();
         delay(20);
     }
@@ -45,17 +45,17 @@ int StateFunctions::getOffPlatform(Drive *drive)
 
 int StateFunctions::approach(Drive *drive, VL53L0X* prox) 
 {
-    PID acc(ACC_P, ACC_I, ACC_D, ROBOT_SPEED_MAX / 4.0f, ROBOT_SPEED_MIN / 4.0f);
+    PID acc(ACC_P, ACC_I, ACC_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);
     float meas = 0, cmd = 0;
     // 
     // Monitor and control the speed using the PID and 
     do {
         do {
             meas = prox->readRangeContinuousMillimeters();
-            cmd = -1.0f * acc.getCmd(WALL_SET_DIST, meas);
+            cmd = acc.getCmd(WALL_SET_DIST, meas);
             drive->setReference(cmd, 0.0f);
             drive->update();
-            delay(70);
+            delay(30);
         } while (abs(meas - WALL_SET_DIST) > WALL_DIST_TOL);
         // 
         // Stop and ensure no drift. 
@@ -69,13 +69,17 @@ int StateFunctions::jump(Adafruit_DCMotor *jumpMotor, IMU *imu)
 {
     // 
     // Run the motor forwards until acceleration is detected.
-    jumpMotor->run(FORWARD);
+    jumpMotor->run(BACKWARD);
     jumpMotor->setSpeed(255);
     // 
     // Wait for acceleration upwards.
-    do {
-        imu->read();
-    } while(imu->getGlobalZ() < JUMP_THRESHOLD);
+    while(1){
+        delay(1);
+        //Serial.println("Running the motor");
+    }
+    // do {
+    //     imu->read();
+    // } while(imu->getGlobalZ() < JUMP_THRESHOLD);
     // 
     // Stop the motor.
     jumpMotor->setSpeed(0);
@@ -108,7 +112,7 @@ int StateFunctions::orientForward(Drive *drive, IMU *imu, float refYaw)
         imu->read();
         curYaw = imu->getYaw();
         cmd = pid.getCmd(refYaw, curYaw);
-        drive->setReference(0, imu->isUpsideDown() ? cmd : -cmd);
+        drive->setReference(0, imu->isUpsideDown() ? -cmd : cmd);
         drive->update();
         delay(10);
         Serial.print(curYaw);
@@ -138,8 +142,8 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     do {
         ultrasonicLeft->DistanceMeasure();
         ultrasonicRight->DistanceMeasure();
-        leftSensor = ultrasonicLeft.microsecondsToCentimeters();
-        rightSensor = ultrasonicRight.microsecondsToCentimeters();
+        leftSensor = ultrasonicLeft->microsecondsToCentimeters();
+        rightSensor = ultrasonicRight->microsecondsToCentimeters();
         drive->update();
         delay(20);
     } while (leftSensor > 400 && rightSensor > 400); // assumes sensor value > 400 means nothing detected

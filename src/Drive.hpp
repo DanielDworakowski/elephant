@@ -29,8 +29,7 @@
 #define WHEEL_RADIUS (0.1524f)
 #define WHEEL_DIAMETER (2 * 0.1524f)
 #define WHEEL_CIRCUMFRENCE (M_PI * WHEEL_DIAMETER)
-#pragma message("Fix this length")
-#define CHASIS_LENGTH (0.3f) 
+#define CHASIS_LENGTH (0.28f) 
 // 
 // Conversion factors from ticks to linear velocity.
 #define TICKS_PER_REVOLUTION (12.0f * 47.0f)

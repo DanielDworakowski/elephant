@@ -124,10 +124,10 @@ int IMU::read()
 
 float IMU::getYaw() 
 {
-    if (ypr_[0] < 0) {
-        return 360 + (ypr_[0] * 180.0f / M_PI);
-    }
-    return ypr_[0] * 180.0f / M_PI;
+    float val = 2.25f * (ypr_[0] + M_PI) * 180.0f / M_PI;
+    int a = (int)val;
+    a = a / 360 * 360;
+    return val - a;
 }
 
 float IMU::getPitch() 
