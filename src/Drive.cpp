@@ -87,23 +87,27 @@ int Drive::stop()
 // Need to tune for exactly 90 deg left/right
 int Drive::turnLeft()
 {
-    // lMotor_->setSpeed(-1.0f * ROBOT_SPEED_MAX / 2.0f);
-    // rMotor_->setSpeed(ROBOT_SPEED_MAX / 2.0f);
-    // delay(300);
-    // lMotor_->setSpeed(0);
-    // rMotor_->setSpeed(0);
-    // setReference(0,0);    
+    lMotor_->run(BACKWARD);
+    lMotor_->setSpeed(ROBOT_SPEED_MAX / 2.0f);
+    rMotor_->setSpeed(ROBOT_SPEED_MAX / 2.0f);
+    delay(300);
+    lMotor_->run(FORWARD);
+    lMotor_->setSpeed(0);
+    rMotor_->setSpeed(0);
+    setReference(0,0);    
     return 0;
 }
 
 int Drive::turnRight()
 {
-    // lMotor_->setSpeed(ROBOT_SPEED_MAX / 2.0f);
-    // rMotor_->setSpeed(-1.0f * ROBOT_SPEED_MAX / 2.0f);
-    // delay(300);
-    // lMotor_->setSpeed(0);
-    // rMotor_->setSpeed(0);
-    // setReference(0,0);    
+    rMotor_->run(BACKWARD);
+    lMotor_->setSpeed(ROBOT_SPEED_MAX / 2.0f);
+    rMotor_->setSpeed(ROBOT_SPEED_MAX / 2.0f);
+    delay(300);
+    rMotor_->run(FORWARD);
+    lMotor_->setSpeed(0);
+    rMotor_->setSpeed(0);
+    setReference(0,0);    
     return 0;
 }
 
