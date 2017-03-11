@@ -141,6 +141,7 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
 
         leftSensor = ultrasonicLeft.microsecondsToCentimeters();
         rightSensor = ultrasonicRight.microsecondsToCentimeters();
+        drive->update();
         delay(20);
     } while (leftSensor > 400 && rightSensor > 400); // assumes sensor value > 400 means nothing detected
 
@@ -148,7 +149,8 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
 
     if (leftSensor < 400) {
         drive->turnLeft();
-    } else {
+    }
+    else {
         drive->turnRight();
     }
 
@@ -168,6 +170,7 @@ int StateFunctions::driveToDest(Drive *drive, IMU *imu)
     do {
         imu->read();
         newZ = imu->getGlobalZ();
+        drive->update();
         delay(20);
     } while (abs(oldZ - newZ) < HEI_TOL);
 
