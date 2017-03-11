@@ -83,8 +83,32 @@ int Drive::stop()
     return 0;
 }
 
+//
+// Need to tune for exactly 90 deg left/right
+int Drive::turnLeft()
+{
+    lMotor_->setSpeed(-1.0f * ROBOT_SPEED_MAX / 2.0f);
+    rMotor_->setSpeed(ROBOT_SPEED_MAX / 2.0f);
+    delay(300);
+    lMotor_->setSpeed(0);
+    rMotor_->setSpeed(0);
+    setReference(0,0);    
+    return 0;
+}
+
+int Drive::turnRight()
+{
+    lMotor_->setSpeed(ROBOT_SPEED_MAX / 2.0f);
+    rMotor_->setSpeed(-1.0f * ROBOT_SPEED_MAX / 2.0f);
+    delay(300);
+    lMotor_->setSpeed(0);
+    rMotor_->setSpeed(0);
+    setReference(0,0);    
+    return 0;
+}
+
 // 
-// Not guarunteed to work.
+// Not guaranteed to work.
 int Drive::updatePos(float omegal, float omegar, float dt)
 {
     float vec = 0, angle = 0, xCompLocal = 0, yCompLocal = 0;

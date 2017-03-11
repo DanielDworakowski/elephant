@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "VL53L0X.h"
+#include "Ultrasonic.h"
 #include "Drive.hpp"
 #include "PID.hpp"
 #include "PinDefines.h"
@@ -37,6 +38,9 @@
 // The tolerance for yaw re-orientation.
 #define YAW_TOL 3.0f
 // 
+// The tolerance for height detection.
+#define HEI_TOL 3.0f
+// 
 // Functions in the state machine.
 namespace StateFunctions 
 {
@@ -60,7 +64,10 @@ namespace StateFunctions
     int orientForward(Drive *drive, IMU *imu, float refYaw);
     // 
     // State that searches for the destination.
-    int locateDest(Drive *drive /* Other components TBD. */);
+    int locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight);
+    //
+    // State that drives to destination
+    int driveToDest(Drive *drive, IMU *imu);
 }
 
 #endif /* __STATE_FUNCTIONS__ */

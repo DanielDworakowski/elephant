@@ -58,7 +58,12 @@ class Drive {
         // 
         // Reset the position vector's origin.
         int resetOrigin();
-
+        //
+        // Turn the robot 90 degrees to the left.
+        void turnLeft();
+        //
+        // Turn the robot 90 degrees to the right.
+        void turnRight();
     private:
         // 
         // Using the actual velocity update the position vector.

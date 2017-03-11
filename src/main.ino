@@ -2,6 +2,7 @@
 #include "digitalWriteFast.h"
 #include "PinDefines.h"
 #include "VL53L0X.h"
+#include "Ultrasonic.h"
 #include "Robot_ISR.hpp"
 #include "Kalman-1D.hpp"
 #include "IMU_Wrapper.hpp"
@@ -133,6 +134,8 @@ void loop()
     VL53L0X prox;
     Adafruit_MotorShield motorShield;
     IMU imu(PIN::imuInterruptPin);
+    Ultrasonic ultrasonicLeft(PIN::leftUltrasonicPin);
+    Ultrasonic ultrasonicRight(PIN::rightUltrasonicPin);
     Drive drive(&gRightEncoderTicks, &gLeftEncoderTicks, motorShield.getMotor(2), motorShield.getMotor(1));
     float yawRef = 0;
     float temp;
@@ -159,6 +162,8 @@ void loop()
         // StateFunctions::jump(motorShield.getMotor(2), &imu);
         // StateFunctions::inAir(&drive, &imu);
         StateFunctions::orientForward(&drive, &imu, yawRef);
+        // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight);
+        // StateFunctions::driveToDest(&drive, &imu);
     }
 }
  

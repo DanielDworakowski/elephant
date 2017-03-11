@@ -19,6 +19,10 @@ enum PIN: byte
 	//
 	// Start button pin
 	startButtonPin = 8,
+    //
+    // Ultrasonic sensor
+    leftUltrasonicPin = 111,
+    rightUltrasonicPin = 222,
 };
 
 #endif

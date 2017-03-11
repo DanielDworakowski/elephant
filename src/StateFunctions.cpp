@@ -126,8 +126,52 @@ int StateFunctions::orientForward(Drive *drive, IMU *imu, float refYaw)
     return 0;
 }
 
-int StateFunctions::locateDest(Drive *drive /* Other components TBD. */)
+int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight)
 {   
-    (void) drive;
+    long leftSensor = 10000;
+    long rightSensor = 10000;
+
+    drive->setReference(ROBOT_SPEED_MAX / 4.0f, 0.0f);
+    drive->update();
+    delay(20);
+
+    do {
+        ultrasonicLeft.DistanceMeasure();
+        ultrasonicRight.DistanceMeasure();
+
+        leftSensor = ultrasonicLeft.microsecondsToCentimeters();
+        rightSensor = ultrasonicRight.microsecondsToCentimeters();
+        delay(20);
+    } while (leftSensor > 400 && rightSensor > 400); // assumes sensor value > 400 means nothing detected
+
+    drive->stop();
+
+    if (leftSensor < 400) {
+        drive->turnLeft();
+    } else {
+        drive->turnRight();
+    }
+
+    return 0;
+}
+
+int StateFunctions::driveToDest(Drive *drive, IMU *imu)
+{   
+    imu->read();
+    float oldZ = imu->getGlobalZ();
+    float newZ;
+
+    drive->setReference(ROBOT_SPEED_MAX / 4.0f, 0.0f);
+    drive->update();
+    delay(20);
+    
+    do {
+        imu->read();
+        newZ = imu->getGlobalZ();
+        delay(20);
+    } while (abs(oldZ - newZ) < HEI_TOL);
+
+    drive->stop();
+
     return 0;
 }
