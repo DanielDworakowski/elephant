@@ -136,11 +136,11 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     delay(20);
 
     do {
-        ultrasonicLeft.DistanceMeasure();
-        ultrasonicRight.DistanceMeasure();
+        ultrasonicLeft->DistanceMeasure();
+        ultrasonicRight->DistanceMeasure();
 
-        leftSensor = ultrasonicLeft.microsecondsToCentimeters();
-        rightSensor = ultrasonicRight.microsecondsToCentimeters();
+        leftSensor = ultrasonicLeft->microsecondsToCentimeters();
+        rightSensor = ultrasonicRight->microsecondsToCentimeters();
         delay(20);
     } while (leftSensor > 400 && rightSensor > 400); // assumes sensor value > 400 means nothing detected
 

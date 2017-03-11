@@ -46,9 +46,9 @@ int Drive::update()
     // Calculate the commands for the speed control.
     rMotorCommand_ = -1 * rVelocity_.getCmd(w_r_, calcR);
     lMotorCommand_ = -1 * lVelocity_.getCmd(w_l_, calcL);
-    // Serial.print(calcL);
-    // Serial.print("\t");
-    // Serial.println(calcR);
+    Serial.print(calcL);
+    Serial.print("\t");
+    Serial.println(calcR);
     // 
     // Set commands.
     if (lMotorCommand_ < 0) {
@@ -87,23 +87,23 @@ int Drive::stop()
 // Need to tune for exactly 90 deg left/right
 int Drive::turnLeft()
 {
-    lMotor_->setSpeed(-1.0f * ROBOT_SPEED_MAX / 2.0f);
-    rMotor_->setSpeed(ROBOT_SPEED_MAX / 2.0f);
-    delay(300);
-    lMotor_->setSpeed(0);
-    rMotor_->setSpeed(0);
-    setReference(0,0);    
+    // lMotor_->setSpeed(-1.0f * ROBOT_SPEED_MAX / 2.0f);
+    // rMotor_->setSpeed(ROBOT_SPEED_MAX / 2.0f);
+    // delay(300);
+    // lMotor_->setSpeed(0);
+    // rMotor_->setSpeed(0);
+    // setReference(0,0);    
     return 0;
 }
 
 int Drive::turnRight()
 {
-    lMotor_->setSpeed(ROBOT_SPEED_MAX / 2.0f);
-    rMotor_->setSpeed(-1.0f * ROBOT_SPEED_MAX / 2.0f);
-    delay(300);
-    lMotor_->setSpeed(0);
-    rMotor_->setSpeed(0);
-    setReference(0,0);    
+    // lMotor_->setSpeed(ROBOT_SPEED_MAX / 2.0f);
+    // rMotor_->setSpeed(-1.0f * ROBOT_SPEED_MAX / 2.0f);
+    // delay(300);
+    // lMotor_->setSpeed(0);
+    // rMotor_->setSpeed(0);
+    // setReference(0,0);    
     return 0;
 }
 
@@ -135,10 +135,10 @@ int Drive::updatePos(float omegal, float omegar, float dt)
         angle = 90;
     }
 
-    xCompLocal = vec * cos(90 - angle/2.0f);
-    yCompLocal = vec * sin(90 - angle/2.0f);
-    xComp_ += xCompLocal*cos(yaw_) + yCompLocal*sin(yaw_);
-    yComp_ += -xCompLocal*sin(yaw_) + yCompLocal*cos(yaw_);
+    xCompLocal = vec * cos(90 - angle / 2.0f);
+    yCompLocal = vec * sin(90 - angle / 2.0f);
+    xComp_ += xCompLocal * cos(yaw_) + yCompLocal * sin(yaw_);
+    yComp_ += -xCompLocal * sin(yaw_) + yCompLocal * cos(yaw_);
     yaw_ += angle;
     return 0;
 }
