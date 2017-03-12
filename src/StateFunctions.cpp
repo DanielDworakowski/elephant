@@ -50,18 +50,12 @@ int StateFunctions::approach(Drive *drive, VL53L0X* prox)
     // 
     // Monitor and control the speed using the PID and 
     do {
-        do {
-            meas = prox->readRangeContinuousMillimeters();
-            cmd = acc.getCmd(WALL_SET_DIST, meas);
-            drive->setReference(cmd, 0.0f);
-            drive->update();
-            delay(30);
-        } while (abs(meas - WALL_SET_DIST) > WALL_DIST_TOL);
-        // 
-        // Stop and ensure no drift. 
-        drive->stop();
-        delay(10);
-    } while (abs(meas - WALL_SET_DIST) > WALL_DIST_TOL);
+        meas = prox->readRangeContinuousMillimeters();
+        cmd = acc.getCmd(WALL_SET_DIST, meas);
+        drive->setReference(cmd, 0.0f);
+        drive->update();
+        delay(30);
+    } while (meas - WALL_JUMP_DIST > WALL_DIST_TOL);
     return 0;
 }
 
@@ -71,15 +65,7 @@ int StateFunctions::jump(Adafruit_DCMotor *jumpMotor, IMU *imu)
     // Run the motor forwards until acceleration is detected.
     jumpMotor->run(BACKWARD);
     jumpMotor->setSpeed(255);
-    // 
-    // Wait for acceleration upwards.
-    while(1){
-        delay(1);
-        //Serial.println("Running the motor");
-    }
-    // do {
-    //     imu->read();
-    // } while(imu->getGlobalZ() < JUMP_THRESHOLD);
+    delay(1000);
     // 
     // Stop the motor.
     jumpMotor->setSpeed(0);
