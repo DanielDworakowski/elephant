@@ -143,6 +143,14 @@ void loop()
     setupProximity(prox);
     prox.startContinuous();
     motorShield.begin();
+
+    // StateFunctions::waitForStartButton(&imu, yawRef);
+    // drive.setReference(2,0);
+    // while (1) {
+    //     drive.update();
+    //     delay(30);
+    // }
+
     // 
     // Begin the state machine.
     while (1) {
@@ -150,11 +158,12 @@ void loop()
         StateFunctions::waitForStartButton(&imu, yawRef);
         StateFunctions::getOffPlatform(&drive);
         StateFunctions::approach(&drive, &prox);
-        StateFunctions::jump(motorShield.getMotor(3), &imu);
+        // StateFunctions::jump(motorShield.getMotor(3), &imu);
         // StateFunctions::inAir(&drive, &imu);
         // StateFunctions::orientForward(&drive, &imu, yawRef);
         // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight);
         // StateFunctions::driveToDest(&drive, &imu);
+        drive.stop();
     }
 }
  

@@ -6,13 +6,13 @@ int StateFunctions::waitForStartButton(IMU *imu, float &yaw)
     const uint16_t avgNum = 15;
     while (!digitalRead(PIN::startButtonPin)) {
         imu->read();
-        Serial.print(imu->getYaw());
-        Serial.print('\t');
-        Serial.print(imu->getPitch());
-        Serial.print('\t');
-        Serial.print(imu->getRoll());
-        Serial.println('\t');
-        // delay(100);
+        // Serial.print(imu->getYaw());
+        // Serial.print('\t');
+        // Serial.print(imu->getPitch());
+        // Serial.print('\t');
+        // Serial.print(imu->getRoll());
+        // Serial.println('\t');
+        delay(100);
     }
     Serial.println("Button was pressed!");
     // 
@@ -36,9 +36,9 @@ int StateFunctions::getOffPlatform(Drive *drive)
 {
     float startTime = millis();
     while (millis() - startTime < DRIVE_OFF_PLATFORM_TIME) {
-        drive->setReference(-1.0 * ROBOT_SPEED_MAX, 0.0f);
+        drive->setReference(1.0 * ROBOT_SPEED_MAX, 0.0f);
         drive->update();
-        delay(20);
+        delay(30);
     }
     return 0;
 }
@@ -51,11 +51,16 @@ int StateFunctions::approach(Drive *drive, VL53L0X* prox)
     // Monitor and control the speed using the PID and 
     do {
         meas = prox->readRangeContinuousMillimeters();
+        
+        Serial.print(meas);
+        Serial.print("\t");
+        Serial.println(WALL_SET_DIST);
+        
         cmd = acc.getCmd(WALL_SET_DIST, meas);
-        drive->setReference(cmd, 0.0f);
+        drive->setReference(-1.0 * cmd, 0.0f);
         drive->update();
         delay(30);
-    } while (meas - WALL_JUMP_DIST > WALL_DIST_TOL);
+    } while (meas > WALL_JUMP_DIST);
     return 0;
 }
 
