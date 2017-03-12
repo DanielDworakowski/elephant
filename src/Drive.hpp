@@ -16,6 +16,11 @@
 #define RIGHT_MOTOR_I 0.0f
 #define RIGHT_MOTOR_D 0.0f
 // 
+// Yaw control tuning.
+#define YAW_P 1.0f
+#define YAW_I 0.0f
+#define YAW_D 0.0f
+// 
 // The maximum and minimum motor speeds.
 // Given we have a 11.1V LiPo divide 255 max by 2.
 #define MAX_SPEED /*255*/(255 / 2.0f)
@@ -66,6 +71,15 @@ class Drive {
 
     private:
         // 
+        // Calculate the compensation for angular speeds.
+        int angleComp(float omegaL, float omegaR, uint32_t dT, float &setOmega);
+        // 
+        // Calculate the speeds of the wheels to achieve set speeds.
+        int calcWheelSpeeds(float setSpeed, float setOmega);
+        // 
+        // Set the speeds of the motors.
+        int setMotorSpeeds(float lCmd, float rCmd);
+        // 
         // Using the actual velocity update the position vector.
         int updatePos(float omegal, float omegar, float dt);
         // 
@@ -74,10 +88,13 @@ class Drive {
         int32_t lastR_, lastL_;
         int32_t lastTime_;
         float w_r_, w_l_;
+        float setSpeed_, setOmega_;
+        float actYaw_, desYaw_;
         //
         // PIDs for motors.
         PID lVelocity_;
         PID rVelocity_;
+        PID yawControl_;
         float lMotorCommand_, rMotorCommand_;
         Adafruit_DCMotor *rMotor_, *lMotor_;
         // 
