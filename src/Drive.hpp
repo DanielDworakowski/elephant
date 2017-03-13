@@ -17,7 +17,7 @@
 #define RIGHT_MOTOR_D 0.0f
 // 
 // Yaw control tuning.
-#define YAW_P 1.0f
+#define YAW_P 30.0f
 #define YAW_I 0.0f
 #define YAW_D 0.0f
 // 
@@ -51,6 +51,9 @@ class Drive {
         Drive(volatile int32_t *rEncoderCount, volatile int32_t *lEncoderCount, Adafruit_DCMotor *rMotor, Adafruit_DCMotor *lMotor);
         ~Drive();
         // 
+        // Resets the time to now - tDiff, this prevents integration error.
+        int reset(uint32_t tDiff);
+        // 
         // Manage PID loops.
         int update();
         // 
@@ -72,7 +75,7 @@ class Drive {
     private:
         // 
         // Calculate the compensation for angular speeds.
-        int angleComp(float omegaL, float omegaR, uint32_t dT, float &setOmega);
+        int angleComp(float omegaL, float omegaR, float dT, float &setOmega);
         // 
         // Calculate the speeds of the wheels to achieve set speeds.
         int calcWheelSpeeds(float setSpeed, float setOmega);

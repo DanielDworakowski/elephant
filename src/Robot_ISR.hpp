@@ -3,8 +3,8 @@
 #ifndef __ISR_H__
 #define __ISR_H__
 
-volatile int32_t gLeftEncoderTicks;
-volatile int32_t gRightEncoderTicks;
+volatile int32_t gLeftEncoderTicks = 0;
+volatile int32_t gRightEncoderTicks = 0;
 
 #define LeftEncoderIsReversed
 // #define RightEncoderIsReversed

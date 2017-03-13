@@ -52,9 +52,9 @@ int StateFunctions::approach(Drive *drive, VL53L0X* prox)
     do {
         meas = prox->readRangeContinuousMillimeters();
         
-        Serial.print(meas);
-        Serial.print("\t");
-        Serial.println(WALL_SET_DIST);
+        // Serial.print(meas);
+        // Serial.print("\t");
+        // Serial.println(WALL_SET_DIST);
         
         cmd = acc.getCmd(WALL_SET_DIST, meas);
         drive->setReference(-1.0 * cmd, 0.0f);
