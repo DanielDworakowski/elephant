@@ -34,19 +34,36 @@
 // 
 // The amount in G that is considered moving upwards in z.
 #define JUMP_THRESHOLD 0.5f
+//
+// Time in ms to run the jump motor when jumping.
+#define JUMP_MOTOR_ENGAGE_TIME 1000
 // 
 // The tolerance for yaw re-orientation.
 #define YAW_TOL 3.0f
 // 
 // The tolerance for height detection.
 #define HEI_TOL 3.0f
+//
+// Toggle for debug printing.
+#define DEBUG false
+//
+// Debug print function.
+#define dprint(payload) \
+    do { if (DEBUG) Serial.print(payload); } while (0)
+//
+// Debug println function.
+#define dprintln(payload) \
+    do { if (DEBUG) Serial.println(payload); } while (0)
 // 
 // Functions in the state machine.
 namespace StateFunctions 
 {
     //
     // State that waits for the start button to be pressed.
-    int waitForStartButton(IMU *imu, float &yaw);
+    int waitForStartButton();
+    //
+    // State to save the reference yaw.
+    int sampleYaw(IMU *imu, float &yaw);
     //
     // State to get off the starting platform.
     int getOffPlatform(Drive* drive);

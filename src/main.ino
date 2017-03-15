@@ -146,27 +146,16 @@ void loop()
     // 
     // Begin the state machine.
     while (1) {
-        yawRef = 0; // Reset.
-        StateFunctions::waitForStartButton(&imu, yawRef);
-        delay(4000);
-        StateFunctions::jump(motorShield.getMotor(3), &imu);
+      yawRef = 0; // Reset.
+      StateFunctions::waitForStartButton();
+      StateFunctions::sampleYaw(&imu, yawRef);
+      StateFunctions::getOffPlatform(&drive);
+      StateFunctions::approach(&drive, &prox);
+      StateFunctions::jump(motorShield.getMotor(3), &imu);
+      //StateFunctions::inAir(&drive, &imu);
+      //StateFunctions::orientForward(&drive, &imu, yawRef);
+      //StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight);
+      //StateFunctions::driveToDest(&drive, &imu);
     }
-
-
-    // float temp;
-    // StateFunctions::waitForStartButton(&imu, yawRef);
-    // // 
-    // // Begin the state machine.
-    // while (1) {
-    //     // yawRef = 0; // Reset.
-    //     StateFunctions::waitForStartButton(&imu, temp);
-    //     // StateFunctions::getOffPlatform(&drive);
-    //     // StateFunctions::approach(&drive, &prox);
-    //     // StateFunctions::jump(motorShield.getMotor(3), &imu);
-    //     // StateFunctions::inAir(&drive, &imu);
-        // StateFunctions::orientForward(&drive, &imu, yawRef);
-    //     // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight);
-    //     // StateFunctions::driveToDest(&drive, &imu);
-    // }
 }
  
