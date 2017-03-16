@@ -20,9 +20,12 @@ enum PIN: byte
 	// Start button pin
 	startButtonPin = 8,
     //
-    // Ultrasonic sensor
-    leftUltrasonicPin = 111,
-    rightUltrasonicPin = 222,
+    // SR04 Ultrasonic Sensor --- NEEDS TO BE DEFINED
+    SR04TrigPin = 111,
+    SR04EchoPin = 112,
+    //
+    // Right Ultrasonic Sensor
+    rightUltrasonicPin = 222
 };
 
 #endif
