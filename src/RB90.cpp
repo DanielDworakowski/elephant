@@ -26,9 +26,15 @@
 /*****************************************************************************/
 #include "RB90.hpp"
 
+/* DEBUG */
+#define DEBUG false
+#define dprint(x) do { if (DEBUG) Serial.print(x); } while (0)
+#define dprintln(x) do { if (DEBUG) Serial.println(x); } while (0)
+
 RB90::RB90(int pin)
 {
     _pin = pin;
+    dprintln('//// HARDWARE - RB90 Ultrasonic Initialized');
 }
 
 /*Begin the detection and get the pulse back signal*/

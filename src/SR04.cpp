@@ -20,6 +20,7 @@
  * License:
  *  Public Domain
  */
+#include "SR04.hpp"
 
 // Anything over 400 cm (23200 us pulse) is "out of range"
 const unsigned int MAX_DIST = 23200;
@@ -29,7 +30,7 @@ const float CONVERSION_CONSTANT_INCH = 1 / 148.0;
 SR04::SR04(int trig_pin, int echo_pin)
 {
     _trig_pin = trig_pin;
-    _echo_pin = echo_pin
+    _echo_pin = echo_pin;
 
     // Initialize trigger pin.
     pinMode(_trig_pin, OUTPUT);
@@ -52,7 +53,7 @@ void SR04::DistanceMeasure(void)
     // Measure how long the echo pin was held high (pulse width)
     // Note: the micros() counter will overflow after ~70 min
     t1 = micros();
-    while ( digitalRead(ECHO_PIN) == 1 );
+    while ( digitalRead(_echo_pin) == 1 );
     t2 = micros();
 
     _pulse_width = t2 - t1;
@@ -61,13 +62,13 @@ void SR04::DistanceMeasure(void)
 
 long SR04::microsecondsToCentimeters(void)
 {
-    return (long)(pulse_width > MAX_DIST ? 400 : CONVERSION_CONSTANT_CM * _pulse_width);
+    return (long)(_pulse_width > MAX_DIST ? 400 : CONVERSION_CONSTANT_CM * _pulse_width);
 }
 
 
 long SR04::microsecondsToInches(void) 
 {
-    return (long)(pulse_width > MAX_DIST ? 400 : CONVERSION_CONSTANT_INCH * _pulse_width);
+    return (long)(_pulse_width > MAX_DIST ? 400 : CONVERSION_CONSTANT_INCH * _pulse_width);
 }
 
 unsigned long SR04::getTimestamp(void)

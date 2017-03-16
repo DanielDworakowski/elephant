@@ -1,10 +1,13 @@
 #include <Arduino.h>
 
+#ifndef __SR04_H__
+#define __SR04_H__
+
 class SR04
 {
     public:
         SR04(int trig_pin, int echo_pin);
-        void measureDistance(void);
+        void DistanceMeasure(void);
         long microsecondsToCentimeters(void);
         long microsecondsToInches(void);
         unsigned long getTimestamp(void);
@@ -17,4 +20,4 @@ class SR04
         unsigned long _timestamp = 0;
 };
 
-
+#endif 

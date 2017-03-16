@@ -1,5 +1,8 @@
 #include <Arduino.h>
 
+#ifndef __RB90_H__
+#define __RB90_H__
+
 class RB90
 {
     public:
@@ -15,3 +18,5 @@ class RB90
         long _duration;// the Pulse time received;
         unsigned long _timestamp;
 };
+
+#endif 
