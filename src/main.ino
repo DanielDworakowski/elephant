@@ -157,12 +157,12 @@ void loop()
     while (1) {
         yawRef = 0; // Reset.
         StateFunctions::waitForStartButton(&imu, yawRef);
-        StateFunctions::getOffPlatform(&drive);
-        StateFunctions::approach(&drive, &prox);
+        // StateFunctions::getOffPlatform(&drive);
+        // StateFunctions::approach(&drive, &prox);
         // StateFunctions::jump(motorShield.getMotor(3), &imu);
         // StateFunctions::inAir(&drive, &imu);
         // StateFunctions::orientForward(&drive, &imu, yawRef);
-        // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight);
+        StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight);
         // StateFunctions::driveToDest(&drive, &imu);
         drive.stop();
     }

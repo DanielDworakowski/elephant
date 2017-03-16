@@ -1,6 +1,8 @@
 #ifndef __PIN_DEFINITIONS_H__
 #define __PIN_DEFINITIONS_H__
 
+#include <Arduino.h>
+
 enum PIN: byte
 {
 	// 
@@ -21,11 +23,11 @@ enum PIN: byte
 	startButtonPin = 8,
     //
     // SR04 Ultrasonic Sensor (left) --- NEEDS TO BE DEFINED
-    SR04TrigPin = 111,
-    SR04EchoPin = 112,
+    SR04TrigPin = 31,
+    SR04EchoPin = 24,
     //
     // RB90 Ultrasonic Sensor (right) --- NEEDS TO BE DEFINED
-    RB90Pin = 222
+    RB90Pin = 35,
 };
 
 #endif

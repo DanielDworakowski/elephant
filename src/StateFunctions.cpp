@@ -126,15 +126,20 @@ int StateFunctions::locateDest(Drive *drive, SR04 *ultrasonicLeft, RB90 *ultraso
     long leftSensor = 10000;
     long rightSensor = 10000;
 
-    drive->setReference(ROBOT_SPEED_MAX / 4.0f, 0.0f);
+    drive->setReference(-1.0 * ROBOT_SPEED_MAX / 8.0, 0.0f);
     drive->update();
     delay(20);
-
+    Serial.println('Sensor detection.');
     do {
-        ultrasonicLeft->DistanceMeasure();
-        ultrasonicRight->DistanceMeasure();
+        ultrasonicLeft->distanceMeasure();
+        // ultrasonicRight->distanceMeasure();
         leftSensor = ultrasonicLeft->microsecondsToCentimeters();
-        rightSensor = ultrasonicRight->microsecondsToCentimeters();
+        // rightSensor = ultrasonicRight ->microsecondsToCentimeters();
+        Serial.print(leftSensor);
+        Serial.print('\t');
+        // Serial.print(rightSensor);
+        Serial.print('\t');
+        Serial.println('\t');
         drive->update();
         delay(20);
     } while (leftSensor > 400 && rightSensor > 400); // assumes sensor value > 400 means nothing detected
@@ -160,7 +165,7 @@ int StateFunctions::driveToDest(Drive *drive, IMU *imu)
     drive->setReference(ROBOT_SPEED_MAX / 4.0f, 0.0f);
     drive->update();
     delay(20);
-    
+
     do {
         imu->read();
         newZ = imu->getGlobalZ();

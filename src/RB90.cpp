@@ -32,7 +32,7 @@ RB90::RB90(int pin)
 }
 
 /*Begin the detection and get the pulse back signal*/
-void RB90::DistanceMeasure(void)
+void RB90::distanceMeasure(void)
 {
     pinMode(_pin, OUTPUT);
     digitalWrite(_pin, LOW);

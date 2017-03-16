@@ -1,10 +1,13 @@
+#ifndef __RB90__
+#define __RB90__
+
 #include <Arduino.h>
 
 class RB90
 {
     public:
         RB90(int pin);
-        void DistanceMeasure(void);
+        void distanceMeasure(void);
         long microsecondsToCentimeters(void);
         long microsecondsToInches(void);
         unsigned long getTimestamp(void);
@@ -15,3 +18,5 @@ class RB90
         long _duration;// the Pulse time received;
         unsigned long _timestamp;
 };
+
+#endif
