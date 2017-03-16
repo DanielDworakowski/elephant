@@ -121,7 +121,7 @@ int StateFunctions::orientForward(Drive *drive, IMU *imu, float refYaw)
     return 0;
 }
 
-int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight)
+int StateFunctions::locateDest(Drive *drive, SR04 *ultrasonicLeft, RB90 *ultrasonicRight)
 {   
     long leftSensor = 10000;
     long rightSensor = 10000;

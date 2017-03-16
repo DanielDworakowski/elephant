@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "VL53L0X.h"
-#include "Ultrasonic.h"
+#include "RB90.hpp"
+#include "SR04.hpp"
 #include "Drive.hpp"
 #include "PID.hpp"
 #include "PinDefines.h"
@@ -65,7 +66,7 @@ namespace StateFunctions
     int orientForward(Drive *drive, IMU *imu, float refYaw);
     // 
     // State that searches for the destination.
-    int locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight);
+    int locateDest(Drive *drive, SR04 *ultrasonicLeft, RB90 *ultrasonicRight);
     //
     // State that drives to destination
     int driveToDest(Drive *drive, IMU *imu);

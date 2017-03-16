@@ -24,15 +24,15 @@
 //  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 //
 /*****************************************************************************/
-#include "Ultrasonic.h"
+#include "RB90.hpp"
 
-Ultrasonic::Ultrasonic(int pin)
+RB90::RB90(int pin)
 {
     _pin = pin;
 }
 
 /*Begin the detection and get the pulse back signal*/
-void Ultrasonic::DistanceMeasure(void)
+void RB90::DistanceMeasure(void)
 {
     pinMode(_pin, OUTPUT);
     digitalWrite(_pin, LOW);
@@ -41,17 +41,23 @@ void Ultrasonic::DistanceMeasure(void)
     delayMicroseconds(5);
     digitalWrite(_pin,LOW);
     pinMode(_pin,INPUT);
-    duration = pulseIn(_pin,HIGH);
+    _duration = pulseIn(_pin,HIGH);
+    _timestamp = millis();
 }
 
 /*The measured distance from the range 0 to 400 Centimeters*/
-long Ultrasonic::microsecondsToCentimeters(void)
+long RB90::microsecondsToCentimeters(void)
 {
-    return duration/29/2;
+    return _duration/29/2;
 }
 
 /*The measured distance from the range 0 to 157 Inches*/
-long Ultrasonic::microsecondsToInches(void)
+long RB90::microsecondsToInches(void)
 {
-    return duration/74/2;
+    return _duration/74/2;
+}
+
+unsigned long RB90::getTimestamp(void)
+{
+    return _timestamp;
 }
