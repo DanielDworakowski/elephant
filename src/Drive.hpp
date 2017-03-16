@@ -23,8 +23,8 @@
 // 
 // The maximum and minimum motor speeds.
 // Given we have a 11.1V LiPo divide 255 max by 2.
-#define MAX_SPEED /*255*/(255 / 2.0f)
-#define MIN_SPEED /*-255*/(-255 / 2.0f)
+#define MAX_SPEED 255/*(255 / 2.0f)*/
+#define MIN_SPEED -255/*(-255 / 2.0f)*/
 // 
 // The maximum and miminmum robot velocity.
 #define ROBOT_SPEED_MAX 4.0f
@@ -75,7 +75,7 @@ class Drive {
     private:
         // 
         // Calculate the compensation for angular speeds.
-        int angleComp(float omegaL, float omegaR, float dT, float &setOmega);
+        int angleComp(int32_t lenc, int32_t renc, float dT, float &setOmega);
         // 
         // Calculate the speeds of the wheels to achieve set speeds.
         int calcWheelSpeeds(float setSpeed, float setOmega);
