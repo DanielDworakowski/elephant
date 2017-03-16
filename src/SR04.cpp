@@ -23,7 +23,8 @@
 
 // Anything over 400 cm (23200 us pulse) is "out of range"
 const unsigned int MAX_DIST = 23200;
-const float CONVERSION_CONSTANT = 1 / 58.0;
+const float CONVERSION_CONSTANT_CM = 1 / 58.0;
+const float CONVERSION_CONSTANT_INCH = 1 / 148.0;
 
 SR04::SR04(int trig_pin, int echo_pin)
 {
@@ -35,11 +36,10 @@ SR04::SR04(int trig_pin, int echo_pin)
     digitalWrite(_trig_pin, LOW);
 }
 
-void SR04::measureDistance() 
+void SR04::DistanceMeasure(void) 
 {
     unsigned long t1;
     unsigned long t2;
-    unsigned long pulse_width;
 
     // Hold the trigger pin high for at least 10 us
     digitalWrite(_trig_pin, HIGH);
@@ -55,18 +55,22 @@ void SR04::measureDistance()
     while ( digitalRead(ECHO_PIN) == 1 );
     t2 = micros();
 
-    pulse_width = t2 - t1;
-    // May needs calibration. Constant found in datasheet.
-    _distance = pulse_width > MAX_DIST ? 400 : CONVERSION_CONSTANT * pulse_width;
+    _pulse_width = t2 - t1;
     _timestamp = millis();
 }
 
-float SR04::getDistance() 
+long SR04::microsecondsToCentimeters(void)
 {
-    return _distance;
+    return (long)(pulse_width > MAX_DIST ? 400 : CONVERSION_CONSTANT_CM * _pulse_width);
 }
 
-unsigned long SR04::getTimestamp()
+
+long SR04::microsecondsToInches(void) 
+{
+    return (long)(pulse_width > MAX_DIST ? 400 : CONVERSION_CONSTANT_INCH * _pulse_width);
+}
+
+unsigned long SR04::getTimestamp(void)
 {
     return _timestamp;
 }

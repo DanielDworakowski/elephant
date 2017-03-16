@@ -1,4 +1,4 @@
-#include "Arduino.h"
+#include <Arduino.h>
 
 class RB90
 {
@@ -11,6 +11,7 @@ class RB90
     
     private:
         int _pin;//pin number of Arduino that is connected with SIG pin of Ultrasonic Ranger.
+        
         long _duration;// the Pulse time received;
         unsigned long _timestamp;
 };
