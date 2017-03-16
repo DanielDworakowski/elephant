@@ -50,7 +50,7 @@ int Drive::update()
     lastTime_ = curTime;
     // 
     // Calculate the commands for the speed control.
-    angleComp(calcL, calcR, deltaT, compOmega);
+    angleComp(*lEncoderCount_, *rEncoderCount_, deltaT, compOmega);
     calcWheelSpeeds(setSpeed_, compOmega);
     rMotorCommand_ = -1 * rVelocity_.getCmd(w_r_, calcR);
     lMotorCommand_ = -1 * lVelocity_.getCmd(w_l_, calcL);
@@ -66,7 +66,11 @@ int Drive::update()
     Serial.print("\t");
     Serial.print(lastL_);
     Serial.print("\t");
-    Serial.println(lastR_);
+    Serial.print(lastR_);
+    Serial.print("\t");
+    Serial.print(lMotorCommand_);
+    Serial.print("\t");
+    Serial.println(rMotorCommand_);
 
     return setMotorSpeeds(lMotorCommand_, rMotorCommand_);
 }
@@ -95,9 +99,9 @@ int Drive::calcWheelSpeeds(float setSpeed, float setOmega)
     return 0;
 }
 
-int Drive::angleComp(float omegaL, float omegaR, float dT, float &setOmega)
+int Drive::angleComp(int32_t lenc, int32_t renc, float dT, float &setOmega)
 {
-    actYaw_ += (WHEEL_RADIUS / CHASIS_LENGTH) * (omegaR - omegaL) * dT;
+    actYaw_ = (WHEEL_RADIUS / CHASIS_LENGTH) * (TO_OMEGA(renc) - TO_OMEGA(lenc));
     desYaw_ += setOmega_ * dT;
     setOmega = yawControl_.getCmd(desYaw_, actYaw_);
     return 0;
