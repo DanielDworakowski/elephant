@@ -133,32 +133,25 @@ void loop()
     // Define objects.
     VL53L0X prox;
     Adafruit_MotorShield motorShield;
+    Drive drive(&gRightEncoderTicks, &gLeftEncoderTicks, motorShield.getMotor(2), motorShield.getMotor(1));
+    motorShield.begin();
     IMU imu(PIN::imuInterruptPin);
     Ultrasonic ultrasonicLeft(PIN::leftUltrasonicPin);
     Ultrasonic ultrasonicRight(PIN::rightUltrasonicPin);
-    Drive drive(&gRightEncoderTicks, &gLeftEncoderTicks, motorShield.getMotor(2), motorShield.getMotor(1));
     float yawRef = 0;
     // 
     // Begin sensing.
     setupProximity(prox);
     prox.startContinuous();
-    motorShield.begin();
-
-    // StateFunctions::waitForStartButton(&imu, yawRef);
-    // drive.setReference(2,0);
-    // while (1) {
-    //     drive.update();
-    //     delay(30);
-    // }
-
     // 
     // Begin the state machine.
     while (1) {
         yawRef = 0; // Reset.
         StateFunctions::waitForStartButton(&imu, yawRef);
-        StateFunctions::getOffPlatform(&drive);
-        StateFunctions::approach(&drive, &prox);
-        // StateFunctions::jump(motorShield.getMotor(3), &imu);
+        // StateFunctions::getOffPlatform(&drive);
+        // StateFunctions::approach(&drive, &prox);
+        StateFunctions::approach2(&drive, &prox);
+        StateFunctions::jump(motorShield.getMotor(3), &imu);
         // StateFunctions::inAir(&drive, &imu);
         // StateFunctions::orientForward(&drive, &imu, yawRef);
         // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight);

@@ -21,7 +21,7 @@
 #define AIR_D 1.0f
 // 
 // PID parameters for orientation control.
-#define ORIENT_P 5.0f
+#define ORIENT_P 10.0f
 #define ORIENT_I 0.0f
 #define ORIENT_D 0.0f
 // 
@@ -31,7 +31,7 @@
 #define WALL_JUMP_DIST 500.0f
 //
 // Time in ms to get off the platform
-#define DRIVE_OFF_PLATFORM_TIME 500
+#define DRIVE_OFF_PLATFORM_TIME 2000
 // 
 // The amount in G that is considered moving upwards in z.
 #define JUMP_THRESHOLD 0.5f
@@ -40,7 +40,7 @@
 #define YAW_TOL 3.0f
 // 
 // The tolerance for height detection.
-#define HEI_TOL 3.0f
+#define HEI_TOL 10.0f
 // 
 // Functions in the state machine.
 namespace StateFunctions 
@@ -54,6 +54,9 @@ namespace StateFunctions
     //
     // State that approaches the wall of the arena.
     int approach(Drive* drive, VL53L0X* prox);
+    // 
+    // Another state for approaching.
+    int approach2(Drive* drive, VL53L0X* prox);
     // 
     // State that manages the jumping.
     int jump(Adafruit_DCMotor *jumpMotor, IMU *imu);

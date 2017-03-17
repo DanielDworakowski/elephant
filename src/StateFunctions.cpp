@@ -6,13 +6,13 @@ int StateFunctions::waitForStartButton(IMU *imu, float &yaw)
     const uint16_t avgNum = 15;
     while (!digitalRead(PIN::startButtonPin)) {
         imu->read();
-        // Serial.print(imu->getYaw());
-        // Serial.print('\t');
-        // Serial.print(imu->getPitch());
-        // Serial.print('\t');
-        // Serial.print(imu->getRoll());
-        // Serial.println('\t');
-        delay(100);
+        Serial.print(imu->getYaw());
+        Serial.print('\t');
+        Serial.print(imu->getPitch());
+        Serial.print('\t');
+        Serial.print(imu->getRoll());
+        Serial.println('\t');
+        // delay(30);
     }
     Serial.println("Button was pressed!");
     // 
@@ -34,11 +34,16 @@ int StateFunctions::waitForStartButton(IMU *imu, float &yaw)
 
 int StateFunctions::getOffPlatform(Drive *drive)
 {
-    float startTime = millis();
-    while (millis() - startTime < DRIVE_OFF_PLATFORM_TIME) {
-        drive->setReference(1.0 * ROBOT_SPEED_MAX, 0.0f);
-        drive->update();
-        delay(30);
+    const float numSteps = 4.0f;
+    float step = 0;
+    float startTime;
+    for (step = 0; step < numSteps; ++step) {
+        startTime = millis();
+        while (millis() - startTime < DRIVE_OFF_PLATFORM_TIME / numSteps) {
+            drive->setReference(ROBOT_SPEED_MAX * (step / numSteps), 0.0f);
+            drive->update();
+            delay(30);
+        }
     }
     return 0;
 }
@@ -47,22 +52,57 @@ int StateFunctions::approach(Drive *drive, VL53L0X* prox)
 {
     PID acc(ACC_P, ACC_I, ACC_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);
     float meas = 0, cmd = 0;
+    drive->setReference(ROBOT_SPEED_MAX, 0.0f);
+
     // 
     // Monitor and control the speed using the PID and 
     do {
         meas = prox->readRangeContinuousMillimeters();
         
-        // Serial.print(meas);
-        // Serial.print("\t");
-        // Serial.println(WALL_SET_DIST);
+        Serial.print(meas);
+        Serial.print("\t");
+        Serial.println(WALL_SET_DIST);
         
-        cmd = acc.getCmd(WALL_SET_DIST, meas);
-        drive->setReference(-1.0 * cmd, 0.0f);
+        // cmd = acc.getCmd(WALL_SET_DIST, meas);
+        // drive->setReference(-1.0 * cmd, 0.0f);
         drive->update();
         delay(30);
     } while (meas > WALL_JUMP_DIST);
     return 0;
 }
+
+int StateFunctions::approach2(Drive *drive, VL53L0X* prox) 
+{
+    const float numSteps = 20.0f;
+    const int minTriggerTime = 3000;
+    uint32_t minTriggerStart = millis();
+    float step = 0;
+    float startTime;
+    float meas;
+    for (step = 0; step < numSteps; ++step) {
+        meas = prox->readRangeContinuousMillimeters();
+        startTime = millis();
+        while (millis() - startTime < DRIVE_OFF_PLATFORM_TIME / numSteps) {
+            drive->setReference(ROBOT_SPEED_MAX * (step / numSteps), 0.0f);
+            drive->update();
+            meas = prox->readRangeContinuousMillimeters();
+            if (meas < WALL_JUMP_DIST && ((millis() - minTriggerStart) > minTriggerTime)) {
+                break;
+            }
+            delay(30);
+        }
+        if (step >= (numSteps - 1)) {
+            do {
+                meas = prox->readRangeContinuousMillimeters();
+                drive->update();
+            } while (meas > WALL_JUMP_DIST);
+            break;
+        }
+    }
+    return 0;
+}
+
+
 
 int StateFunctions::jump(Adafruit_DCMotor *jumpMotor, IMU *imu)
 {
@@ -102,7 +142,7 @@ int StateFunctions::orientForward(Drive *drive, IMU *imu, float refYaw)
     while (abs(curYaw - refYaw) > YAW_TOL) {
         imu->read();
         curYaw = imu->getYaw();
-        cmd = pid.getCmd(refYaw, curYaw);
+        cmd = -1 * pid.getCmd(refYaw, curYaw);
         drive->setReference(0, imu->isUpsideDown() ? -cmd : cmd);
         drive->update();
         delay(10);
@@ -115,7 +155,9 @@ int StateFunctions::orientForward(Drive *drive, IMU *imu, float refYaw)
         Serial.print(imu->getPitch());
         Serial.print('\t');
         Serial.print(imu->getRoll());
-        Serial.println('\t');
+        Serial.print('\t');
+        Serial.println(cmd);
+
     } 
     drive->stop();
     return 0;
@@ -157,7 +199,7 @@ int StateFunctions::driveToDest(Drive *drive, IMU *imu)
     float oldZ = imu->getGlobalZ();
     float newZ;
 
-    drive->setReference(ROBOT_SPEED_MAX / 4.0f, 0.0f);
+    drive->setReference(ROBOT_SPEED_MAX / 4.0, 0.0f);
     drive->update();
     delay(20);
     

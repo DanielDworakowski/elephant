@@ -17,7 +17,7 @@
 #define RIGHT_MOTOR_D 0.0f
 // 
 // Yaw control tuning.
-#define YAW_P 30.0f
+#define YAW_P 10.0f // 25.0f
 #define YAW_I 0.0f
 #define YAW_D 0.0f
 // 
