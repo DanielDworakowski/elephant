@@ -123,36 +123,47 @@ int StateFunctions::orientForward(Drive *drive, IMU *imu, float refYaw)
 
 int StateFunctions::locateDest(Drive *drive, SR04 *ultrasonicLeft, RB90 *ultrasonicRight)
 {   
-    long leftSensor = 10000;
-    long rightSensor = 10000;
+    long leftSensor;
+    long rightSensor;
+    long leftSensorLast;
+    long rightSensorLast;
 
-    drive->setReference(-1.0 * ROBOT_SPEED_MAX / 8.0, 0.0f);
-    drive->update();
+    //drive->setReference(-1.0 * ROBOT_SPEED_MAX / 8.0, 0.0f);
+    //drive->update();
+
+    ultrasonicLeft->distanceMeasure();
+    leftSensorLast = ultrasonicLeft->microsecondsToCentimeters();
+    leftSensor = leftSensorLast;
+
+    ultrasonicRight->distanceMeasure();
+    rightSensorLast = ultrasonicRight->microsecondsToCentimeters();
+    rightSensor = rightSensorLast;
+
     delay(20);
-    Serial.println('Sensor detection.');
+
     do {
+        leftSensorLast = leftSensor;
         ultrasonicLeft->distanceMeasure();
-        // ultrasonicRight->distanceMeasure();
         leftSensor = ultrasonicLeft->microsecondsToCentimeters();
-        // rightSensor = ultrasonicRight ->microsecondsToCentimeters();
-        Serial.print(leftSensor);
-        Serial.print('\t');
-        // Serial.print(rightSensor);
-        Serial.print('\t');
-        Serial.println('\t');
-        drive->update();
-        delay(20);
-    } while (leftSensor > 400 && rightSensor > 400); // assumes sensor value > 400 means nothing detected
+        
+        rightSensorLast = rightSensor;
+        ultrasonicRight->distanceMeasure();
+        rightSensor = ultrasonicRight ->microsecondsToCentimeters();
 
-    drive->stop();
+        //drive->update();
+        delay(500);
+    } while (abs(leftSensor - leftSensorLast) < ULTRASONIC_DELTA_TOLERANCE && abs(rightSensor - rightSensorLast) < ULTRASONIC_DELTA_TOLERANCE); // assumes sensor value > 400 means nothing detected
 
+    Serial.println("Pole found.");
+    //drive->stop();
+    /*
     if (leftSensor < 400) {
         drive->turnLeft();
     }
     else {
         drive->turnRight();
     }
-
+    */
     return 0;
 }
 

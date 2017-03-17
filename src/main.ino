@@ -12,20 +12,6 @@
 #include "Drive.hpp"
 #include "StateFunctions.hpp"
 
-void setupProximity(VL53L0X &sensor) 
-{
-    sensor.init();
-    sensor.setTimeout(500);
-    // 
-    // Setup sensor for long range.
-    sensor.setSignalRateLimit(0.1);
-    sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 18);
-    sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 14);
-    //
-    // Set the timing budget for higher accuracy. 
-    sensor.setMeasurementTimingBudget(70000); // 70000 works well 
-}
-
 #ifdef CLEAR_I2C
 /**
  * This routine turns off the I2C bus and clears it
@@ -102,6 +88,20 @@ int I2C_ClearBus() {
 }
 #endif
 
+void setupProximity(VL53L0X &sensor) 
+{
+    sensor.init();
+    sensor.setTimeout(500);
+    // 
+    // Setup sensor for long range.
+    sensor.setSignalRateLimit(0.1);
+    sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 18);
+    sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 14);
+    //
+    // Set the timing budget for higher accuracy. 
+    sensor.setMeasurementTimingBudget(70000); // 70000 works well 
+}
+
 void setup()
 {
     Serial.begin(115200);
@@ -130,41 +130,38 @@ void setup()
 
 void loop()
 { 
+    Serial.print("Hello.");
     // 
     // Define objects.
-    VL53L0X prox;
+    //VL53L0X prox;
     Adafruit_MotorShield motorShield;
-    IMU imu(PIN::imuInterruptPin);
+    //IMU imu(PIN::imuInterruptPin);
     SR04 ultrasonicLeft(PIN::SR04TrigPin, PIN::SR04EchoPin);
     RB90 ultrasonicRight(PIN::RB90Pin);
     Drive drive(&gRightEncoderTicks, &gLeftEncoderTicks, motorShield.getMotor(2), motorShield.getMotor(1));
-    float yawRef = 0;
+    //float yawRef = 0;
+
     // 
     // Begin sensing.
-    setupProximity(prox);
-    prox.startContinuous();
-    motorShield.begin();
-
-    // StateFunctions::waitForStartButton(&imu, yawRef);
-    // drive.setReference(2,0);
-    // while (1) {
-    //     drive.update();
-    //     delay(30);
-    // }
+    //setupProximity(prox);
+    //prox.startContinuous();
+    //motorShield.begin();
 
     // 
     // Begin the state machine.
     while (1) {
-        yawRef = 0; // Reset.
-        StateFunctions::waitForStartButton(&imu, yawRef);
+        //yawRef = 0; // Reset.
+        //StateFunctions::waitForStartButton(&imu, yawRef);
         // StateFunctions::getOffPlatform(&drive);
         // StateFunctions::approach(&drive, &prox);
         // StateFunctions::jump(motorShield.getMotor(3), &imu);
         // StateFunctions::inAir(&drive, &imu);
         // StateFunctions::orientForward(&drive, &imu, yawRef);
+        Serial.println("Starting new game of find the pole.");
         StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight);
+        delay(1000);
         // StateFunctions::driveToDest(&drive, &imu);
-        drive.stop();
+        //drive.stop();
     }
 }
  

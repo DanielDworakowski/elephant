@@ -26,9 +26,15 @@
 /*****************************************************************************/
 #include "RB90.hpp"
 
+#define DEBUG true
+#define dprint(x) do { if (DEBUG) Serial.print(x); } while (0)
+#define dprintln(x) do { if (DEBUG) Serial.println(x); } while (0)
+
 RB90::RB90(int pin)
 {
     _pin = pin;
+
+    dprintln("//// Hardware - RB90 Ultrasonic Sensor initialized.");
 }
 
 /*Begin the detection and get the pulse back signal*/
@@ -41,8 +47,13 @@ void RB90::distanceMeasure(void)
     delayMicroseconds(5);
     digitalWrite(_pin,LOW);
     pinMode(_pin,INPUT);
+
     _duration = pulseIn(_pin,HIGH);
     _timestamp = millis();
+
+    dprint("RB90 - Measured distance ");
+    dprint(_duration/29/2);
+    dprintln(" cm.");
 }
 
 /*The measured distance from the range 0 to 400 Centimeters*/

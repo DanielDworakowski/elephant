@@ -42,6 +42,9 @@
 // 
 // The tolerance for height detection.
 #define HEI_TOL 3.0f
+//
+// The tolerance of change in distance to count as finding the pole.
+#define ULTRASONIC_DELTA_TOLERANCE 10.0
 // 
 // Functions in the state machine.
 namespace StateFunctions 
