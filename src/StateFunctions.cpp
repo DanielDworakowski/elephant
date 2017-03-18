@@ -53,6 +53,7 @@ int StateFunctions::approach(Drive *drive, VL53L0X* prox)
     PID acc(ACC_P, ACC_I, ACC_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);
     float meas = 0, cmd = 0;
     drive->setReference(ROBOT_SPEED_MAX, 0.0f);
+    drive->reset(30);
 
     // 
     // Monitor and control the speed using the PID and 
@@ -79,6 +80,7 @@ int StateFunctions::approach2(Drive *drive, VL53L0X* prox)
     float step = 0;
     float startTime;
     float meas;
+    drive->reset(30);
     for (step = 0; step < numSteps; ++step) {
         meas = prox->readRangeContinuousMillimeters();
         startTime = millis();
@@ -89,7 +91,7 @@ int StateFunctions::approach2(Drive *drive, VL53L0X* prox)
             if (meas < WALL_JUMP_DIST && ((millis() - minTriggerStart) > minTriggerTime)) {
                 break;
             }
-            delay(30);
+            // delay(30);
         }
         if (step >= (numSteps - 1)) {
             do {

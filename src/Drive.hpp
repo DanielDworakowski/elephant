@@ -7,18 +7,18 @@
 #define __DRIVE__
 // 
 // Left motor tuning.
-#define LEFT_MOTOR_P 15.0f
-#define LEFT_MOTOR_I 0.0f
+#define LEFT_MOTOR_P 8.0f
+#define LEFT_MOTOR_I 0.5f
 #define LEFT_MOTOR_D 0.0f
 // 
 // Right motor tuning.
-#define RIGHT_MOTOR_P 15.0f
-#define RIGHT_MOTOR_I 0.0f
+#define RIGHT_MOTOR_P 9.0f
+#define RIGHT_MOTOR_I 0.5f
 #define RIGHT_MOTOR_D 0.0f
 // 
 // Yaw control tuning.
-#define YAW_P 10.0f // 25.0f
-#define YAW_I 0.0f
+#define YAW_P 7.0f 
+#define YAW_I 1.0f
 #define YAW_D 0.0f
 // 
 // The maximum and minimum motor speeds.
