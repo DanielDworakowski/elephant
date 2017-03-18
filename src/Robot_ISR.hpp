@@ -44,8 +44,11 @@ void setupPins()
     attachInterrupt(digitalPinToInterrupt(PIN::leftEncoderInterruptPin), HandleLeftMotorInterruptA, RISING);
     attachInterrupt(digitalPinToInterrupt(PIN::rightEncoderInterruptPin), HandleRightMotorInterruptA, RISING);
     // 
-    // Start Button
+    // Start Button.
     pinMode(PIN::startButtonPin, INPUT);
+    // 
+    // Alignment button.
+    pinMode(PIN::alignButtonPin, INPUT_PULLUP);
 }
 
 #endif

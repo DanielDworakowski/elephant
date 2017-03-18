@@ -1,17 +1,27 @@
 #include "StateFunctions.hpp"
 
-int StateFunctions::waitForStartButton(IMU *imu, float &yaw)
+int StateFunctions::waitForStartButton(IMU *imu, float &yaw, Adafruit_DCMotor *jumpMotor)
 {
     uint16_t cnt;
     const uint16_t avgNum = 15;
     while (!digitalRead(PIN::startButtonPin)) {
-        imu->read();
-        Serial.print(imu->getYaw());
-        Serial.print('\t');
-        Serial.print(imu->getPitch());
-        Serial.print('\t');
-        Serial.print(imu->getRoll());
-        Serial.println('\t');
+        // 
+        // Shaft alignment code.
+        if (!digitalRead(PIN::alignButtonPin)) {
+            jumpMotor->run(BACKWARD);
+            jumpMotor->setSpeed(255.0f / 4.0f);
+            delay(50);
+            jumpMotor->setSpeed(0);
+            Serial.println("Align button is pressed!");
+        }
+
+        // imu->read();
+        // Serial.print(imu->getYaw());
+        // Serial.print('\t');
+        // Serial.print(imu->getPitch());
+        // Serial.print('\t');
+        // Serial.print(imu->getRoll());
+        // Serial.println('\t');
         // delay(30);
     }
     Serial.println("Button was pressed!");
@@ -85,7 +95,7 @@ int StateFunctions::approach2(Drive *drive, VL53L0X* prox)
         meas = prox->readRangeContinuousMillimeters();
         startTime = millis();
         while (millis() - startTime < DRIVE_OFF_PLATFORM_TIME / numSteps) {
-            drive->setReference(ROBOT_SPEED_MAX * (step / numSteps), 0.0f);
+            drive->setReference(-ROBOT_SPEED_MAX * (step / numSteps), 0.0f);
             drive->update();
             meas = prox->readRangeContinuousMillimeters();
             if (meas < WALL_JUMP_DIST && ((millis() - minTriggerStart) > minTriggerTime)) {
@@ -97,6 +107,12 @@ int StateFunctions::approach2(Drive *drive, VL53L0X* prox)
             do {
                 meas = prox->readRangeContinuousMillimeters();
                 drive->update();
+
+#pragma message("REMOVE THIS!")
+                if ((millis() - startTime) > minTriggerTime) {
+                    break;
+                }
+
             } while (meas > WALL_JUMP_DIST);
             break;
         }
@@ -106,15 +122,14 @@ int StateFunctions::approach2(Drive *drive, VL53L0X* prox)
 
 
 
-int StateFunctions::jump(Adafruit_DCMotor *jumpMotor, IMU *imu)
+int StateFunctions::jump(Adafruit_DCMotor *jumpMotor, IMU *imu, Drive* drive)
 {
+    uint32_t startTime = 0;
     // 
     // Run the motor forwards until acceleration is detected.
     jumpMotor->run(BACKWARD);
     jumpMotor->setSpeed(255);
     delay(1000);
-    // 
-    // Stop the motor.
     jumpMotor->setSpeed(0);
     return 0;
 }

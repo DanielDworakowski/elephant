@@ -28,7 +28,7 @@
 // The set distance desired to the wall.
 #define WALL_SET_DIST 400.0f
 #define WALL_DIST_TOL 50.0f
-#define WALL_JUMP_DIST 500.0f
+#define WALL_JUMP_DIST 300.0f
 //
 // Time in ms to get off the platform
 #define DRIVE_OFF_PLATFORM_TIME 2000
@@ -47,7 +47,7 @@ namespace StateFunctions
 {
     //
     // State that waits for the start button to be pressed.
-    int waitForStartButton(IMU *imu, float &yaw);
+    int waitForStartButton(IMU *imu, float &yaw, Adafruit_DCMotor *jumpMotor);
     //
     // State to get off the starting platform.
     int getOffPlatform(Drive* drive);
@@ -59,7 +59,7 @@ namespace StateFunctions
     int approach2(Drive* drive, VL53L0X* prox);
     // 
     // State that manages the jumping.
-    int jump(Adafruit_DCMotor *jumpMotor, IMU *imu);
+    int jump(Adafruit_DCMotor *jumpMotor, IMU *imu, Drive* drive);
     // 
     // State that manages the in air control.
     int inAir(Drive *drive, IMU *imu);

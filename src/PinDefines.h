@@ -17,8 +17,11 @@ enum PIN: byte
 	tofStage1InterruptPin = 0,
 	tofStage2InterruptPin = 0,
 	//
-	// Start button pin
+	// Start button pin.
 	startButtonPin = 8,
+	// 
+	// Alignment button pin.
+	alignButtonPin = 53,
     //
     // Ultrasonic sensor
     leftUltrasonicPin = 111,

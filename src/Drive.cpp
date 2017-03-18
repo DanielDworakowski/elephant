@@ -50,7 +50,7 @@ int Drive::update()
     lastTime_ = curTime;
     // 
     // Calculate the commands for the speed control.
-    if (setSpeed_ > 0) {
+    if (setSpeed_ != 0) {
         angleComp(*lEncoderCount_, *rEncoderCount_, deltaT, compOmega);
         calcWheelSpeeds(setSpeed_, compOmega);
     }
