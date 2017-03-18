@@ -1,12 +1,12 @@
-#ifndef __SR04__
-#define __SR04__
+#ifndef __ULTRASONIC__
+#define __ULTRASONIC__
 
 #include <Arduino.h>
 
-class SR04
+class Ultrasonic
 {
     public:
-        SR04(int trig_pin, int echo_pin);
+        Ultrasonic(int trig_pin, int echo_pin);
         void distanceMeasure(void);
         long microsecondsToCentimeters(void);
         long microsecondsToInches(void);

@@ -2,8 +2,7 @@
 #include "digitalWriteFast.h"
 #include "PinDefines.h"
 #include "VL53L0X.h"
-#include "RB90.hpp"
-#include "SR04.hpp"
+#include "Ultrasonic.hpp"
 #include "Robot_ISR.hpp"
 #include "Kalman-1D.hpp"
 #include "IMU_Wrapper.hpp"
@@ -130,36 +129,36 @@ void setup()
 
 void loop()
 { 
-    Serial.print("Hello.");
     // 
     // Define objects.
-    //VL53L0X prox;
+    VL53L0X prox;
     Adafruit_MotorShield motorShield;
     //IMU imu(PIN::imuInterruptPin);
-    SR04 ultrasonicLeft(PIN::SR04TrigPin, PIN::SR04EchoPin);
-    RB90 ultrasonicRight(PIN::RB90Pin);
+    Ultrasonic ultrasonicLeft(PIN::leftUltrasonicTrigPin, PIN::leftUltrasonicEchoPin);
+    Ultrasonic ultrasonicRight(PIN::rightUltrasonicTrigPin, PIN::rightUltrasonicEchoPin);
     Drive drive(&gRightEncoderTicks, &gLeftEncoderTicks, motorShield.getMotor(2), motorShield.getMotor(1));
     //float yawRef = 0;
 
     // 
     // Begin sensing.
-    //setupProximity(prox);
-    //prox.startContinuous();
+    setupProximity(prox);
+    prox.startContinuous();
     //motorShield.begin();
+
+    // Initialize internal pullup for align button.
+    pinMode(PIN::alignButtonPin, INPUT_PULLUP);
 
     // 
     // Begin the state machine.
     while (1) {
         //yawRef = 0; // Reset.
-        //StateFunctions::waitForStartButton(&imu, yawRef);
+        StateFunctions::waitForStartButton();
         // StateFunctions::getOffPlatform(&drive);
-        // StateFunctions::approach(&drive, &prox);
+        StateFunctions::approach(&drive, &prox);
         // StateFunctions::jump(motorShield.getMotor(3), &imu);
         // StateFunctions::inAir(&drive, &imu);
         // StateFunctions::orientForward(&drive, &imu, yawRef);
-        Serial.println("Starting new game of find the pole.");
         StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight);
-        delay(1000);
         // StateFunctions::driveToDest(&drive, &imu);
         //drive.stop();
     }

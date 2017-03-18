@@ -21,7 +21,7 @@
  *  Public Domain
  */
 
-#include "SR04.hpp"
+#include "Ultrasonic.hpp"
 
 #define DEBUG true
 #define dprint(x) do { if (DEBUG) Serial.print(x); } while (0)
@@ -32,7 +32,7 @@ const unsigned int MAX_DIST = 23200;
 const float CONVERSION_CONSTANT_CM = 1 / 58.2;
 const float CONVERSION_CONSTANT_INCH = 1 / 148.0;
 
-SR04::SR04(int trig_pin, int echo_pin)
+Ultrasonic::Ultrasonic(int trig_pin, int echo_pin)
 {
     _trig_pin = trig_pin;
     _echo_pin = echo_pin;
@@ -43,7 +43,7 @@ SR04::SR04(int trig_pin, int echo_pin)
     dprintln("//// Hardware - SR04 Ultrasonic Sensor initialized.");
 }
 
-void SR04::distanceMeasure(void) 
+void Ultrasonic::distanceMeasure(void) 
 {
     digitalWrite(_trig_pin, LOW);
     delayMicroseconds(5);
@@ -60,17 +60,17 @@ void SR04::distanceMeasure(void)
     dprintln(" cm.");
 }
 
-long SR04::microsecondsToCentimeters(void)
+long Ultrasonic::microsecondsToCentimeters(void)
 {
     return (long)(_pulse_width > MAX_DIST ? 400 : CONVERSION_CONSTANT_CM * _pulse_width);
 }
 
-long SR04::microsecondsToInches(void) 
+long Ultrasonic::microsecondsToInches(void) 
 {
     return (long)(_pulse_width > MAX_DIST ? 400 : CONVERSION_CONSTANT_INCH * _pulse_width);
 }
 
-unsigned long SR04::getTimestamp(void)
+unsigned long Ultrasonic::getTimestamp(void)
 {
     return _timestamp;
 }

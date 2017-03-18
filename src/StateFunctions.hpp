@@ -1,7 +1,6 @@
 #include <stdint.h>
 #include "VL53L0X.h"
-#include "RB90.hpp"
-#include "SR04.hpp"
+#include "Ultrasonic.hpp"
 #include "Drive.hpp"
 #include "PID.hpp"
 #include "PinDefines.h"
@@ -44,14 +43,20 @@
 #define HEI_TOL 3.0f
 //
 // The tolerance of change in distance to count as finding the pole.
-#define ULTRASONIC_DELTA_TOLERANCE 10.0
+#define ULTRASONIC_DELTA_TOLERANCE 30.0
+//
+// Time for the IMU to stablize, in milliseconds.
+#define IMU_STABLIZE_TIME 2000
 // 
 // Functions in the state machine.
 namespace StateFunctions 
 {
     //
     // State that waits for the start button to be pressed.
-    int waitForStartButton(IMU *imu, float &yaw);
+    int waitForStartButton(void);
+    //
+    // State that samples the IMU for reference yaw.
+    int sampleYaw(IMU *imu, float &yaw);
     //
     // State to get off the starting platform.
     int getOffPlatform(Drive* drive);
@@ -69,7 +74,7 @@ namespace StateFunctions
     int orientForward(Drive *drive, IMU *imu, float refYaw);
     // 
     // State that searches for the destination.
-    int locateDest(Drive *drive, SR04 *ultrasonicLeft, RB90 *ultrasonicRight);
+    int locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight);
     //
     // State that drives to destination
     int driveToDest(Drive *drive, IMU *imu);

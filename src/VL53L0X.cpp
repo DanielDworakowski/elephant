@@ -32,6 +32,11 @@
 // PLL_period_ps = 1655; macro_period_vclks = 2304
 #define calcMacroPeriod(vcsel_period_pclks) ((((uint32_t)2304 * (vcsel_period_pclks) * 1655) + 500) / 1000)
 
+// For debug logging.
+#define DEBUG false
+#define dprint(x) do { if (DEBUG) Serial.print(x); } while (0)
+#define dprintln(x) do { if (DEBUG) Serial.println(x); } while (0)
+
 // Constructors ////////////////////////////////////////////////////////////////
 
 VL53L0X::VL53L0X(void)
@@ -792,6 +797,8 @@ void VL53L0X::startContinuous(uint32_t period_ms)
     // continuous back-to-back mode
     writeReg(SYSRANGE_START, 0x02); // VL53L0X_REG_SYSRANGE_MODE_BACKTOBACK
   }
+
+  dprintln("//// Hardware - VL53L0X starting continuous measurement.");
 }
 
 // Stop continuous measurements
@@ -828,6 +835,9 @@ uint16_t VL53L0X::readRangeContinuousMillimeters(void)
 
   writeReg(SYSTEM_INTERRUPT_CLEAR, 0x01);
 
+  dprint("VL53L0X - measured distance ");
+  dprint(range);
+  dprintln(" mm.");
   return range;
 }
 
