@@ -101,22 +101,12 @@ int StateFunctions::approach2(Drive *drive, VL53L0X* prox)
             if (meas < WALL_JUMP_DIST && ((millis() - minTriggerStart) > minTriggerTime)) {
                 break;
             }
-            // delay(30);
-        }
-        if (step >= (numSteps - 1)) {
-            do {
-                meas = prox->readRangeContinuousMillimeters();
-                drive->update();
-
-#pragma message("REMOVE THIS!")
-                if ((millis() - startTime) > minTriggerTime) {
-                    break;
-                }
-
-            } while (meas > WALL_JUMP_DIST);
-            break;
         }
     }
+    do {
+        meas = prox->readRangeContinuousMillimeters();
+        drive->update();
+    } while (meas > WALL_JUMP_DIST);
     return 0;
 }
 
@@ -124,7 +114,6 @@ int StateFunctions::approach2(Drive *drive, VL53L0X* prox)
 
 int StateFunctions::jump(Adafruit_DCMotor *jumpMotor, IMU *imu, Drive* drive)
 {
-    uint32_t startTime = 0;
     // 
     // Run the motor forwards until acceleration is detected.
     jumpMotor->run(BACKWARD);
@@ -186,9 +175,6 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     long rightSensor = 10000;
 
     drive->setReference(ROBOT_SPEED_MAX / 4.0f, 0.0f);
-    drive->update();
-    delay(20);
-
     do {
         ultrasonicLeft->DistanceMeasure();
         ultrasonicRight->DistanceMeasure();
@@ -201,10 +187,10 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     drive->stop();
 
     if (leftSensor < 400) {
-        drive->turnLeft();
+        drive->turnTheta(90);
     }
     else {
-        drive->turnRight();
+        drive->turnTheta(-90);
     }
 
     return 0;

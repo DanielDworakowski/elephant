@@ -21,6 +21,41 @@
 #define YAW_I 1.0f
 #define YAW_D 0.0f
 // 
+// Tuning for the second orientation of the robot.
+// Left motor tuning.
+#define POLE_LEFT_MOTOR_P 20.0f
+#define POLE_LEFT_MOTOR_I 2.0f
+#define POLE_LEFT_MOTOR_D 0.0f
+// 
+// Right motor tuning.
+#define POLE_RIGHT_MOTOR_P 20.0f
+#define POLE_RIGHT_MOTOR_I 2.0f
+#define POLE_RIGHT_MOTOR_D 0.0f
+// 
+// Yaw control tuning.
+#define POLE_YAW_P 20.0f 
+#define POLE_YAW_I 0.0f
+#define POLE_YAW_D 0.03f
+// 
+// Tuning for the second orientation of the robot.
+// Left motor tuning.
+#define TURN_LEFT_MOTOR_P 20.0f
+#define TURN_LEFT_MOTOR_I 2.0f
+#define TURN_LEFT_MOTOR_D 0.0f
+// 
+// Right motor tuning.
+#define TURN_RIGHT_MOTOR_P 20.0f
+#define TURN_RIGHT_MOTOR_I 2.0f
+#define TURN_RIGHT_MOTOR_D 0.0f
+// 
+// Yaw control tuning.
+#define TURN_YAW_P 20.0f 
+#define TURN_YAW_I 0.0f
+#define TURN_YAW_D 0.03f
+// 
+// Tolerance for the rotation
+#define YAW_TOLERANCE (5.0f * M_PI / 180.0f) // 2 degree tolerance.
+// 
 // The maximum and minimum motor speeds.
 // Given we have a 11.1V LiPo divide 255 max by 2.
 #define MAX_SPEED 255/*(255 / 2.0f)*/
@@ -66,13 +101,27 @@ class Drive {
         // Reset the position vector's origin.
         int resetOrigin();
         //
-        // Turn the robot 90 degrees to the left.
-        int turnLeft();
+        // Turn the robot by some angle. 
+        int turnTheta(float theta);
+        // 
+        // Set the tuning of the controllers for pole searching.
+        int setPoleSearch();
+        // 
+        // Pole search.
+        int setJump();
         //
-        // Turn the robot 90 degrees to the right.
-        int turnRight();
+        // Turning. 
+        int setTurn();
 
     private:
+        // 
+        // Drive state.
+        enum DriveState: byte
+        {
+            TURN_STATE,
+            JUMP_STATE,
+            POLE_SEARCH_STATE
+        };
         // 
         // Calculate the compensation for angular speeds.
         int angleComp(int32_t lenc, int32_t renc, float dT, float &setOmega);
@@ -103,6 +152,7 @@ class Drive {
         // 
         // The position of the robot from encoder counts
         float xComp_, yComp_, yaw_;
+        DriveState state_;
 };
 
 #endif /* _DRIVE_H_ */

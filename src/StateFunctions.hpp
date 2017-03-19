@@ -28,7 +28,7 @@
 // The set distance desired to the wall.
 #define WALL_SET_DIST 400.0f
 #define WALL_DIST_TOL 50.0f
-#define WALL_JUMP_DIST 300.0f
+#define WALL_JUMP_DIST 500.0f
 //
 // Time in ms to get off the platform
 #define DRIVE_OFF_PLATFORM_TIME 2000

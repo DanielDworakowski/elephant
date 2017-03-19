@@ -42,3 +42,21 @@ float PID::getCmd(float ref, float meas)
     lastTime_ = curTime;
     return cmd;
 }
+
+int PID::setPID(float p, float i, float d) 
+{
+    p_ = p;
+    i_ = i;
+    d_ = d;
+    return 0;
+}
+
+int PID::reset(uint32_t tDiff)
+{
+    lastTime_ = millis() - tDiff;
+    return 0;
+}
+
+
+
+

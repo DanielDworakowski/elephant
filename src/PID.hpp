@@ -10,6 +10,12 @@ class PID {
         // 
         // Error function.
         float getCmd(float ref, float meas);
+        // 
+        // Change PID tuning.
+        int setPID(float p, float i, float d);
+        // 
+        // Reset the tDiff.
+        int reset(uint32_t tDiff);
 
     private:
         float p_, i_, d_;

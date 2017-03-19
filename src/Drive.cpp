@@ -23,6 +23,7 @@ Drive::Drive(volatile int32_t *rEncoderCount, volatile int32_t *lEncoderCount, A
     , xComp_(0.0f)
     , yComp_(0.0f)
     , yaw_(0.0f)
+    , state_(JUMP_STATE)
 {
 }
 
@@ -85,8 +86,13 @@ int Drive::reset(uint32_t tDiff)
     lastTime_ = millis() - tDiff;
     lastL_ = 0;
     lastR_ = 0;
+    desYaw_ = 0;
+    actYaw_ = 0;
     *lEncoderCount_ = 0;
     *rEncoderCount_ = 0;
+    lVelocity_.reset(tDiff);
+    rVelocity_.reset(tDiff);
+    yawControl_.reset(tDiff);
     return 0;
 }
 
@@ -120,32 +126,57 @@ int Drive::stop()
     return 0;
 }
 
-//
-// Need to tune for exactly 90 deg left/right
-int Drive::turnLeft()
+int Drive::turnTheta(float theta)
 {
-    lMotor_->run(BACKWARD);
-    lMotor_->setSpeed(ROBOT_SPEED_MAX / 2.0f);
-    rMotor_->setSpeed(ROBOT_SPEED_MAX / 2.0f);
-    delay(300);
-    lMotor_->run(FORWARD);
-    lMotor_->setSpeed(0);
-    rMotor_->setSpeed(0);
-    setReference(0,0);    
+    float cmd;
+    desYaw_ = actYaw_ + 2.0f * theta * (M_PI / 180.f);
+    setTurn();
+    // 
+    // PID around orientation.
+    while (abs(actYaw_ - desYaw_) > YAW_TOLERANCE) {
+        actYaw_ = (WHEEL_RADIUS / CHASIS_LENGTH) * (TO_OMEGA(*rEncoderCount_) - TO_OMEGA(*lEncoderCount_));
+        cmd = yawControl_.getCmd(desYaw_, actYaw_);
+        setReference(0, cmd);
+        update();
+        delay(30);
+    } 
+    switch (state_) {
+        case JUMP_STATE:
+            setJump();
+            break;
+        default:
+        case POLE_SEARCH_STATE:
+            setPoleSearch();
+            break;
+
+    }
     return 0;
 }
 
-int Drive::turnRight()
+int Drive::setPoleSearch()
 {
-    rMotor_->run(BACKWARD);
-    lMotor_->setSpeed(ROBOT_SPEED_MAX / 2.0f);
-    rMotor_->setSpeed(ROBOT_SPEED_MAX / 2.0f);
-    delay(300);
-    rMotor_->run(FORWARD);
-    lMotor_->setSpeed(0);
-    rMotor_->setSpeed(0);
-    setReference(0,0);    
+    lVelocity_.setPID(POLE_LEFT_MOTOR_P, POLE_LEFT_MOTOR_I, POLE_LEFT_MOTOR_D);
+    rVelocity_.setPID(POLE_RIGHT_MOTOR_P, POLE_RIGHT_MOTOR_I, POLE_RIGHT_MOTOR_D);
+    yawControl_.setPID(POLE_YAW_P, POLE_YAW_I, POLE_YAW_D);
+    state_ = POLE_SEARCH_STATE;
     return 0;
+}
+
+int Drive::setJump()
+{
+    lVelocity_.setPID(LEFT_MOTOR_P, LEFT_MOTOR_I, LEFT_MOTOR_D);
+    rVelocity_.setPID(RIGHT_MOTOR_P, RIGHT_MOTOR_I, RIGHT_MOTOR_D);
+    yawControl_.setPID(YAW_P, YAW_I, YAW_D);
+    state_ = JUMP_STATE;
+    return 0;
+}
+
+int Drive::setTurn()
+{
+    lVelocity_.setPID(TURN_LEFT_MOTOR_P, TURN_LEFT_MOTOR_I, TURN_LEFT_MOTOR_D);
+    rVelocity_.setPID(TURN_RIGHT_MOTOR_P, TURN_RIGHT_MOTOR_I, TURN_RIGHT_MOTOR_D);
+    yawControl_.setPID(TURN_YAW_P, TURN_YAW_I, TURN_YAW_D);  
+    return 0; 
 }
 
 int Drive::setMotorSpeeds(float lCmd, float rCmd)

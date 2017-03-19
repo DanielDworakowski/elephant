@@ -135,6 +135,7 @@ void loop()
     Adafruit_MotorShield motorShield;
     Drive drive(&gRightEncoderTicks, &gLeftEncoderTicks, motorShield.getMotor(2), motorShield.getMotor(1));
     motorShield.begin();
+    drive.stop();
     IMU imu(PIN::imuInterruptPin);
     Ultrasonic ultrasonicLeft(PIN::leftUltrasonicPin);
     Ultrasonic ultrasonicRight(PIN::rightUltrasonicPin);
@@ -147,14 +148,17 @@ void loop()
     // Begin the state machine.
     while (1) {
         yawRef = 0; // Reset.
-        StateFunctions::waitForStartButton(&imu, yawRef);
-        // StateFunctions::getOffPlatform(&drive);
-        // StateFunctions::approach(&drive, &prox);
+        StateFunctions::waitForStartButton(&imu, yawRef, motorShield.getMotor(3));
+        drive.reset(30);
         StateFunctions::approach2(&drive, &prox);
-        StateFunctions::jump(motorShield.getMotor(3), &imu);
-        // StateFunctions::inAir(&drive, &imu);
-        // StateFunctions::orientForward(&drive, &imu, yawRef);
-        // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight);
+        // StateFunctions::jump(motorShield.getMotor(3), &imu, &drive);
+        // 
+        // From this point on the robot is in a different configuration.
+        // The tunings of the controllers must reflect this. 
+        // drive.setPoleSearch();
+        // drive.turnTheta(90);
+        // // StateFunctions::orientForward(&drive, &imu, yawRef);
+        // // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight);
         // StateFunctions::driveToDest(&drive, &imu);
         drive.stop();
     }
