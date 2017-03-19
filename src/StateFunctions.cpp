@@ -1,9 +1,24 @@
 #include "StateFunctions.hpp"
 
-int StateFunctions::waitForStartButton(IMU *imu, float &yaw, Adafruit_DCMotor *jumpMotor)
+#define DEBUG
+#ifdef DEBUG
+
+#define dprint(x) do { Serial.print(x); } while (0)
+#define dprintln(x) do { Serial.println(x); } while (0)
+
+#else
+
+#define dprint(x) 
+#define dprintln(x) 
+
+#endif 
+
+/* 
+ * Parameters: none
+ * Waits for button press, then a certain amount of time before continuing.
+ */
+int StateFunctions::waitForStartButton(Adafruit_DCMotor *jumpMotor)
 {
-    uint16_t cnt;
-    const uint16_t avgNum = 15;
     while (!digitalRead(PIN::startButtonPin)) {
         // 
         // Shaft alignment code.
@@ -14,17 +29,22 @@ int StateFunctions::waitForStartButton(IMU *imu, float &yaw, Adafruit_DCMotor *j
             jumpMotor->setSpeed(0);
             Serial.println("Align button is pressed!");
         }
-
-        // imu->read();
-        // Serial.print(imu->getYaw());
-        // Serial.print('\t');
-        // Serial.print(imu->getPitch());
-        // Serial.print('\t');
-        // Serial.print(imu->getRoll());
-        // Serial.println('\t');
-        // delay(30);
     }
-    Serial.println("Button was pressed!");
+    return 0;
+}
+
+/* 
+ *  Parameters: pointer to IMU interface instance, address of yaw storage variable.
+ *  Takes a number of samples of the current yaw and saves the average to the pointer.
+ */
+int StateFunctions::sampleYaw(IMU *imu, float &yaw)
+{
+    uint16_t cnt;
+    const uint16_t avgNum = 15;
+    dprintln("//// State - enter sampleYaw.");
+    // 
+    // Give 2 seconds for the IMU to stablize, as well as to get out of the way.
+    delay(IMU_STABLIZE_TIME);
     // 
     // Average the current yaw.
     for (cnt = 0; cnt < avgNum; ++cnt) {
@@ -32,53 +52,12 @@ int StateFunctions::waitForStartButton(IMU *imu, float &yaw, Adafruit_DCMotor *j
             --cnt;
             continue;
         }
+
         yaw += imu->getYaw();
-        Serial.println(imu->getYaw());
         delay(40);
     }
-    Serial.println("Done averaging");
     yaw /= avgNum;
-    delay(1000);
-    return 0;
-}
-
-int StateFunctions::getOffPlatform(Drive *drive)
-{
-    const float numSteps = 4.0f;
-    float step = 0;
-    float startTime;
-    for (step = 0; step < numSteps; ++step) {
-        startTime = millis();
-        while (millis() - startTime < DRIVE_OFF_PLATFORM_TIME / numSteps) {
-            drive->setReference(ROBOT_SPEED_MAX * (step / numSteps), 0.0f);
-            drive->update();
-            delay(30);
-        }
-    }
-    return 0;
-}
-
-int StateFunctions::approach(Drive *drive, VL53L0X* prox) 
-{
-    PID acc(ACC_P, ACC_I, ACC_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);
-    float meas = 0, cmd = 0;
-    drive->setReference(ROBOT_SPEED_MAX, 0.0f);
-    drive->reset(30);
-
-    // 
-    // Monitor and control the speed using the PID and 
-    do {
-        meas = prox->readRangeContinuousMillimeters();
-        
-        Serial.print(meas);
-        Serial.print("\t");
-        Serial.println(WALL_SET_DIST);
-        
-        // cmd = acc.getCmd(WALL_SET_DIST, meas);
-        // drive->setReference(-1.0 * cmd, 0.0f);
-        drive->update();
-        delay(30);
-    } while (meas > WALL_JUMP_DIST);
+    dprintln("//// State - exit sampleYaw.");
     return 0;
 }
 
@@ -109,8 +88,6 @@ int StateFunctions::approach2(Drive *drive, VL53L0X* prox)
     } while (meas > WALL_JUMP_DIST);
     return 0;
 }
-
-
 
 int StateFunctions::jump(Adafruit_DCMotor *jumpMotor, IMU *imu, Drive* drive)
 {
@@ -169,30 +146,101 @@ int StateFunctions::orientForward(Drive *drive, IMU *imu, float refYaw)
     return 0;
 }
 
+/*
+ *  Parameters: pointer to drive motor interface instance, pointer to left and right ultrasonic interface.
+ *  Continues driving until either of the ultrasonics detect a large difference in measurement.
+ *  Then the robot turns in that direction.
+ */
 int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight)
 {   
-    long leftSensor = 10000;
-    long rightSensor = 10000;
+    long leftData[3];
+    long leftCurrentData;
+    long leftLastData;
+    long rightData[3];
+    long rightCurrentData;
+    long rightLastData;
+    int initIterations = 10;
+    uint32_t startTime = millis();
+    int32_t sleepTime = 0;
 
-    drive->setReference(ROBOT_SPEED_MAX / 4.0f, 0.0f);
+    dprintln("//// State - enter locateDest.");
+    // 
+    // The first few measurements of the sensor usually is very off.
+    // "Warm up" the sensor by measuring a few times.
+    while (--initIterations > 3) {
+        ultrasonicLeft->distanceMeasure();
+        ultrasonicRight->distanceMeasure();
+
+        delay(30);
+    }
+    // 
+    // Take initial measurements to fill data buffer.
+    while (--initIterations >= 0) {
+        ultrasonicLeft->distanceMeasure();
+        leftData[2 - initIterations] = ultrasonicLeft->microsecondsToCentimeters();
+
+        ultrasonicRight->distanceMeasure();
+        rightData[2 - initIterations] = ultrasonicRight->microsecondsToCentimeters();
+    }
+    // 
+    // Compute median.
+    leftCurrentData = max(min(leftData[0], leftData[1]), min(max(leftData[0], leftData[1]), leftData[2]));
+    rightCurrentData = max(min(rightData[0], rightData[1]), min(max(rightData[0], rightData[1]), rightData[2]));
+    // 
+    // Start moving.
+    drive->setReference(ROBOT_SPEED_MAX / 8.0, 0.0f);
+    drive->update();
     do {
-        ultrasonicLeft->DistanceMeasure();
-        ultrasonicRight->DistanceMeasure();
-        leftSensor = ultrasonicLeft->microsecondsToCentimeters();
-        rightSensor = ultrasonicRight->microsecondsToCentimeters();
+        startTime = millis();
+        // 
+        // Measure then evaluate delta.
+        ultrasonicLeft->distanceMeasure();
+        leftData[0] = leftData[1];
+        leftData[1] = leftData[2];
+        leftData[2] = ultrasonicLeft->microsecondsToCentimeters();
+        // 
+        // Save data.
+        leftLastData = leftCurrentData;
+        leftCurrentData = max(min(leftData[0], leftData[1]), min(max(leftData[0], leftData[1]), leftData[2]));
+        // 
+        // Update the drive if needed.
+        if ((millis() - startTime) > DRIVE_SLEEP_TIME){
+            Serial.println(millis() - startTime);
+            drive->update();
+        }
+        // 
+        // Measure and evaluate the right sensor.
+        ultrasonicRight->distanceMeasure();
+        rightData[0] = rightData[1];
+        rightData[1] = rightData[2];
+        rightData[2] = ultrasonicRight->microsecondsToCentimeters();
+        // 
+        // Save data.
+        rightLastData = rightCurrentData;
+        rightCurrentData = max(min(rightData[0], rightData[1]), min(max(rightData[0], rightData[1]), rightData[2]));
         drive->update();
-        delay(20);
-    } while (leftSensor > 400 && rightSensor > 400); // assumes sensor value > 400 means nothing detected
+        // 
+        // Calculate how much to sleep to keep controller stable.
+        sleepTime = DRIVE_SLEEP_TIME - (millis() - startTime);
+        sleepTime = sleepTime > 0 ? sleepTime : 0;
+        Serial.print("Sleeping for: ");
+        Serial.println(sleepTime);
+        delay(sleepTime);
+    } while (abs(leftCurrentData - leftLastData) < ULTRASONIC_DELTA_TOLERANCE && abs(rightCurrentData - rightLastData) < ULTRASONIC_DELTA_TOLERANCE);
 
+    dprint("Pole found ");
     drive->stop();
-
-    if (leftSensor < 400) {
+    
+    if (abs(leftCurrentData - leftLastData) > ULTRASONIC_DELTA_TOLERANCE) {
+        dprintln("on left side.");
         drive->turnTheta(90);
     }
     else {
+        dprintln("on right side.");
         drive->turnTheta(-90);
     }
 
+    dprintln("//// State - exit locateDest.");
     return 0;
 }
 

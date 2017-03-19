@@ -23,13 +23,13 @@
 // 
 // Tuning for the second orientation of the robot.
 // Left motor tuning.
-#define POLE_LEFT_MOTOR_P 20.0f
-#define POLE_LEFT_MOTOR_I 2.0f
+#define POLE_LEFT_MOTOR_P 8.0f
+#define POLE_LEFT_MOTOR_I 0.5f
 #define POLE_LEFT_MOTOR_D 0.0f
 // 
 // Right motor tuning.
-#define POLE_RIGHT_MOTOR_P 20.0f
-#define POLE_RIGHT_MOTOR_I 2.0f
+#define POLE_RIGHT_MOTOR_P 8.0f
+#define POLE_RIGHT_MOTOR_I 0.5f
 #define POLE_RIGHT_MOTOR_D 0.0f
 // 
 // Yaw control tuning.

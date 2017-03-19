@@ -1,57 +1,85 @@
-/***************************************************************************/
-//    Function: Measure the distance to obstacles in front and print the distance
-//              value to the serial terminal.The measured distance is from
-//              the range 0 to 400cm(157 inches).
-//    Hardware: Ultrasonic Range sensor
-//    Arduino IDE: Arduino-1.0
-//    Author:     LG
-//    Date:      Jan 17,2013
-//    Version: v1.0 modified by FrankieChu
-//    by www.seeedstudio.com
-//
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License, or (at your option) any later version.
-//
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
-//
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-//
-/*****************************************************************************/
-#include "Ultrasonic.h"
+/**
+ * HC-SR04 Demo
+ * Demonstration of the HC-SR04 Ultrasonic Sensor
+ * Date: August 3, 2016
+ * 
+ * Description:
+ *  Connect the ultrasonic sensor to the Arduino as per the
+ *  hardware connections below. Run the sketch and open a serial
+ *  monitor. The distance read from the sensor will be displayed
+ *  in centimeters and inches.
+ * 
+ * Hardware Connections:
+ *  Arduino | HC-SR04 
+ *  -------------------
+ *    5V    |   VCC     
+ *    7     |   Trig     
+ *    8     |   Echo     
+ *    GND   |   GND
+ *  
+ * License:
+ *  Public Domain
+ */
 
-Ultrasonic::Ultrasonic(int pin)
+#include "Ultrasonic.hpp"
+
+#define DEBUG
+#ifdef DEBUG
+
+#define dprint(x) do { Serial.print(x); } while (0)
+#define dprintln(x) do { Serial.println(x); } while (0)
+
+#else
+
+#define dprint(x) 
+#define dprintln(x) 
+
+#endif 
+
+// Anything over 400 cm (23200 us pulse) is "out of range"
+const unsigned int MAX_DIST = 23200;
+const float CONVERSION_CONSTANT_CM = 1 / 58.2;
+const float CONVERSION_CONSTANT_INCH = 1 / 148.0;
+
+Ultrasonic::Ultrasonic(int trig_pin, int echo_pin)
 {
-    _pin = pin;
+    _trig_pin = trig_pin;
+    _echo_pin = echo_pin;
+
+    pinMode(_trig_pin, OUTPUT);
+    pinMode(_echo_pin, INPUT);
+
+    dprintln("//// Hardware - SR04 Ultrasonic Sensor initialized.");
 }
 
-/*Begin the detection and get the pulse back signal*/
-void Ultrasonic::DistanceMeasure(void)
+void Ultrasonic::distanceMeasure(void) 
 {
-    pinMode(_pin, OUTPUT);
-    digitalWrite(_pin, LOW);
-    delayMicroseconds(2);
-    digitalWrite(_pin, HIGH);
+    digitalWrite(_trig_pin, LOW);
     delayMicroseconds(5);
-    digitalWrite(_pin,LOW);
-    pinMode(_pin,INPUT);
-    duration = pulseIn(_pin,HIGH);
+    digitalWrite(_trig_pin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(_trig_pin, LOW);
+      
+    pinMode(_echo_pin, INPUT);
+    _pulse_width = pulseIn(_echo_pin, HIGH);
+    _timestamp = millis();
+
+    dprint("SR04 - Measured distance ");
+    dprint(_pulse_width > MAX_DIST ? 400 : CONVERSION_CONSTANT_CM * _pulse_width);
+    dprintln(" cm.");
 }
 
-/*The measured distance from the range 0 to 400 Centimeters*/
 long Ultrasonic::microsecondsToCentimeters(void)
 {
-    return duration/29/2;
+    return (long)(_pulse_width > MAX_DIST ? 400 : CONVERSION_CONSTANT_CM * _pulse_width);
 }
 
-/*The measured distance from the range 0 to 157 Inches*/
-long Ultrasonic::microsecondsToInches(void)
+long Ultrasonic::microsecondsToInches(void) 
 {
-    return duration/74/2;
+    return (long)(_pulse_width > MAX_DIST ? 400 : CONVERSION_CONSTANT_INCH * _pulse_width);
+}
+
+unsigned long Ultrasonic::getTimestamp(void)
+{
+    return _timestamp;
 }

@@ -3,29 +3,33 @@
 
 enum PIN: byte
 {
-	// 
-	// Quadrature encoders.
-	leftEncoderInterruptPin = 19, // A side of encoder
-	leftEncoderPinB = 17,
-	rightEncoderInterruptPin =  18, // A side of encoder
-	rightEncoderPinB =  16,
-	// 
-	// IMU interrupt pin.
-	imuInterruptPin = 2,
-	// 
-	// Proximity sensor interrupt pins.
-	tofStage1InterruptPin = 0,
-	tofStage2InterruptPin = 0,
-	//
-	// Start button pin.
-	startButtonPin = 8,
-	// 
-	// Alignment button pin.
-	alignButtonPin = 53,
+    // 
+    // Quadrature encoders.
+    leftEncoderInterruptPin = 19, // A side of encoder
+    leftEncoderPinB = 17,
+    rightEncoderInterruptPin =  18, // A side of encoder
+    rightEncoderPinB =  16,
+    // 
+    // IMU interrupt pin.
+    imuInterruptPin = 2,
+    // 
+    // Proximity sensor interrupt pins.
+    tofStage1InterruptPin = 0,
+    tofStage2InterruptPin = 0,
     //
-    // Ultrasonic sensor
-    leftUltrasonicPin = 111,
-    rightUltrasonicPin = 222,
+    // Start button pin.
+    startButtonPin = 8,
+    // 
+    // Alignment button pin.
+    alignButtonPin = 53,
+    //
+    // SR04 Ultrasonic Sensor (left) --- NEEDS TO BE DEFINED
+    leftUltrasonicTrigPin = 7,
+    leftUltrasonicEchoPin = 6,
+    //
+    // RB90 Ultrasonic Sensor (right) --- NEEDS TO BE DEFINED
+    rightUltrasonicTrigPin = 4,
+    rightUltrasonicEchoPin = 3,
 };
 
 #endif

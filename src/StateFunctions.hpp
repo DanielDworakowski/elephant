@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include "VL53L0X.h"
-#include "Ultrasonic.h"
+#include "Ultrasonic.hpp"
 #include "Drive.hpp"
 #include "PID.hpp"
 #include "PinDefines.h"
@@ -41,13 +41,25 @@
 // 
 // The tolerance for height detection.
 #define HEI_TOL 10.0f
+//
+// The tolerance of change in distance to count as finding the pole.
+#define ULTRASONIC_DELTA_TOLERANCE 30.0
+//
+// Time for the IMU to stablize, in milliseconds.
+#define IMU_STABLIZE_TIME 2000
+// 
+// Drive sleep time.
+#define DRIVE_SLEEP_TIME 30
 // 
 // Functions in the state machine.
 namespace StateFunctions 
 {
     //
     // State that waits for the start button to be pressed.
-    int waitForStartButton(IMU *imu, float &yaw, Adafruit_DCMotor *jumpMotor);
+    int waitForStartButton(Adafruit_DCMotor *jumpMotor);
+    //
+    // State that samples the IMU for reference yaw.
+    int sampleYaw(IMU *imu, float &yaw);
     //
     // State to get off the starting platform.
     int getOffPlatform(Drive* drive);
