@@ -60,12 +60,9 @@ namespace StateFunctions
     //
     // State that samples the IMU for reference yaw.
     int sampleYaw(IMU *imu, float &yaw);
-    //
-    // State to get off the starting platform.
-    int getOffPlatform(Drive* drive);
-    //
-    // State that approaches the wall of the arena.
-    int approach(Drive* drive, VL53L0X* prox);
+    // 
+    // Just drives straight.
+    int driveStraight(Drive *drive, float speed, uint32_t timeMs);
     // 
     // Another state for approaching.
     int approach2(Drive* drive, VL53L0X* prox);

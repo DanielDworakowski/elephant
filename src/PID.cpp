@@ -54,6 +54,7 @@ int PID::setPID(float p, float i, float d)
 int PID::reset(uint32_t tDiff)
 {
     lastTime_ = millis() - tDiff;
+    integralErr_ = 0.0f;
     return 0;
 }
 

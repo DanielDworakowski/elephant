@@ -61,6 +61,17 @@ int StateFunctions::sampleYaw(IMU *imu, float &yaw)
     return 0;
 }
 
+int StateFunctions::driveStraight(Drive *drive, float speed, uint32_t timeMs)
+{
+    uint32_t startTime = millis();
+    drive->setReference(speed, 0);
+    do {
+        drive->update();
+        delay(30);
+    } while((millis() - startTime) < timeMs);
+    return 0;
+}
+
 int StateFunctions::approach2(Drive *drive, VL53L0X* prox) 
 {
     const float numSteps = 20.0f;
@@ -205,7 +216,6 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
         // 
         // Update the drive if needed.
         if ((millis() - startTime) > DRIVE_SLEEP_TIME){
-            Serial.println(millis() - startTime);
             drive->update();
         }
         // 
@@ -223,8 +233,6 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
         // Calculate how much to sleep to keep controller stable.
         sleepTime = DRIVE_SLEEP_TIME - (millis() - startTime);
         sleepTime = sleepTime > 0 ? sleepTime : 0;
-        Serial.print("Sleeping for: ");
-        Serial.println(sleepTime);
         delay(sleepTime);
     } while (abs(leftCurrentData - leftLastData) < ULTRASONIC_DELTA_TOLERANCE && abs(rightCurrentData - rightLastData) < ULTRASONIC_DELTA_TOLERANCE);
 
