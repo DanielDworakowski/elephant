@@ -2,7 +2,7 @@
 #include "digitalWriteFast.h"
 #include "PinDefines.h"
 #include "VL53L0X.h"
-#include "Ultrasonic.h"
+#include "Ultrasonic.hpp"
 #include "Robot_ISR.hpp"
 #include "Kalman-1D.hpp"
 #include "IMU_Wrapper.hpp"
@@ -137,8 +137,8 @@ void loop()
     motorShield.begin();
     drive.stop();
     IMU imu(PIN::imuInterruptPin);
-    Ultrasonic ultrasonicLeft(PIN::leftUltrasonicPin);
-    Ultrasonic ultrasonicRight(PIN::rightUltrasonicPin);
+    Ultrasonic ultrasonicLeft(PIN::leftUltrasonicTrigPin, PIN::leftUltrasonicEchoPin);
+    Ultrasonic ultrasonicRight(PIN::rightUltrasonicTrigPin, PIN::rightUltrasonicEchoPin);
     float yawRef = 0;
     // 
     // Begin sensing.
@@ -148,17 +148,18 @@ void loop()
     // Begin the state machine.
     while (1) {
         yawRef = 0; // Reset.
-        StateFunctions::waitForStartButton(&imu, yawRef, motorShield.getMotor(3));
+        StateFunctions::waitForStartButton(motorShield.getMotor(3));
         drive.reset(30);
-        StateFunctions::approach2(&drive, &prox);
+        // StateFunctions::approach2(&drive, &prox);
         // StateFunctions::jump(motorShield.getMotor(3), &imu, &drive);
         // 
         // From this point on the robot is in a different configuration.
         // The tunings of the controllers must reflect this. 
-        // drive.setPoleSearch();
+        drive.setPoleSearch();
+        StateFunctions::driveStraight(&drive, ROBOT_SPEED_MAX / 2.0f, 10000);
         // drive.turnTheta(90);
         // // StateFunctions::orientForward(&drive, &imu, yawRef);
-        // // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight);
+        // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight);
         // StateFunctions::driveToDest(&drive, &imu);
         drive.stop();
     }
