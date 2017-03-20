@@ -25,8 +25,8 @@
 #define ORIENT_I 0.0f
 #define ORIENT_D 0.0f
 // 
-// PID parameters for in air control.
-#define LOCATE_P 1.0f
+// PID parameters for location control.
+#define LOCATE_P 0.05f
 #define LOCATE_I 0.0f
 #define LOCATE_D 0.0f
 // 
