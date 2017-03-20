@@ -1,6 +1,8 @@
 #ifndef __PIN_DEFINITIONS_H__
 #define __PIN_DEFINITIONS_H__
 
+#include "Arduino.h"
+
 enum PIN: byte
 {
     // 
