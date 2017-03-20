@@ -138,16 +138,23 @@ int Drive::stop()
 int Drive::turnTheta(float theta)
 {
     float cmd;
-    desYaw_ = actYaw_ + 2.0f * theta * (M_PI / 180.f);
+    desYaw_ = actYaw_ * (180.0f / M_PI) + 2.0f * theta;
     setTurn();
     // 
     // PID around orientation.
     while (abs(actYaw_ - desYaw_) > YAW_TOLERANCE) {
-        actYaw_ = (WHEEL_RADIUS / CHASIS_LENGTH) * (TO_OMEGA(*rEncoderCount_) - TO_OMEGA(*lEncoderCount_));
+        actYaw_ = (WHEEL_RADIUS / CHASIS_LENGTH) * (TO_OMEGA(*rEncoderCount_) - TO_OMEGA(*lEncoderCount_))  * (180.0f / M_PI) ;
         cmd = yawControl_.getCmd(desYaw_, actYaw_);
         setReference(0, cmd);
         update();
         delay(30);
+        // Serial.print("Actual: ");
+        // Serial.print(actYaw_);
+        // Serial.print("des: ");
+        // Serial.print(desYaw_);        
+        // Serial.print(" cmd: ");
+        // Serial.println(cmd);
+
     } 
     switch (state_) {
         case JUMP_STATE:

@@ -40,21 +40,25 @@
 // Tuning for the second orientation of the robot.
 // Left motor tuning.
 #define TURN_LEFT_MOTOR_P 20.0f
-#define TURN_LEFT_MOTOR_I 2.0f
+#define TURN_LEFT_MOTOR_I 4.0f
 #define TURN_LEFT_MOTOR_D 0.0f
 // 
 // Right motor tuning.
 #define TURN_RIGHT_MOTOR_P 20.0f
-#define TURN_RIGHT_MOTOR_I 2.0f
+#define TURN_RIGHT_MOTOR_I 4.0f
 #define TURN_RIGHT_MOTOR_D 0.0f
 // 
 // Yaw control tuning.
-#define TURN_YAW_P 20.0f 
+// #define TURN_YAW_P 20.0f  // Radian tuning.
+// #define TURN_YAW_I 0.0f
+// #define TURN_YAW_D 0.03f
+#define TURN_YAW_P 1.0f 
 #define TURN_YAW_I 0.0f
-#define TURN_YAW_D 0.03f
+#define TURN_YAW_D 0.0f
 // 
 // Tolerance for the rotation
-#define YAW_TOLERANCE (5.0f * M_PI / 180.0f) // 2 degree tolerance.
+// #define YAW_TOLERANCE (5.0f * M_PI / 180.0f) // 2 degree tolerance.
+#define YAW_TOLERANCE 5.0f
 // 
 // The maximum and minimum motor speeds.
 // Given we have a 11.1V LiPo divide 255 max by 2.
