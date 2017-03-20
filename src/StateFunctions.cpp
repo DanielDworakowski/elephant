@@ -166,10 +166,10 @@ int StateFunctions::checkUpsideDown(Drive *drive, VL53L0X *prox)
 
 int locateDriveHelper(Drive *drive, float curDist, float setDist)
 {
-    static PID distPID(LOCATE_P, LOCATE_I, LOCATE_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);
-    float cmd = 0;
-    cmd = distPID.getCmd(setDist, curDist);
-    drive->setOmega(cmd);
+    // static PID distPID(LOCATE_P, LOCATE_I, LOCATE_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);
+    // float cmd = 0;
+    // cmd = distPID.getCmd(setDist, curDist);
+    // drive->setOmega(cmd);
     drive->update();
     return 0;
 }
@@ -239,6 +239,10 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     poleCurrentData = max(min(poleData[0], poleData[1]), min(max(poleData[0], poleData[1]), poleData[2]));
     wallCurrentData = max(min(wallData[0], wallData[1]), min(max(wallData[0], wallData[1]), wallData[2]));
     initialLDist = wallCurrentData;
+    dprint("Pole: ");
+    dprint(poleCurrentData);
+    dprint(" Wall: ");
+    dprintln(wallCurrentData);
     
     //
     // This outer while loop runs until the pole has been confirmed to be found.
@@ -289,7 +293,7 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
             sleepTime = DRIVE_SLEEP_TIME - (millis() - startTime);
             sleepTime = sleepTime > 0 ? sleepTime : 0;
             delay(sleepTime);
-        } while (abs(poleCurrentData - poleLastData) > POLE_DELTA_TOLERANCE);
+        } while (abs(poleCurrentData - poleLastData) < POLE_DELTA_TOLERANCE || poleCurrentData > POLE_NOISE_CEIL);
 
         drive->stop();
     
@@ -308,6 +312,7 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
             delay(30);
         }
     } while (confirmationCheckPassed < POLE_CONFIRMATION_CHECK_COUNT - POLE_CONFIRMATION_CHECK_FAIL_TOLERANCE);
+    // 
     // May need to implement something to check if crashed. Also may need better method of handling false negative, maybe backing up.
 
     dprintln("Pole found.");
