@@ -1034,3 +1034,9 @@ bool VL53L0X::performSingleRefCalibration(uint8_t vhv_init_byte)
 
   return true;
 }
+
+// Checks the range reading to see if it is pointing at floor (false) or upside down (true)
+bool VL53L0X::isUpsideDown() 
+{
+  return readRangeContinuousMillimeters() > UPSIDE_DOWN_HEIGHT_THRESHOLD;
+}

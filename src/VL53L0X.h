@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+#define UPSIDE_DOWN_HEIGHT_THRESHOLD 20.0
+
 class VL53L0X
 {
   public:
@@ -130,6 +132,8 @@ class VL53L0X
     inline void setTimeout(uint16_t timeout) { io_timeout = timeout; }
     inline uint16_t getTimeout(void) { return io_timeout; }
     bool timeoutOccurred(void);
+
+    bool isUpsideDown(void);
 
   private:
     // TCC: Target CentreCheck
