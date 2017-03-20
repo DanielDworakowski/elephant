@@ -115,6 +115,9 @@ class Drive {
         //
         // Turning. 
         int setTurn();
+        // 
+        // Set whether the robot is upside down to invert control. 
+        int setUpsideDown(bool upsideDown);
 
     private:
         // 
@@ -156,6 +159,7 @@ class Drive {
         // The position of the robot from encoder counts
         float xComp_, yComp_, yaw_;
         DriveState state_;
+        float upsideDown_;
 };
 
 #endif /* _DRIVE_H_ */

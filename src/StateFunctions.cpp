@@ -157,6 +157,13 @@ int StateFunctions::orientForward(Drive *drive, IMU *imu, float refYaw)
     return 0;
 }
 
+int StateFunctions::checkUpsideDown(Drive *drive, VL53L0X *prox)
+{
+    drive->setUpsideDown(prox->isUpsideDown());
+    drive->reset(30);
+    return 0;
+}
+
 int locateDriveHelper(Drive *drive, float curDist, float setDist)
 {
     static PID distPID(LOCATE_P, LOCATE_I, LOCATE_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);

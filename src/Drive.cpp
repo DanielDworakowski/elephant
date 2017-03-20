@@ -24,6 +24,7 @@ Drive::Drive(volatile int32_t *rEncoderCount, volatile int32_t *lEncoderCount, A
     , yComp_(0.0f)
     , yaw_(0.0f)
     , state_(JUMP_STATE)
+    , upsideDown_(1.0f)
 {
 }
 
@@ -105,7 +106,9 @@ int Drive::setOmega(float setOmega)
 int Drive::setReference(float setSpeed, float setOmega)
 {
     setSpeed_ = setSpeed;
-    setOmega_ = setOmega;
+    // 
+    // Based on whether the robot is upside down change the direction of turning.
+    setOmega_ = /*upsideDown_ **/setOmega; 
     return 0;
 }
 
@@ -204,6 +207,12 @@ int Drive::setMotorSpeeds(float lCmd, float rCmd)
     return 0;
 }
 
+int Drive::setUpsideDown(bool upsideDown)
+{
+    upsideDown_ = upsideDown ? -1.0 : 1.0;
+    return 0;
+}
+
 // 
 // Not guaranteed to work.
 int Drive::updatePos(float omegal, float omegar, float dt)
@@ -239,5 +248,4 @@ int Drive::updatePos(float omegal, float omegar, float dt)
     yaw_ += angle;
     return 0;
 }
-
 

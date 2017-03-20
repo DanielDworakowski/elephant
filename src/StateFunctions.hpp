@@ -78,6 +78,9 @@ namespace StateFunctions
     // State that manages the in air control.
     int inAir(Drive *drive, IMU *imu);
     // 
+    // Check if the robot is upside down and set controls as needed.
+    int checkUpsideDown(Drive* drive, VL53L0X* prox);
+    // 
     // Function that helps orient the robot after jumping.
     int orientForward(Drive *drive, IMU *imu, float refYaw);
     // 
