@@ -226,11 +226,6 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
         leftLastData = leftCurrentData;
         leftCurrentData = max(min(leftData[0], leftData[1]), min(max(leftData[0], leftData[1]), leftData[2]));
         // 
-        // Update the drive if needed.
-        if ((millis() - startTime) > DRIVE_SLEEP_TIME){
-            drive->update();
-        }
-        // 
         // Measure and evaluate the right sensor.
         ultrasonicRight->distanceMeasure();
         rightData[0] = rightData[1];
@@ -240,7 +235,7 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
         // Save data.
         rightLastData = rightCurrentData;
         rightCurrentData = max(min(rightData[0], rightData[1]), min(max(rightData[0], rightData[1]), rightData[2]));
-        drive->update();
+        locateDriveHelper(drive, leftCurrentData, initialLDist);
         // 
         // Left right ultrasonics. 
         dprint("left: ");

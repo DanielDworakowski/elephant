@@ -27,8 +27,8 @@
 // 
 // PID parameters for in air control.
 #define LOCATE_P 1.0f
-#define LOCATE_I 1.0f
-#define LOCATE_D 1.0f
+#define LOCATE_I 0.0f
+#define LOCATE_D 0.0f
 // 
 // The set distance desired to the wall.
 #define WALL_SET_DIST 400.0f
