@@ -95,6 +95,9 @@ class Drive {
         // Change the reference values desired.
         int setReference(float setSpeed, float setOmega);
         // 
+        // Only set the current omega.
+        int setOmega(float setOmega);
+        // 
         // Stop the robot.
         int stop();
         // 

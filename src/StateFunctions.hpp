@@ -25,6 +25,11 @@
 #define ORIENT_I 0.0f
 #define ORIENT_D 0.0f
 // 
+// PID parameters for in air control.
+#define LOCATE_P 1.0f
+#define LOCATE_I 1.0f
+#define LOCATE_D 1.0f
+// 
 // The set distance desired to the wall.
 #define WALL_SET_DIST 400.0f
 #define WALL_DIST_TOL 50.0f

@@ -96,6 +96,12 @@ int Drive::reset(uint32_t tDiff)
     return 0;
 }
 
+int Drive::setOmega(float setOmega)
+{
+    setOmega_ = setOmega;
+    return 0;
+}
+
 int Drive::setReference(float setSpeed, float setOmega)
 {
     setSpeed_ = setSpeed;

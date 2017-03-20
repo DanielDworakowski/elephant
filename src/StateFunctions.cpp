@@ -157,6 +157,16 @@ int StateFunctions::orientForward(Drive *drive, IMU *imu, float refYaw)
     return 0;
 }
 
+int locateDriveHelper(Drive *drive, float curDist, float setDist)
+{
+    static PID distPID(LOCATE_P, LOCATE_I, LOCATE_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);
+    float cmd = 0;
+    cmd = distPID.getCmd(setDist, curDist);
+    drive->setOmega(cmd);
+    drive->update();
+    return 0;
+}
+
 /*
  *  Parameters: pointer to drive motor interface instance, pointer to left and right ultrasonic interface.
  *  Continues driving until either of the ultrasonics detect a large difference in measurement.
@@ -173,6 +183,7 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     int initIterations = 10;
     uint32_t startTime = millis();
     int32_t sleepTime = 0;
+    float initialLDist = 0;
 
     dprintln("//// State - enter locateDest.");
     // 
@@ -197,6 +208,7 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     // Compute median.
     leftCurrentData = max(min(leftData[0], leftData[1]), min(max(leftData[0], leftData[1]), leftData[2]));
     rightCurrentData = max(min(rightData[0], rightData[1]), min(max(rightData[0], rightData[1]), rightData[2]));
+    initialLDist = leftCurrentData;
     // 
     // Start moving.
     drive->setReference(ROBOT_SPEED_MAX / 4.0, 0.0f);
