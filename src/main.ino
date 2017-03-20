@@ -137,8 +137,8 @@ void loop()
     motorShield.begin();
     drive.stop();
     IMU imu(PIN::imuInterruptPin);
-    Ultrasonic ultrasonicLeft(PIN::leftUltrasonicTrigPin, PIN::leftUltrasonicEchoPin);
-    Ultrasonic ultrasonicRight(PIN::rightUltrasonicTrigPin, PIN::rightUltrasonicEchoPin);
+    Ultrasonic ultrasonicRight(PIN::leftUltrasonicTrigPin, PIN::leftUltrasonicEchoPin);
+    Ultrasonic ultrasonicLeft(PIN::rightUltrasonicTrigPin, PIN::rightUltrasonicEchoPin);
     float yawRef = 0;
     // 
     // Begin sensing.
@@ -156,10 +156,10 @@ void loop()
         // From this point on the robot is in a different configuration.
         // The tunings of the controllers must reflect this. 
         drive.setPoleSearch();
-        StateFunctions::driveStraight(&drive, ROBOT_SPEED_MAX / 2.0f, 10000);
+        // StateFunctions::driveStraight(&drive, ROBOT_SPEED_MAX / 2.0f, 10000);
         // drive.turnTheta(90);
         // // StateFunctions::orientForward(&drive, &imu, yawRef);
-        // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight);
+        StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight);
         // StateFunctions::driveToDest(&drive, &imu);
         drive.stop();
     }

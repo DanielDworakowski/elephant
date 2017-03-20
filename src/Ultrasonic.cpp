@@ -23,7 +23,7 @@
 
 #include "Ultrasonic.hpp"
 
-#define DEBUG
+// #define DEBUG
 #ifdef DEBUG
 
 #define dprint(x) do { Serial.print(x); } while (0)

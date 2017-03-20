@@ -199,7 +199,7 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     rightCurrentData = max(min(rightData[0], rightData[1]), min(max(rightData[0], rightData[1]), rightData[2]));
     // 
     // Start moving.
-    drive->setReference(ROBOT_SPEED_MAX / 8.0, 0.0f);
+    drive->setReference(ROBOT_SPEED_MAX / 4.0, 0.0f);
     drive->update();
     do {
         startTime = millis();
@@ -230,11 +230,17 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
         rightCurrentData = max(min(rightData[0], rightData[1]), min(max(rightData[0], rightData[1]), rightData[2]));
         drive->update();
         // 
+        // Left right ultrasonics. 
+        dprint("left: ");
+        dprint(leftCurrentData);
+        dprint(" right: ");
+        dprintln(rightCurrentData);
+        // 
         // Calculate how much to sleep to keep controller stable.
         sleepTime = DRIVE_SLEEP_TIME - (millis() - startTime);
         sleepTime = sleepTime > 0 ? sleepTime : 0;
         delay(sleepTime);
-    } while (abs(leftCurrentData - leftLastData) < ULTRASONIC_DELTA_TOLERANCE && abs(rightCurrentData - rightLastData) < ULTRASONIC_DELTA_TOLERANCE);
+    } while (1); /*(abs(leftCurrentData - leftLastData) < ULTRASONIC_DELTA_TOLERANCE && abs(rightCurrentData - rightLastData) < ULTRASONIC_DELTA_TOLERANCE);*/
 
     dprint("Pole found ");
     drive->stop();
