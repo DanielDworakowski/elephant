@@ -48,7 +48,16 @@
 #define HEI_TOL 10.0f
 //
 // The tolerance of change in distance to count as finding the pole.
-#define ULTRASONIC_DELTA_TOLERANCE 30.0
+#define POLE_DELTA_TOLERANCE 30.0
+//
+// The tolerance of change in distance between the measured data and subsequent measurements that counts as the same.
+#define POLE_CONFIRMATION_TOLERANCE 15.0
+//
+// The number of times to verify the pole search measurements before confirming there is indeed a pole there.
+#define POLE_CONFIRMATION_CHECK_COUNT 0
+//
+// The number of times the confirmation check can fail (false negative).
+#define POLE_CONFIRMATION_CHECK_FAIL_TOLERANCE 0
 //
 // Time for the IMU to stablize, in milliseconds.
 #define IMU_STABLIZE_TIME 2000

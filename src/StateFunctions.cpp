@@ -194,6 +194,8 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     uint32_t startTime = millis();
     int32_t sleepTime = 0;
     float initialLDist = 0;
+    int confirmationCheckCount = POLE_CONFIRMATION_CHECK_COUNT;
+    int confirmationCheckPassed = 0;
 
     dprintln("//// State - enter locateDest.");
 
@@ -237,55 +239,79 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     poleCurrentData = max(min(poleData[0], poleData[1]), min(max(poleData[0], poleData[1]), poleData[2]));
     wallCurrentData = max(min(wallData[0], wallData[1]), min(max(wallData[0], wallData[1]), wallData[2]));
     initialLDist = wallCurrentData;
-    // 
-    // Start moving.
-    drive->setReference(ROBOT_SPEED_MAX / 4.0, 0.0f);
-    drive->update();
+    
+    //
+    // This outer while loop runs until the pole has been confirmed to be found.
+    // If the confirmation check fails, it will loop back to going forward and searching (inner loop).
     do {
-        startTime = millis();
         // 
-        // Measure then evaluate delta.
-        poleSensor->distanceMeasure();
-        poleData[0] = poleData[1];
-        poleData[1] = poleData[2];
-        poleData[2] = poleSensor->microsecondsToCentimeters();
-        // 
-        // Save data.
-        poleLastData = poleCurrentData;
-        poleCurrentData = max(min(poleData[0], poleData[1]), min(max(poleData[0], poleData[1]), poleData[2]));
-        // 
-        // Measure and evaluate the right sensor.
-        wallSensor->distanceMeasure();
-        wallData[0] = wallData[1];
-        wallData[1] = wallData[2];
-        wallData[2] = wallSensor->microsecondsToCentimeters();
-        // 
-        // Save data.
-        wallLastData = wallCurrentData;
-        wallCurrentData = max(min(wallData[0], wallData[1]), min(max(wallData[0], wallData[1]), wallData[2]));
-        locateDriveHelper(drive, wallCurrentData, initialLDist);
-        // 
-        // Left right ultrasonics. 
-        dprint("Pole: ");
-        dprint(poleCurrentData);
-        dprint(" Wall: ");
-        dprintln(wallCurrentData);
-        // 
-        // Calculate how much to sleep to keep controller stable.
-        sleepTime = DRIVE_SLEEP_TIME - (millis() - startTime);
-        sleepTime = sleepTime > 0 ? sleepTime : 0;
-        delay(sleepTime);
-    } while (1); /*(abs(leftCurrentData - leftLastData) < ULTRASONIC_DELTA_TOLERANCE && abs(rightCurrentData - rightLastData) < ULTRASONIC_DELTA_TOLERANCE);*/
+        // Start moving.
+        drive->setReference(ROBOT_SPEED_MAX / 4.0, 0.0f);
+        drive->update();
+        //
+        // This inner loop drives and takes measurements until something that appears to be the pole is detected.
+        do {
+            startTime = millis();
+            // 
+            // Measure data and shift down data buffer.
+            poleSensor->distanceMeasure();
+            poleData[0] = poleData[1];
+            poleData[1] = poleData[2];
+            poleData[2] = poleSensor->microsecondsToCentimeters();
+            // 
+            // Save previous data and compute new data from median.
+            poleLastData = poleCurrentData;
+            poleCurrentData = max(min(poleData[0], poleData[1]), min(max(poleData[0], poleData[1]), poleData[2]));
+            // 
+            // Update the drive if needed.
+            if ((millis() - startTime) > DRIVE_SLEEP_TIME){
+                drive->update();
+            }
+            // 
+            // Measure and evaluate the right sensor.
+            wallSensor->distanceMeasure();
+            wallData[0] = wallData[1];
+            wallData[1] = wallData[2];
+            wallData[2] = wallSensor->microsecondsToCentimeters();
+            // 
+            // Save data.
+            wallLastData = wallCurrentData;
+            wallCurrentData = max(min(wallData[0], wallData[1]), min(max(wallData[0], wallData[1]), wallData[2]));
+            locateDriveHelper(drive, wallCurrentData, initialLDist); // Drive->update() is called in here.
+            // 
+            // Left right ultrasonics. 
+            dprint("Pole: ");
+            dprint(poleCurrentData);
+            dprint(" Wall: ");
+            dprintln(wallCurrentData);
+            // 
+            // Calculate how much to sleep to keep controller stable.
+            sleepTime = DRIVE_SLEEP_TIME - (millis() - startTime);
+            sleepTime = sleepTime > 0 ? sleepTime : 0;
+            delay(sleepTime);
+        } while (abs(poleCurrentData - poleLastData) > POLE_DELTA_TOLERANCE);
+
+        drive->stop();
+    
+        //
+        // Do confirmation check on the pole measurement.
+        confirmationCheckCount = POLE_CONFIRMATION_CHECK_COUNT;
+        confirmationCheckPassed = 0;
+        while (confirmationCheckCount > 0) {
+            poleSensor->distanceMeasure();
+
+            if (abs(poleSensor->microsecondsToCentimeters() - poleCurrentData) <= POLE_CONFIRMATION_TOLERANCE) {
+                confirmationCheckPassed++;
+            }
+
+            confirmationCheckCount--;
+            delay(30);
+        }
+    } while (confirmationCheckPassed < POLE_CONFIRMATION_CHECK_COUNT - POLE_CONFIRMATION_CHECK_FAIL_TOLERANCE);
+    // May need to implement something to check if crashed. Also may need better method of handling false negative, maybe backing up.
 
     dprintln("Pole found.");
-    drive->stop();
-    
-    if (isUpsideDown) {
-        drive->turnTheta(90);
-    }
-    else {
-        drive->turnTheta(-90);
-    }
+    drive->turnTheta(-90);
 
     dprintln("//// State - exit locateDest.");
     return 0;

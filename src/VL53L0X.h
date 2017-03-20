@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-#define UPSIDE_DOWN_HEIGHT_THRESHOLD 20.0
+#define UPSIDE_DOWN_HEIGHT_THRESHOLD 200.0
 
 class VL53L0X
 {
