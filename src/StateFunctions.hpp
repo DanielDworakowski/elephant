@@ -45,7 +45,7 @@
 #define YAW_TOL 3.0f
 // 
 // The tolerance for height detection.
-#define HEI_TOL 10.0f
+#define HEI_TOL 0.06f
 //
 // The tolerance of change in distance to count as finding the pole.
 #define POLE_DELTA_TOLERANCE 15.0f

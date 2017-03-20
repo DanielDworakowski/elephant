@@ -250,7 +250,7 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     do {
         // 
         // Start moving.
-        drive->setReference(ROBOT_SPEED_MAX / 4.0, 0.0f);
+        drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
         drive->update();
         //
         // This inner loop drives and takes measurements until something that appears to be the pole is detected.
@@ -294,52 +294,52 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
             sleepTime = sleepTime > 0 ? sleepTime : 0;
             delay(sleepTime);
         } while (abs(poleCurrentData - poleLastData) < POLE_DELTA_TOLERANCE || poleCurrentData > POLE_NOISE_CEIL);
-
-        drive->stop();
-    
         //
         // Do confirmation check on the pole measurement.
+        drive->stop();
         confirmationCheckCount = POLE_CONFIRMATION_CHECK_COUNT;
         confirmationCheckPassed = 0;
         while (confirmationCheckCount > 0) {
             poleSensor->distanceMeasure();
-
+            // 
+            // Check if the measurement was not a mistake through a tolerance. 
             if (abs(poleSensor->microsecondsToCentimeters() - poleCurrentData) <= POLE_CONFIRMATION_TOLERANCE) {
                 confirmationCheckPassed++;
             }
-
             confirmationCheckCount--;
             delay(30);
         }
     } while (confirmationCheckPassed < POLE_CONFIRMATION_CHECK_COUNT - POLE_CONFIRMATION_CHECK_FAIL_TOLERANCE);
     // 
     // May need to implement something to check if crashed. Also may need better method of handling false negative, maybe backing up.
-
     dprintln("Pole found.");
     drive->turnTheta(-90);
-
     dprintln("//// State - exit locateDest.");
     return 0;
 }
 
 int StateFunctions::driveToDest(Drive *drive, IMU *imu)
 {   
-    imu->read();
-    float oldZ = imu->getGlobalZ();
+    while (imu->read() != 0) {};
+    float initZ = imu->getGlobalZ();
     float newZ;
-
-    drive->setReference(ROBOT_SPEED_MAX / 4.0, 0.0f);
+    // 
+    // Start moving the robot. 
+    drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
     drive->update();
     delay(20);
-    
+    // 
+    // Continue until a bump is detected. 
     do {
         imu->read();
         newZ = imu->getGlobalZ();
         drive->update();
-        delay(20);
-    } while (abs(oldZ - newZ) < HEI_TOL);
-
+        dprint("initZ: ");
+        dprint(initZ);
+        dprint(" newZ; ");
+        dprintln(newZ);
+        delay(30);
+    } while (1);
     drive->stop();
-
     return 0;
 }
