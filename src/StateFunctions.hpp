@@ -82,7 +82,7 @@ namespace StateFunctions
     int orientForward(Drive *drive, IMU *imu, float refYaw);
     // 
     // State that searches for the destination.
-    int locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight);
+    int locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox);
     //
     // State that drives to destination
     int driveToDest(Drive *drive, IMU *imu);

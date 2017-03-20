@@ -172,43 +172,64 @@ int locateDriveHelper(Drive *drive, float curDist, float setDist)
  *  Continues driving until either of the ultrasonics detect a large difference in measurement.
  *  Then the robot turns in that direction.
  */
-int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight)
+int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox)
 {   
-    long leftData[3];
-    long leftCurrentData;
-    long leftLastData;
-    long rightData[3];
-    long rightCurrentData;
-    long rightLastData;
+    Ultrasonic *poleSensor;
+    Ultrasonic *wallSensor;
+    bool isUpsideDown;
+    long poleData[3];
+    long poleCurrentData;
+    long poleLastData;
+    long wallData[3];
+    long wallCurrentData;
+    long wallLastData;
     int initIterations = 10;
     uint32_t startTime = millis();
     int32_t sleepTime = 0;
     float initialLDist = 0;
 
     dprintln("//// State - enter locateDest.");
+
+    //
+    // Check if the robot is upside down. 
+    isUpsideDown = prox->isUpsideDown();
+
+    //
+    //Determine which sensor is looking for pole.
+    if (isUpsideDown) {
+        poleSensor = ultrasonicLeft;
+        wallSensor = ultrasonicRight;
+    }
+    else {
+        poleSensor = ultrasonicRight;
+        wallSensor = ultrasonicLeft;
+    }
+
     // 
     // The first few measurements of the sensor usually is very off.
     // "Warm up" the sensor by measuring a few times.
     while (--initIterations > 3) {
-        ultrasonicLeft->distanceMeasure();
-        ultrasonicRight->distanceMeasure();
+        wallSensor->distanceMeasure();
+        poleSensor->distanceMeasure();
 
         delay(30);
     }
+
     // 
     // Take initial measurements to fill data buffer.
     while (--initIterations >= 0) {
-        ultrasonicLeft->distanceMeasure();
-        leftData[2 - initIterations] = ultrasonicLeft->microsecondsToCentimeters();
+        poleSensor->distanceMeasure();
+        poleData[2 - initIterations] = poleSensor->microsecondsToCentimeters();
 
-        ultrasonicRight->distanceMeasure();
-        rightData[2 - initIterations] = ultrasonicRight->microsecondsToCentimeters();
+        wallSensor->distanceMeasure();
+        wallData[2 - initIterations] = wallSensor->microsecondsToCentimeters();
     }
+
     // 
     // Compute median.
-    leftCurrentData = max(min(leftData[0], leftData[1]), min(max(leftData[0], leftData[1]), leftData[2]));
-    rightCurrentData = max(min(rightData[0], rightData[1]), min(max(rightData[0], rightData[1]), rightData[2]));
-    initialLDist = leftCurrentData;
+    poleCurrentData = max(min(poleData[0], poleData[1]), min(max(poleData[0], poleData[1]), poleData[2]));
+    wallCurrentData = max(min(wallData[0], wallData[1]), min(max(wallData[0], wallData[1]), wallData[2]));
+    initialLDist = wallCurrentData;
     // 
     // Start moving.
     drive->setReference(ROBOT_SPEED_MAX / 4.0, 0.0f);
@@ -217,31 +238,31 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
         startTime = millis();
         // 
         // Measure then evaluate delta.
-        ultrasonicLeft->distanceMeasure();
-        leftData[0] = leftData[1];
-        leftData[1] = leftData[2];
-        leftData[2] = ultrasonicLeft->microsecondsToCentimeters();
+        poleSensor->distanceMeasure();
+        poleData[0] = poleData[1];
+        poleData[1] = poleData[2];
+        poleData[2] = poleSensor->microsecondsToCentimeters();
         // 
         // Save data.
-        leftLastData = leftCurrentData;
-        leftCurrentData = max(min(leftData[0], leftData[1]), min(max(leftData[0], leftData[1]), leftData[2]));
+        poleLastData = poleCurrentData;
+        poleCurrentData = max(min(poleData[0], poleData[1]), min(max(poleData[0], poleData[1]), poleData[2]));
         // 
         // Measure and evaluate the right sensor.
-        ultrasonicRight->distanceMeasure();
-        rightData[0] = rightData[1];
-        rightData[1] = rightData[2];
-        rightData[2] = ultrasonicRight->microsecondsToCentimeters();
+        wallSensor->distanceMeasure();
+        wallData[0] = wallData[1];
+        wallData[1] = wallData[2];
+        wallData[2] = wallSensor->microsecondsToCentimeters();
         // 
         // Save data.
-        rightLastData = rightCurrentData;
-        rightCurrentData = max(min(rightData[0], rightData[1]), min(max(rightData[0], rightData[1]), rightData[2]));
-        locateDriveHelper(drive, leftCurrentData, initialLDist);
+        wallLastData = wallCurrentData;
+        wallCurrentData = max(min(wallData[0], wallData[1]), min(max(wallData[0], wallData[1]), wallData[2]));
+        locateDriveHelper(drive, wallCurrentData, initialLDist);
         // 
         // Left right ultrasonics. 
-        dprint("left: ");
-        dprint(leftCurrentData);
-        dprint(" right: ");
-        dprintln(rightCurrentData);
+        dprint("Pole: ");
+        dprint(poleCurrentData);
+        dprint(" Wall: ");
+        dprintln(wallCurrentData);
         // 
         // Calculate how much to sleep to keep controller stable.
         sleepTime = DRIVE_SLEEP_TIME - (millis() - startTime);
@@ -249,15 +270,13 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
         delay(sleepTime);
     } while (1); /*(abs(leftCurrentData - leftLastData) < ULTRASONIC_DELTA_TOLERANCE && abs(rightCurrentData - rightLastData) < ULTRASONIC_DELTA_TOLERANCE);*/
 
-    dprint("Pole found ");
+    dprintln("Pole found.");
     drive->stop();
     
-    if (abs(leftCurrentData - leftLastData) > ULTRASONIC_DELTA_TOLERANCE) {
-        dprintln("on left side.");
+    if (isUpsideDown) {
         drive->turnTheta(90);
     }
     else {
-        dprintln("on right side.");
         drive->turnTheta(-90);
     }
 
