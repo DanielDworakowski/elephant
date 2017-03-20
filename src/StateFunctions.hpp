@@ -93,8 +93,11 @@ namespace StateFunctions
     // Check if the robot is upside down and set controls as needed.
     int checkUpsideDown(Drive* drive, VL53L0X* prox);
     // 
+    // Orient the robot to be parallelish to the wall.
+    int orient(Drive *drive, Ultrasonic* ultrasonicL, Ultrasonic* ultrasonicR);
+    // 
     // Function that helps orient the robot after jumping.
-    int orientForward(Drive *drive, IMU *imu, float refYaw);
+    int orientForwardIMU(Drive *drive, IMU *imu, float refYaw);
     // 
     // State that searches for the destination.
     int locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox);

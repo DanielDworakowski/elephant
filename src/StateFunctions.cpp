@@ -57,6 +57,8 @@ int StateFunctions::sampleYaw(IMU *imu, float &yaw)
         delay(40);
     }
     yaw /= avgNum;
+    dprint("Setting yaw value to ");
+    dprintln(yaw);
     dprintln("//// State - exit sampleYaw.");
     return 0;
 }
@@ -81,11 +83,12 @@ int StateFunctions::approach2(Drive *drive, VL53L0X* prox)
     float startTime;
     float meas;
     drive->reset(30);
+    //
+    // Acceleration by the number of steps equally. 
     for (step = 0; step < numSteps; ++step) {
-        meas = prox->readRangeContinuousMillimeters();
         startTime = millis();
+        drive->setReference(-ROBOT_SPEED_MAX * (step / numSteps), 0.0f);
         while (millis() - startTime < DRIVE_OFF_PLATFORM_TIME / numSteps) {
-            drive->setReference(-ROBOT_SPEED_MAX * (step / numSteps), 0.0f);
             drive->update();
             meas = prox->readRangeContinuousMillimeters();
             if (meas < WALL_JUMP_DIST && ((millis() - minTriggerStart) > minTriggerTime)) {
@@ -93,6 +96,8 @@ int StateFunctions::approach2(Drive *drive, VL53L0X* prox)
             }
         }
     }
+    // 
+    // We are done accelerating make sure the drive is going in steady state.
     do {
         meas = prox->readRangeContinuousMillimeters();
         drive->update();
@@ -127,14 +132,18 @@ int StateFunctions::inAir(Drive *drive, IMU *imu)
     return 0;
 }
 
-int StateFunctions::orientForward(Drive *drive, IMU *imu, float refYaw)
+int StateFunctions::orientForwardIMU(Drive *drive, IMU *imu, float refYaw)
 {
+    dprintln("//// State - enter orientForwardIMU.");
+    drive->setTurn();
     float cmd = 0.0;
-    imu->read();
+    while (imu->read() != 0) {};
     float curYaw = imu->getYaw();
     PID pid(ORIENT_P, ORIENT_I, ORIENT_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);
     while (abs(curYaw - refYaw) > YAW_TOL) {
-        imu->read();
+        if (imu->read() != 0) {
+            continue;
+        }
         curYaw = imu->getYaw();
         cmd = -1 * pid.getCmd(refYaw, curYaw);
         drive->setReference(0, imu->isUpsideDown() ? -cmd : cmd);
@@ -153,8 +162,18 @@ int StateFunctions::orientForward(Drive *drive, IMU *imu, float refYaw)
         Serial.println(cmd);
 
     } 
+    dprintln("//// State - exit orientForwardIMUx.");
     drive->stop();
     return 0;
+}
+
+int StateFunctions::orientForward(Drive *drive, Ultrasonic* ultrasonicL, Ultrasonic* ultrasonicR)
+{
+    //
+    // Check if one side is too close to rotate and treat it as the wall?
+    // ^ Would likely need a proper set distance for this to avoid dying.  
+    // make assumption about minimal wall distance and rotate until there is a tolerance
+    // follow the wall as required. 
 }
 
 int StateFunctions::checkUpsideDown(Drive *drive, VL53L0X *prox)

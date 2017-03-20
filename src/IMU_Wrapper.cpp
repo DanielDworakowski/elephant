@@ -124,7 +124,7 @@ int IMU::read()
 
 float IMU::getYaw() 
 {
-    float val = 2.14f * (ypr_[0] + M_PI) * 180.0f / M_PI;
+    float val = 2.25f * (ypr_[0] + M_PI) * 180.0f / M_PI;
     int a = (int)val;
     a = a / 360 * 360;
     return val - a;
