@@ -65,6 +65,7 @@ int StateFunctions::sampleYaw(IMU *imu, float &yaw)
 
 int StateFunctions::driveStraight(Drive *drive, float speed, uint32_t timeMs)
 {
+    // drive->reset(30);
     uint32_t startTime = millis();
     drive->setReference(speed, 0);
     do {
@@ -76,9 +77,9 @@ int StateFunctions::driveStraight(Drive *drive, float speed, uint32_t timeMs)
 
 int StateFunctions::curveHelper(Drive *drive, uint32_t turnTimer)
 {
-    const float omega = -3.0f;
-    const uint32_t straightTime = 1000; 
-    const uint32_t turnTime = 1000;
+    const float omega = -60.0f;
+    const uint32_t straightTime = 3000; 
+    const uint32_t turnTime = 500;
     // 
     // Setup the turning profile. 
     if (millis() - turnTimer < straightTime) {
@@ -102,14 +103,13 @@ int StateFunctions::approach2(Drive *drive, VL53L0X* prox)
     float step = 0;
     float startTime;
     float meas;
-    drive->reset(30);
+    // drive->reset(30);
     //
     // Acceleration by the number of steps equally. 
     for (step = 0; step < numSteps; ++step) {
         startTime = millis();
         drive->setReference(-ROBOT_SPEED_MAX * (step / numSteps), 0);
         while (millis() - startTime < DRIVE_OFF_PLATFORM_TIME / numSteps) {
-            curveHelper(drive, turnTimer);
             drive->update();
             meas = prox->readRangeContinuousMillimeters();
             if (meas < WALL_JUMP_DIST && ((millis() - minTriggerStart) > minTriggerTime)) {
@@ -121,7 +121,6 @@ int StateFunctions::approach2(Drive *drive, VL53L0X* prox)
     // We are done accelerating make sure the drive is going in steady state.
     do {
         meas = prox->readRangeContinuousMillimeters();
-        curveHelper(drive, turnTimer);
         drive->update();
     } while (meas > WALL_JUMP_DIST);
     return 0;
@@ -275,7 +274,6 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
         wallSensor->distanceMeasure();
         wallData[2 - initIterations] = wallSensor->microsecondsToCentimeters();
     }
-
     // 
     // Compute median.
     poleCurrentData = max(min(poleData[0], poleData[1]), min(max(poleData[0], poleData[1]), poleData[2]));
@@ -285,7 +283,6 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     dprint(poleCurrentData);
     dprint(" Wall: ");
     dprintln(wallCurrentData);
-    
     //
     // This outer while loop runs until the pole has been confirmed to be found.
     // If the confirmation check fails, it will loop back to going forward and searching (inner loop).

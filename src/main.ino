@@ -127,6 +127,19 @@ void setup()
     setupPins();
 }
 
+
+// 
+// 
+// 
+// Add ramp up for the driving to the ramp
+// add ramp up for driving parallel to wall for testing.
+// test with other sensor to ensure that wall driving is doable. 
+// 
+// 
+// 
+
+
+
 void loop()
 { 
     // 
@@ -147,21 +160,24 @@ void loop()
     // 
     // Begin the state machine.
     while (1) {
-        yawRef = 0; // Reset.
+        // yawRef = 0; // Reset.
         StateFunctions::waitForStartButton(motorShield.getMotor(3));
         drive.reset(30);
-        // StateFunctions::approach2(&drive, &prox);
+        StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 2, 3000);
+        drive.turnTheta(-90);
+        StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 2, 3000);
+        drive.turnTheta(90);
+        drive.goStraight();
+        StateFunctions::approach2(&drive, &prox);
         // StateFunctions::jump(motorShield.getMotor(3), &imu, &drive);
         // 
         // From this point on the robot is in a different configuration.
         // The tunings of the controllers must reflect this. 
         drive.setPoleSearch();
-        // StateFunctions::checkUpsideDown(&drive, &prox);
-        // StateFunctions::driveStraight(&drive, ROBOT_SPEED_MAX / 2.0f, 10000);
-        // drive.turnTheta(90);
-        // // StateFunctions::orientForward(&drive, &imu, yawRef);
-        StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
-        StateFunctions::driveToDest(&drive, &imu);
+        StateFunctions::checkUpsideDown(&drive, &prox);
+        // drive.setPoleSearch();
+        // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
+        // StateFunctions::driveToDest(&drive, &imu);
         drive.stop();
     }
 }
