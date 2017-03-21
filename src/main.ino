@@ -152,16 +152,26 @@ void loop()
         drive.reset(30);
         // StateFunctions::approach2(&drive, &prox);
         // StateFunctions::jump(motorShield.getMotor(3), &imu, &drive);
-        // 
+        // while (1) {
+        //   ultrasonicRight.distanceMeasure();
+        //   ultrasonicLeft.distanceMeasure();
+
+        //   Serial.print(ultrasonicRight.microsecondsToCentimeters());
+        //   Serial.print(" ");
+        //   Serial.print(ultrasonicLeft.microsecondsToCentimeters());
+        //   Serial.println();
+        //   delay(400);
+        // }
         // From this point on the robot is in a different configuration.
         // The tunings of the controllers must reflect this. 
-        drive.setPoleSearch();
+        // drive.setPoleSearch();
         // StateFunctions::checkUpsideDown(&drive, &prox);
         // StateFunctions::driveStraight(&drive, ROBOT_SPEED_MAX / 2.0f, 10000);
         // drive.turnTheta(90);
-        // // StateFunctions::orientForward(&drive, &imu, yawRef);
-        StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
-        StateFunctions::driveToDest(&drive, &imu);
+        // StateFunctions::orientForward(&drive, &imu, yawRef);
+        // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
+        // StateFunctions::driveToDest(&drive, &imu);
+        StateFunctions::poleSearchGeneral(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
         drive.stop();
     }
 }

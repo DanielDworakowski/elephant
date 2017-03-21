@@ -161,7 +161,6 @@ int Drive::turnTheta(float theta)
         // Serial.print(desYaw_);        
         // Serial.print(" cmd: ");
         // Serial.println(cmd);
-
     } 
     switch (state_) {
         case JUMP_STATE:
@@ -171,7 +170,6 @@ int Drive::turnTheta(float theta)
         case POLE_SEARCH_STATE:
             setPoleSearch();
             break;
-
     }
     return 0;
 }

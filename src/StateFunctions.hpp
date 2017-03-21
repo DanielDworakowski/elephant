@@ -60,6 +60,25 @@
 // The number of times the confirmation check can fail (false negative).
 #define POLE_CONFIRMATION_CHECK_FAIL_TOLERANCE 1
 //
+// The angle for the robot to turn each time it's orienting
+#define WALL_ORIENT_ANGLE 5.0f
+//
+// The number of times the sensor should be read for median filter
+#define WALL_ORIENT_READ_COUNT 3
+//
+// The tolerance of change in distance to count as oriented
+#define WALL_ORIENT_TOLERANCE 3.0f
+//
+// The tolerance of change between sum of ultrasonics and width of field to count as oriented. Should include distance between ultrasonics
+// Distance between ultrasonics = 20
+#define WALL_ORIENT_ULTRASONIC_TOLERANCE 25.0f
+// 
+// The tolerance of change between measured data and subsequent measurements that counts as ramp
+#define RAMP_CONFIRMATION_TOLERANCE 15.0f
+// 
+// The outer limit tolerance of change between measured data and subsequent measurements that counts as pole
+#define RAMP_CONFIRMATION_TOLERANCE 30.0f
+//
 // Time for the IMU to stablize, in milliseconds.
 #define IMU_STABLIZE_TIME 2000
 // 
@@ -95,7 +114,7 @@ namespace StateFunctions
     int checkUpsideDown(Drive* drive, VL53L0X* prox);
     // 
     // Orient the robot to be parallelish to the wall.
-    int orient(Drive *drive, Ultrasonic* ultrasonicL, Ultrasonic* ultrasonicR);
+    int orient(Drive *drive, VL53L0X *prox, Ultrasonic* ultrasonicL, Ultrasonic* ultrasonicR);
     // 
     // Function that helps orient the robot after jumping.
     int orientForwardIMU(Drive *drive, IMU *imu, float refYaw);
@@ -105,6 +124,9 @@ namespace StateFunctions
     //
     // State that drives to destination
     int driveToDest(Drive *drive, IMU *imu);
+    //
+    // State that searches for destination using general algorithm
+    int poleSearchGeneral(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox);
 }
 
 #endif /* __STATE_FUNCTIONS__ */

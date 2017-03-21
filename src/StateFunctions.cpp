@@ -189,13 +189,74 @@ int StateFunctions::orientForwardIMU(Drive *drive, IMU *imu, float refYaw)
     return 0;
 }
 
-int StateFunctions::orient(Drive *drive, Ultrasonic* ultrasonicL, Ultrasonic* ultrasonicR)
+int StateFunctions::orient(Drive *drive, VL53L0X *prox, Ultrasonic* ultrasonicL, Ultrasonic* ultrasonicR)
 {
     //
     // Check if one side is too close to rotate and treat it as the wall?
     // ^ Would likely need a proper set distance for this to avoid dying.  
     // make assumption about minimal wall distance and rotate until there is a tolerance
-    // follow the wall as required. 
+    // follow the wall as required.
+    Ultrasonic *poleSensor;
+    Ultrasonic *wallSensor;
+    bool isUpsideDown;
+    int initIterations = 10;
+
+    long wallData[WALL_ORIENT_READ_COUNT];
+    long wallCurrentData;
+    long wallLastData;
+
+    long distanceToWall;
+    long numberOfTurns = 360.0 / WALL_ORIENT_ANGLE;
+    int turnCount = 0;
+    int readCount = 0;
+    uint32_t startTime;
+
+    //
+    // Check if the robot is upside down. 
+    isUpsideDown = prox->isUpsideDown();
+
+    //
+    //Determine which sensor is looking for pole.
+    if (isUpsideDown) {
+        poleSensor = ultrasonicL;
+        wallSensor = ultrasonicR;
+    }
+    else {
+        poleSensor = ultrasonicR;
+        wallSensor = ultrasonicL;
+    }
+
+    // 
+    // The first few measurements of the sensor usually is very off.
+    // "Warm up" the sensor by measuring a few times.
+    while (--initIterations > 3) {
+        poleSensor->distanceMeasure();
+        wallSensor->distanceMeasure();
+
+        delay(30);
+    }
+
+    for (turnCount = 0; turnCount < numberOfTurns; turnCount++) {
+        drive->turnTheta(WALL_ORIENT_ANGLE);
+
+        for(readCount = 0; readCount < WALL_ORIENT_READ_COUNT; readCount++) {
+            wallSensor->distanceMeasure();
+            wallData[readCount] = wallSensor->microsecondsToCentimeters();
+        }
+        wallCurrentData = max(min(wallData[0], wallData[1]), min(max(wallData[0], wallData[1]), wallData[2]));
+        distanceToWall = min(wallCurrentData, distanceToWall);
+    }
+
+    do {
+        drive->turnTheta(WALL_ORIENT_ANGLE);
+
+        for(readCount = 0; readCount < WALL_ORIENT_READ_COUNT; readCount++) {
+            wallSensor->distanceMeasure();
+            wallData[readCount] = wallSensor->microsecondsToCentimeters();
+        }
+        wallCurrentData = max(min(wallData[0], wallData[1]), min(max(wallData[0], wallData[1]), wallData[2]));
+    } while (abs(wallCurrentData - distanceToWall) < WALL_ORIENT_TOLERANCE);
+
     return 0;
 }
 
@@ -384,4 +445,125 @@ int StateFunctions::driveToDest(Drive *drive, IMU *imu)
     } while (1);
     drive->stop();
     return 0;
+}
+
+long readUltrasonic(Ultrasonic *ultrasonic, int numberOfReadings)
+{
+    int readCount = 0;
+    long reading[numberOfReadings];
+
+    for(readCount = 0; readCount < numberOfReadings; readCount++) {
+        ultrasonic->distanceMeasure();
+        reading[readCount] = ultrasonic->microsecondsToCentimeters();
+    }
+    return max(min(reading[0], reading[1]), min(max(reading[0], reading[1]), reading[2]));
+}
+
+int StateFunctions::poleSearchGeneral(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox)
+{
+    Ultrasonic *temp;
+    int initIterations = 10;
+    int multiplier = 1;
+    float leftValue;
+    float rightValue;
+    float previousLeftValue;
+    float previousRightValue;
+    uint32_t startTime = millis();
+    uint32_t runTime = 10000;
+    Serial.println("Pole Searching now");
+    //
+    //Determine which sensor is looking for pole.
+    if (prox->isUpsideDown()) {
+        temp = ultrasonicLeft;
+        ultrasonicLeft = ultrasonicRight;
+        ultrasonicRight = temp;
+        multiplier = -1;
+        Serial.println("UpsideDown");
+    }
+    else {
+        Serial.println("Not UpsideDown");
+    }
+
+    // 
+    // The first few measurements of the sensor usually is very off.
+    // "Warm up" the sensor by measuring a few times.
+    while (--initIterations > 0) {
+        ultrasonicLeft->distanceMeasure();
+        ultrasonicRight->distanceMeasure();
+
+        delay(30);
+    }
+
+    //
+    // 2 solutions. 
+    // 1st is to follow wall, similar to method above
+    // 1a is to rotate till robot is parallel with side (can be either)
+    // Serial.println("Orient");
+
+    // do {
+    //     leftValue = readUltrasonic(ultrasonicLeft, WALL_ORIENT_READ_COUNT);
+    //     rightValue = readUltrasonic(ultrasonicRight, WALL_ORIENT_READ_COUNT);
+    //     drive->turnTheta(-3.0);
+    //     delay(50);
+    // } while (leftValue + rightValue - 240 > WALL_ORIENT_ULTRASONIC_TOLERANCE);
+
+    // Serial.println("Oriented");
+    // // 1b is to go straight till robot cant move anymore means either hit wall or boundary
+    // // Problems with running into the boundary on side with ramp
+
+    // // Once oriented, go follow
+
+    // drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
+    // drive->update();
+    // delay(8000);
+
+    // drive->turnTheta(180);
+
+    // leftValue = readUltrasonic(ultrasonicLeft, WALL_ORIENT_READ_COUNT);
+    // rightValue = readUltrasonic(ultrasonicRight, WALL_ORIENT_READ_COUNT);
+
+    // do {
+    //     drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
+    //     drive->update();
+
+    //     previousLeftValue = leftValue;
+    //     previousRightValue = rightValue;
+    // } while (abs(previousLeftValue - leftValue) < RAMP_CONFIRMATION_TOLERANCE)
+
+    // TEST: Back up to wall
+
+    // Drive straight for 10s
+    Serial.print("driving for 10s");
+    drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
+    drive->update();
+
+    startTime = millis();
+    do {
+        drive->update();
+        delay(30);
+    } while (millis() - startTime < 7000);
+    
+    drive->setReference(-1.0 * ROBOT_SPEED_MAX / 2.0, 0.0f);
+    drive->update();
+
+    startTime = millis();
+    do {
+        drive->update();
+        delay(30);
+    } while (millis() - startTime < 2000);
+
+    // Turn 90 deg
+    Serial.println("Turning 90 degress");
+    drive->turnTheta(-90);
+
+    // Drive straight for 10s
+    drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
+    drive->update();
+
+    startTime = millis();
+    do {
+        drive->update();
+        delay(30);
+    } while (millis() - startTime < 7000);
+
 }
