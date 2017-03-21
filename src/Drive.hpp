@@ -93,6 +93,9 @@ class Drive {
         // Resets the time to now - tDiff, this prevents integration error.
         int reset(uint32_t tDiff);
         // 
+        // Make the robot drive straight from the current trajectory.
+        int goStraight();
+        // 
         // Manage PID loops.
         int update();
         // 

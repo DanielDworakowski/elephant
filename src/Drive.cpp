@@ -127,6 +127,13 @@ int Drive::angleComp(int32_t lenc, int32_t renc, float dT, float &setOmega)
     return 0;
 }
 
+int Drive::goStraight()
+{
+    desYaw_ = 0;
+    setOmega_ = 0;
+    return 0;
+}
+
 int Drive::stop()
 {
     lMotor_->setSpeed(0);

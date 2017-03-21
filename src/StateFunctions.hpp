@@ -31,8 +31,6 @@
 #define LOCATE_D 0.0f
 // 
 // The set distance desired to the wall.
-#define WALL_SET_DIST 400.0f
-#define WALL_DIST_TOL 50.0f
 #define WALL_JUMP_DIST 500.0f
 //
 // Time in ms to get off the platform
@@ -80,6 +78,9 @@ namespace StateFunctions
     // 
     // Just drives straight.
     int driveStraight(Drive *drive, float speed, uint32_t timeMs);
+    // 
+    // Help create the approach curve.
+    int curveHelper(Drive *drive, uint32_t time);
     // 
     // Another state for approaching.
     int approach2(Drive* drive, VL53L0X* prox);

@@ -74,11 +74,31 @@ int StateFunctions::driveStraight(Drive *drive, float speed, uint32_t timeMs)
     return 0;
 }
 
+int StateFunctions::curveHelper(Drive *drive, uint32_t turnTimer)
+{
+    const float omega = -3.0f;
+    const uint32_t straightTime = 1000; 
+    const uint32_t turnTime = 1000;
+    // 
+    // Setup the turning profile. 
+    if (millis() - turnTimer < straightTime) {
+        drive->setOmega(0);
+    }
+    else if (millis() - turnTimer - straightTime < turnTime) {
+        drive->setOmega(omega);
+    }
+    else {
+        drive->goStraight();
+    }
+    return 0;
+}
+
 int StateFunctions::approach2(Drive *drive, VL53L0X* prox) 
 {
     const float numSteps = 20.0f;
     const int minTriggerTime = 3000;
     uint32_t minTriggerStart = millis();
+    uint32_t turnTimer = millis();
     float step = 0;
     float startTime;
     float meas;
@@ -87,12 +107,13 @@ int StateFunctions::approach2(Drive *drive, VL53L0X* prox)
     // Acceleration by the number of steps equally. 
     for (step = 0; step < numSteps; ++step) {
         startTime = millis();
-        drive->setReference(-ROBOT_SPEED_MAX * (step / numSteps), 0.0f);
+        drive->setReference(-ROBOT_SPEED_MAX * (step / numSteps), 0);
         while (millis() - startTime < DRIVE_OFF_PLATFORM_TIME / numSteps) {
+            curveHelper(drive, turnTimer);
             drive->update();
             meas = prox->readRangeContinuousMillimeters();
             if (meas < WALL_JUMP_DIST && ((millis() - minTriggerStart) > minTriggerTime)) {
-                break;
+                break;  
             }
         }
     }
@@ -100,6 +121,7 @@ int StateFunctions::approach2(Drive *drive, VL53L0X* prox)
     // We are done accelerating make sure the drive is going in steady state.
     do {
         meas = prox->readRangeContinuousMillimeters();
+        curveHelper(drive, turnTimer);
         drive->update();
     } while (meas > WALL_JUMP_DIST);
     return 0;
@@ -167,13 +189,14 @@ int StateFunctions::orientForwardIMU(Drive *drive, IMU *imu, float refYaw)
     return 0;
 }
 
-int StateFunctions::orientForward(Drive *drive, Ultrasonic* ultrasonicL, Ultrasonic* ultrasonicR)
+int StateFunctions::orient(Drive *drive, Ultrasonic* ultrasonicL, Ultrasonic* ultrasonicR)
 {
     //
     // Check if one side is too close to rotate and treat it as the wall?
     // ^ Would likely need a proper set distance for this to avoid dying.  
     // make assumption about minimal wall distance and rotate until there is a tolerance
     // follow the wall as required. 
+    return 0;
 }
 
 int StateFunctions::checkUpsideDown(Drive *drive, VL53L0X *prox)
