@@ -145,15 +145,16 @@ int Drive::stop()
 int Drive::turnTheta(float theta)
 {
     float cmd;
-    float desYaw = actYaw_ * (180.0f / M_PI) + 2.0f * theta;
-    float actYaw = actYaw_ * (180.0f / M_PI);
+    float desYawDeg = actYaw_ * (180.0f / M_PI) + 2.0f * theta;
+    float actYawDeg = actYaw_ * (180.0f / M_PI);
     desYaw_ = actYaw_ + 2.0f * theta * (M_PI / 180.0f); // save the desired value.
     setTurn();
     // 
     // PID around orientation.
-    while (abs(actYaw - desYaw) > YAW_TOLERANCE) {
-        actYaw = (WHEEL_RADIUS / CHASIS_LENGTH) * (TO_OMEGA(*rEncoderCount_) - TO_OMEGA(*lEncoderCount_))  * (180.0f / M_PI) ;
-        cmd = yawControl_.getCmd(desYaw, actYaw);
+    while (abs(actYawDeg - desYawDeg) > YAW_TOLERANCE) {
+        actYawDeg = (WHEEL_RADIUS / CHASIS_LENGTH) * (TO_OMEGA(*rEncoderCount_) - TO_OMEGA(*lEncoderCount_)) * (180.0f / M_PI) ;
+        actYaw_ = (WHEEL_RADIUS / CHASIS_LENGTH) * (TO_OMEGA(*rEncoderCount_) - TO_OMEGA(*lEncoderCount_));
+        cmd = yawControl_.getCmd(desYawDeg, actYawDeg);
         setReference(0, cmd);
         update();
         delay(30);
@@ -174,6 +175,7 @@ int Drive::turnTheta(float theta)
             break;
     }
     actYaw_ = (WHEEL_RADIUS / CHASIS_LENGTH) * (TO_OMEGA(*rEncoderCount_) - TO_OMEGA(*lEncoderCount_));
+    stop();
     return 0;
 }
 

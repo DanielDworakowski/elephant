@@ -590,5 +590,5 @@ int StateFunctions::poleSearchGeneral(Drive *drive, Ultrasonic *ultrasonicLeft, 
         drive->update();
         delay(30);
     } while (millis() - startTime < 7000);
-
+    return 0;
 }

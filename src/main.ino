@@ -152,7 +152,6 @@ void loop()
     IMU imu(PIN::imuInterruptPin);
     Ultrasonic ultrasonicRight(PIN::leftUltrasonicTrigPin, PIN::leftUltrasonicEchoPin);
     Ultrasonic ultrasonicLeft(PIN::rightUltrasonicTrigPin, PIN::rightUltrasonicEchoPin);
-    float yawRef = 0;
     // 
     // Begin sensing.
     setupProximity(prox);
@@ -160,36 +159,23 @@ void loop()
     // 
     // Begin the state machine.
     while (1) {
-        // yawRef = 0; // Reset.
         StateFunctions::waitForStartButton(motorShield.getMotor(3));
         drive.reset(30);
-        // StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 2, 3000);
+        // StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 4000);
         // drive.turnTheta(-90);
-        // StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 2, 3000);
+        // StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 1500);
         // drive.turnTheta(90);
         // drive.goStraight();
-        // StateFunctions::approach2(&drive, &prox);
-        // StateFunctions::jump(motorShield.getMotor(3), &imu, &drive);
-        // while (1) {
-        //   ultrasonicRight.distanceMeasure();
-        //   ultrasonicLeft.distanceMeasure();
-
-        //   Serial.print(ultrasonicRight.microsecondsToCentimeters());
-        //   Serial.print(" ");
-        //   Serial.print(ultrasonicLeft.microsecondsToCentimeters());
-        //   Serial.println();
-        //   delay(400);
-        // }
+        StateFunctions::approachAndStop(&drive, &prox);
+        StateFunctions::jump(motorShield.getMotor(3), &drive);
+        // 
         // From this point on the robot is in a different configuration.
         // The tunings of the controllers must reflect this. 
+        drive.setPoleSearch();
+        StateFunctions::checkUpsideDown(&drive, &prox);
         // drive.setPoleSearch();
-        // StateFunctions::checkUpsideDown(&drive, &prox);
-        // StateFunctions::driveStraight(&drive, ROBOT_SPEED_MAX / 2.0f, 10000);
-        // drive.turnTheta(90);
-        // StateFunctions::orientForward(&drive, &imu, yawRef);
         // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
         // StateFunctions::driveToDest(&drive, &imu);
-        StateFunctions::poleSearchGeneral(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
         drive.stop();
     }
 }
