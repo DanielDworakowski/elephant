@@ -65,6 +65,7 @@ int StateFunctions::sampleYaw(IMU *imu, float &yaw)
 
 int StateFunctions::driveStraight(Drive *drive, float speed, uint32_t timeMs)
 {
+    // drive->reset(30);
     uint32_t startTime = millis();
     drive->setReference(speed, 0);
     do {
@@ -76,9 +77,9 @@ int StateFunctions::driveStraight(Drive *drive, float speed, uint32_t timeMs)
 
 int StateFunctions::curveHelper(Drive *drive, uint32_t turnTimer)
 {
-    const float omega = -3.0f;
-    const uint32_t straightTime = 1000; 
-    const uint32_t turnTime = 1000;
+    const float omega = -60.0f;
+    const uint32_t straightTime = 3000; 
+    const uint32_t turnTime = 500;
     // 
     // Setup the turning profile. 
     if (millis() - turnTimer < straightTime) {
@@ -93,26 +94,46 @@ int StateFunctions::curveHelper(Drive *drive, uint32_t turnTimer)
     return 0;
 }
 
+int StateFunctions::approachAndStop(Drive *drive, VL53L0X* prox)
+{
+    float meas[3];
+    for (int x = 0; x < 3; ++x) {
+        meas[x] = prox->readRangeContinuousMillimeters();
+    }
+    float measDist = max(min(meas[0], meas[1]), min(max(meas[0], meas[1]), meas[2]));
+    // 
+    // Set the reference to be constant. 
+    drive->setReference(-ROBOT_SPEED_MAX / 3.0, 0);
+    while (measDist > WALL_JUMP_DIST_0_VEL) {
+        meas[0] = meas[1];
+        meas[1] = meas[2];
+        meas[2] = prox->readRangeContinuousMillimeters();
+        measDist = max(min(meas[0], meas[1]), min(max(meas[0], meas[1]), meas[2]));
+        drive->update();
+    }
+    drive->stop();
+    delay(3000);
+    return 0;
+}
+
 int StateFunctions::approach2(Drive *drive, VL53L0X* prox) 
 {
     const float numSteps = 20.0f;
     const int minTriggerTime = 3000;
     uint32_t minTriggerStart = millis();
-    uint32_t turnTimer = millis();
     float step = 0;
     float startTime;
     float meas;
-    drive->reset(30);
+    // drive->reset(30);
     //
     // Acceleration by the number of steps equally. 
     for (step = 0; step < numSteps; ++step) {
         startTime = millis();
         drive->setReference(-ROBOT_SPEED_MAX * (step / numSteps), 0);
         while (millis() - startTime < DRIVE_OFF_PLATFORM_TIME / numSteps) {
-            curveHelper(drive, turnTimer);
             drive->update();
             meas = prox->readRangeContinuousMillimeters();
-            if (meas < WALL_JUMP_DIST && ((millis() - minTriggerStart) > minTriggerTime)) {
+            if (meas < WALL_JUMP_DIST_INIT_VEL && ((millis() - minTriggerStart) > minTriggerTime)) {
                 break;  
             }
         }
@@ -121,19 +142,25 @@ int StateFunctions::approach2(Drive *drive, VL53L0X* prox)
     // We are done accelerating make sure the drive is going in steady state.
     do {
         meas = prox->readRangeContinuousMillimeters();
-        curveHelper(drive, turnTimer);
         drive->update();
-    } while (meas > WALL_JUMP_DIST);
+    } while (meas > WALL_JUMP_DIST_INIT_VEL);
     return 0;
 }
 
-int StateFunctions::jump(Adafruit_DCMotor *jumpMotor, IMU *imu, Drive* drive)
+int StateFunctions::jump(Adafruit_DCMotor *jumpMotor, Drive* drive)
 {
+    const uint32_t motorRunTime = 500;
+    uint32_t startMotorRun = 0;
     // 
     // Run the motor forwards until acceleration is detected.
     jumpMotor->run(BACKWARD);
     jumpMotor->setSpeed(255);
-    delay(1000);
+    delay(700);
+    drive->setReference(ROBOT_SPEED_MAX, 0.0f);
+    startMotorRun = millis();
+    do {
+        drive->update();
+    } while (millis() - startMotorRun < motorRunTime);
     jumpMotor->setSpeed(0);
     return 0;
 }
@@ -336,7 +363,6 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
         wallSensor->distanceMeasure();
         wallData[2 - initIterations] = wallSensor->microsecondsToCentimeters();
     }
-
     // 
     // Compute median.
     poleCurrentData = max(min(poleData[0], poleData[1]), min(max(poleData[0], poleData[1]), poleData[2]));
@@ -346,7 +372,6 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     dprint(poleCurrentData);
     dprint(" Wall: ");
     dprintln(wallCurrentData);
-    
     //
     // This outer while loop runs until the pole has been confirmed to be found.
     // If the confirmation check fails, it will loop back to going forward and searching (inner loop).

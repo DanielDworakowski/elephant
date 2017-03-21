@@ -127,6 +127,19 @@ void setup()
     setupPins();
 }
 
+
+// 
+// 
+// 
+// Add ramp up for the driving to the ramp
+// add ramp up for driving parallel to wall for testing.
+// test with other sensor to ensure that wall driving is doable. 
+// 
+// 
+// 
+
+
+
 void loop()
 { 
     // 
@@ -147,9 +160,14 @@ void loop()
     // 
     // Begin the state machine.
     while (1) {
-        yawRef = 0; // Reset.
+        // yawRef = 0; // Reset.
         StateFunctions::waitForStartButton(motorShield.getMotor(3));
         drive.reset(30);
+        // StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 2, 3000);
+        // drive.turnTheta(-90);
+        // StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 2, 3000);
+        // drive.turnTheta(90);
+        // drive.goStraight();
         // StateFunctions::approach2(&drive, &prox);
         // StateFunctions::jump(motorShield.getMotor(3), &imu, &drive);
         // while (1) {

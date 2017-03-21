@@ -61,23 +61,23 @@ int Drive::update()
     }
     rMotorCommand_ = -1 * rVelocity_.getCmd(w_r_, calcR);
     lMotorCommand_ = -1 * lVelocity_.getCmd(w_l_, calcL);
-    // Serial.print(calcL);
-    // Serial.print("\t");
-    // Serial.print(calcR);
-    // Serial.print("\t");
-    // Serial.print(actYaw_);
-    // Serial.print("\t");
-    // Serial.print(desYaw_);
-    // Serial.print("\t");
-    // Serial.print(deltaT);
-    // Serial.print("\t");
-    // Serial.print(lastL_);
-    // Serial.print("\t");
-    // Serial.print(lastR_);
-    // Serial.print("\t");
-    // Serial.print(lMotorCommand_);
-    // Serial.print("\t");
-    // Serial.println(rMotorCommand_);
+    Serial.print(calcL);
+    Serial.print("\t");
+    Serial.print(calcR);
+    Serial.print("\t");
+    Serial.print(actYaw_);
+    Serial.print("\t");
+    Serial.print(desYaw_);
+    Serial.print("\t");
+    Serial.print(deltaT);
+    Serial.print("\t");
+    Serial.print(lastL_);
+    Serial.print("\t");
+    Serial.print(lastR_);
+    Serial.print("\t");
+    Serial.print(lMotorCommand_);
+    Serial.print("\t");
+    Serial.println(rMotorCommand_);
 
     return setMotorSpeeds(lMotorCommand_, rMotorCommand_);
 }
@@ -145,13 +145,15 @@ int Drive::stop()
 int Drive::turnTheta(float theta)
 {
     float cmd;
-    desYaw_ = actYaw_ * (180.0f / M_PI) + 2.0f * theta;
+    float desYaw = actYaw_ * (180.0f / M_PI) + 2.0f * theta;
+    float actYaw = actYaw_ * (180.0f / M_PI);
+    desYaw_ = actYaw_ + 2.0f * theta * (M_PI / 180.0f); // save the desired value.
     setTurn();
     // 
     // PID around orientation.
-    while (abs(actYaw_ - desYaw_) > YAW_TOLERANCE) {
-        actYaw_ = (WHEEL_RADIUS / CHASIS_LENGTH) * (TO_OMEGA(*rEncoderCount_) - TO_OMEGA(*lEncoderCount_))  * (180.0f / M_PI) ;
-        cmd = yawControl_.getCmd(desYaw_, actYaw_);
+    while (abs(actYaw - desYaw) > YAW_TOLERANCE) {
+        actYaw = (WHEEL_RADIUS / CHASIS_LENGTH) * (TO_OMEGA(*rEncoderCount_) - TO_OMEGA(*lEncoderCount_))  * (180.0f / M_PI) ;
+        cmd = yawControl_.getCmd(desYaw, actYaw);
         setReference(0, cmd);
         update();
         delay(30);
@@ -171,6 +173,7 @@ int Drive::turnTheta(float theta)
             setPoleSearch();
             break;
     }
+    actYaw_ = (WHEEL_RADIUS / CHASIS_LENGTH) * (TO_OMEGA(*rEncoderCount_) - TO_OMEGA(*lEncoderCount_));
     return 0;
 }
 
