@@ -31,7 +31,10 @@
 #define LOCATE_D 0.0f
 // 
 // The set distance desired to the wall.
-#define WALL_JUMP_DIST 500.0f
+#define WALL_JUMP_DIST_INIT_VEL 500.0f
+// 
+// The set distance with no initial velocity.
+#define WALL_JUMP_DIST_0_VEL 300.0f
 //
 // Time in ms to get off the platform
 #define DRIVE_OFF_PLATFORM_TIME 2000
@@ -82,11 +85,14 @@ namespace StateFunctions
     // Help create the approach curve.
     int curveHelper(Drive *drive, uint32_t time);
     // 
+    // Approach the wall by a set distance.
+    int approachAndStop(Drive *drive, VL53L0X* prox);
+    // 
     // Another state for approaching.
     int approach2(Drive* drive, VL53L0X* prox);
     // 
     // State that manages the jumping.
-    int jump(Adafruit_DCMotor *jumpMotor, IMU *imu, Drive* drive);
+    int jump(Adafruit_DCMotor *jumpMotor, Drive* drive);
     // 
     // State that manages the in air control.
     int inAir(Drive *drive, IMU *imu);
