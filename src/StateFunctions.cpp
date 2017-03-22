@@ -298,12 +298,12 @@ bool atDesitinationHelper(IMU* imu, bool isUpsideDown)
     while (imu->read() != 0) {};
     if (!isUpsideDown) {
         if (imu->getGlobalY() < destinationYTol) {
-            return true;
+            // return true;
         }
     }
     else {
         if (imu->getGlobalY() > -destinationYTol) {
-            return true;
+            // return true;
         } 
     }
     return false;
@@ -311,10 +311,10 @@ bool atDesitinationHelper(IMU* imu, bool isUpsideDown)
 
 int StateFunctions::locateDriveHelper(Drive *drive, float curDist, float setDist)
 {
-    static PID distPID(LOCATE_P, LOCATE_I, LOCATE_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);
-    float cmd = 0;
-    cmd = distPID.getCmd(setDist, curDist);
-    drive->setOmega(cmd);
+    // static PID distPID(LOCATE_P, LOCATE_I, LOCATE_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);
+    // float cmd = 0;
+    // cmd = distPID.getCmd(setDist, curDist);
+    // drive->setOmega(cmd);
     drive->update();
     return 0;
 }
@@ -442,8 +442,21 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     do {
         // 
         // Start moving.
-        drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
+        drive->setReference(ROBOT_SPEED_MAX / 3.0, 0.0f);
         drive->update();
+        //
+        // Fill data buffer with latest data.
+        readUltrasonic(poleSensor, poleData);
+        readUltrasonic(wallSensor, wallData);
+        delay(30);
+        readUltrasonic(poleSensor, poleData);
+        readUltrasonic(wallSensor, wallData);
+        delay(30);
+        poleLastData = poleCurrentData;
+        poleCurrentData = readUltrasonic(poleSensor, poleData);
+        wallLastData = wallCurrentData;
+        wallCurrentData = readUltrasonic(wallSensor, wallData);
+
         //
         // This inner loop drives and takes measurements until something that appears to be the pole is detected.
         do {
