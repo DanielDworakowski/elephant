@@ -294,6 +294,17 @@ int StateFunctions::checkUpsideDown(Drive *drive, VL53L0X *prox)
     return 0;
 }
 
+bool atDesitinationHelper(IMU* imu)
+{   
+    static const float destinationYTol = -0.15;
+
+    while (imu->read() != 0) {};
+    if (imu->getGlobalY() < destinationYTol) {
+        return true;
+    }
+    return false;
+}
+
 int locateDriveHelper(Drive *drive, float curDist, float setDist)
 {
     // static PID distPID(LOCATE_P, LOCATE_I, LOCATE_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);
@@ -448,9 +459,6 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
 
 int StateFunctions::driveToDest(Drive *drive, IMU *imu)
 {   
-    while (imu->read() != 0) {};
-    float initZ = imu->getGlobalZ();
-    float newZ;
     // 
     // Start moving the robot. 
     drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
@@ -459,15 +467,14 @@ int StateFunctions::driveToDest(Drive *drive, IMU *imu)
     // 
     // Continue until a bump is detected. 
     do {
-        imu->read();
-        newZ = imu->getGlobalZ();
+        while (imu->read() != 0) {};
         drive->update();
-        dprint("initZ: ");
-        dprint(initZ);
-        dprint(" newZ; ");
-        dprintln(newZ);
+        dprint(" newX: ");
+        dprint(imu->getGlobalX());
+        dprint(" newY: ");
+        dprintln(imu->getGlobalY());
         delay(30);
-    } while (1);
+    } while (atDesitinationHelper(imu));
     drive->stop();
     return 0;
 }
