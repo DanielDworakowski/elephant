@@ -374,7 +374,7 @@ long flushUltrasonicDataBuffer(Ultrasonic *sensor, long *data)
 /*
  *  Parameters: pointer to drive motor interface instance, pointer to left and right ultrasonic interface.
  *  Continues driving until either of the ultrasonics detect a large difference in measurement.
- *  Then the robot turns in that direction.
+ *  Then the robot turns in that direction and looks for the pole on the right side.
  */
 int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox)
 {   
@@ -490,7 +490,7 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
             dprint(poleCurrentData);
             dprint(" Wall: ");
             dprintln(wallCurrentData);
-            // 
+            //
             // Calculate how much to sleep to keep controller stable.
             sleepTime = DRIVE_SLEEP_TIME - (millis() - startTime);
             sleepTime = sleepTime > 0 ? sleepTime : 0;
@@ -520,6 +520,141 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     // May need to implement something to check if crashed. Also may need better method of handling false negative, maybe backing up.
     dprintln("Pole found.");
     drive->turnTheta(-90);
+
+    dprintln("//// State - exit locateDest.");
+    return 0;
+}
+
+/*
+ *  Parameters: pointer to drive motor interface instance, pointer to left and right ultrasonic interface.
+ *  Continues driving until either of the ultrasonics detect a large difference in measurement.
+ *  Then the robot turns and runs perpenticular to the ramp.
+ */
+int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox)
+{   
+    Ultrasonic *sensor;
+    bool isUpsideDown;
+    long data[3] = {0, 0, 0};
+    long currentData;
+    long lastData;
+    int initIterations = 10;
+    uint32_t startTime = millis();
+    int32_t sleepTime = 0;
+    float initialLDist = 0;
+    int confirmationCheckCount = POLE_CONFIRMATION_CHECK_COUNT;
+    int confirmationCheckPassed = 0;
+
+    dprintln("//// State - enter locateDest.");
+
+    //
+    // Check if the robot is upside down. 
+    isUpsideDown = prox->isUpsideDown();
+    //
+    //Determine which sensor is looking for pole.
+    if (isUpsideDown) {
+        sensor = ultrasonicRight;
+    }
+    else {
+        sensor = ultrasonicLeft;
+    }
+    // 
+    // The first few measurements of the sensor usually is very off.
+    // "Warm up" the sensor by measuring a few times.
+    while (--initIterations > 0) {
+        sensor->distanceMeasure();
+        delay(30);
+    }
+    //
+    // Get current data.
+    sensor = flushUltrasonicDataBuffer(sensor, data);
+    //
+    // Turn until it is parallel to some wall.
+    do {
+        drive->reset(30);
+        drive->turnTheta(10);
+        //
+        // Have to flush the buffer again since this is facing a different direction now.
+        // Want to apply the median filter only on values measured at this direction.
+        lastData = currentData;
+        currentData = flushUltrasonicDataBuffer(sensor, data);
+    } while (currentData - lastData < 0 || currentData > WALL_MAX_DISTANCE);
+
+    // Turn back and run the minimization algorithm backwards to ensure we are actually facing the minimum distance point.
+    while (currentData - lastData > 0 || currentData > WALL_MAX_DISTANCE) {
+        drive->reset(30);
+        drive->turnTheta(-10);
+        //
+        // Flushing the buffer for the same reason above.
+        lastData = currentData;
+        currentData = flushUltrasonicDataBuffer(sensor, data);
+    } 
+    // 
+    // Undo the last turn. Should be parallel to the wall now.
+    drive->reset(30);
+    drive->turnTheta(10);
+    //
+    // Turn perpenticular to the wall.
+    drive->reset(30);
+    drive->turnTheta(-90);
+    //
+    // This outer while loop runs until the pole has been confirmed to be found.
+    // If the confirmation check fails, it will loop back to going forward and searching (inner loop).
+    do {
+        // 
+        // Start moving.
+        drive->setReference(ROBOT_SPEED_MAX / 3.0, 0.0f);
+        drive->update();
+        //
+        // Fill data buffer with latest data by flushing the buffer.
+        lastData = currentData;
+        currentData = flushUltrasonicDataBuffer(sensor, data);
+
+        //
+        // This inner loop drives and takes measurements until something that appears to be the pole is detected.
+        do {
+            startTime = millis();
+            // 
+            // Measure data and shift down data buffer.
+            lastData = currentData;
+            currentData = readUltrasonic(sensor, data);
+            // 
+            // Update the drive if needed.
+            if ((millis() - startTime) > DRIVE_SLEEP_TIME){
+                drive->update();
+            }
+            // 
+            // Left right ultrasonics. 
+            dprint("Pole: ");
+            dprintln(currentData);
+            //
+            // Calculate how much to sleep to keep controller stable.
+            sleepTime = DRIVE_SLEEP_TIME - (millis() - startTime);
+            sleepTime = sleepTime > 0 ? sleepTime : 0;
+            delay(sleepTime);
+        } while (currentData - lastData > -POLE_DELTA_TOLERANCE || currentData > POLE_NOISE_CEIL);
+        //
+        // Do confirmation check on the pole measurement.
+        drive->stop();
+        confirmationCheckCount = POLE_CONFIRMATION_CHECK_COUNT;
+        confirmationCheckPassed = 0;
+
+        while (confirmationCheckCount > 0) {
+            // 
+            // Check if the measurement was not a mistake through a tolerance.
+            // Note that this uses raw data instead of median filter as it is verifying the raw data.
+            long meas = readUltrasonic(sensor, data);
+            dprint("Meas check: ");
+            dprintln(meas);
+            if (abs(meas - currentData) <= POLE_CONFIRMATION_TOLERANCE) {
+                confirmationCheckPassed++;
+            }
+            confirmationCheckCount--;
+        }
+    } while (confirmationCheckPassed < POLE_CONFIRMATION_CHECK_COUNT - POLE_CONFIRMATION_CHECK_FAIL_TOLERANCE);
+    // 
+    // May need to implement something to check if crashed. Also may need better method of handling false negative, maybe backing up.
+    dprintln("Pole found.");
+    drive->turnTheta(90);
 
     dprintln("//// State - exit locateDest.");
     return 0;
