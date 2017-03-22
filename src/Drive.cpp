@@ -105,10 +105,10 @@ int Drive::setOmega(float setOmega)
 
 int Drive::setReference(float setSpeed, float setOmega)
 {
-    setSpeed_ = setSpeed;
+    setSpeed_ = upsideDown_ * setSpeed;
     // 
     // Based on whether the robot is upside down change the direction of turning.
-    setOmega_ = /*upsideDown_ **/setOmega; 
+    setOmega_ = setOmega; 
     return 0;
 }
 
@@ -227,6 +227,7 @@ int Drive::setMotorSpeeds(float lCmd, float rCmd)
 int Drive::setUpsideDown(bool upsideDown)
 {
     upsideDown_ = upsideDown ? -1.0 : 1.0;
+    setSpeed_ *= -1.0f;
     return 0;
 }
 
