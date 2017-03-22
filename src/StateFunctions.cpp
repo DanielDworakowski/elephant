@@ -383,10 +383,49 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     poleCurrentData = max(min(poleData[0], poleData[1]), min(max(poleData[0], poleData[1]), poleData[2]));
     wallCurrentData = max(min(wallData[0], wallData[1]), min(max(wallData[0], wallData[1]), wallData[2]));
     initialLDist = wallCurrentData;
-    dprint("Pole: ");
-    dprint(poleCurrentData);
-    dprint(" Wall: ");
-    dprintln(wallCurrentData);
+
+    // Turn until it is parallel to some wall.
+    do {
+        drive->reset(30);
+        drive->turnTheta(10);
+
+        wallSensor->distanceMeasure();
+        wallData[0] = wallSensor->microsecondsToCentimeters();
+        delay(50);
+        wallSensor->distanceMeasure();
+        wallData[1] = wallSensor->microsecondsToCentimeters();
+        delay(50);
+        wallSensor->distanceMeasure();
+        wallData[2] = wallSensor->microsecondsToCentimeters();
+
+        wallLastData = wallCurrentData;
+        wallCurrentData = max(min(wallData[0], wallData[1]), min(max(wallData[0], wallData[1]), wallData[2]));
+        dprintln(wallCurrentData);
+    } while (wallCurrentData - wallLastData < 0 || wallCurrentData > WALL_MAX_DISTANCE);
+
+    // Turn until it is parallel to some wall.
+    while (wallCurrentData - wallLastData > 0 || wallCurrentData > WALL_MAX_DISTANCE) {
+        drive->reset(30);
+        drive->turnTheta(-10);
+
+        wallSensor->distanceMeasure();
+        wallData[0] = wallSensor->microsecondsToCentimeters();
+        delay(50);
+        wallSensor->distanceMeasure();
+        wallData[1] = wallSensor->microsecondsToCentimeters();
+        delay(50);
+        wallSensor->distanceMeasure();
+        wallData[2] = wallSensor->microsecondsToCentimeters();
+
+        wallLastData = wallCurrentData;
+        wallCurrentData = max(min(wallData[0], wallData[1]), min(max(wallData[0], wallData[1]), wallData[2]));
+        dprintln(wallCurrentData);
+    } 
+
+    // Undo the last turn. Should be parallel to the wall now.
+    drive->reset(30);
+    drive->turnTheta(10);
+    
     //
     // This outer while loop runs until the pole has been confirmed to be found.
     // If the confirmation check fails, it will loop back to going forward and searching (inner loop).
@@ -442,6 +481,7 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
         drive->stop();
         confirmationCheckCount = POLE_CONFIRMATION_CHECK_COUNT;
         confirmationCheckPassed = 0;
+
         while (confirmationCheckCount > 0) {
             poleSensor->distanceMeasure();
             // 
@@ -457,6 +497,7 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     // May need to implement something to check if crashed. Also may need better method of handling false negative, maybe backing up.
     dprintln("Pole found.");
     drive->turnTheta(-90);
+
     dprintln("//// State - exit locateDest.");
     return 0;
 }

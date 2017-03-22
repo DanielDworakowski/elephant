@@ -75,6 +75,9 @@
 // The tolerance of change between sum of ultrasonics and width of field to count as oriented. Should include distance between ultrasonics
 // Distance between ultrasonics = 20
 #define WALL_ORIENT_ULTRASONIC_TOLERANCE 25.0f
+//
+// Maximum distance to a wall when landed.
+#define WALL_MAX_DISTANCE 30.0f
 // 
 // The tolerance of change between measured data and subsequent measurements that counts as ramp
 #define RAMP_CONFIRMATION_TOLERANCE 15.0f
