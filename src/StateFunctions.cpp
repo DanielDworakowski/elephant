@@ -474,7 +474,7 @@ int StateFunctions::driveToDest(Drive *drive, IMU *imu)
         dprint(" newY: ");
         dprintln(imu->getGlobalY());
         delay(30);
-    } while (atDesitinationHelper(imu));
+    } while (!atDesitinationHelper(imu));
     drive->stop();
     return 0;
 }
