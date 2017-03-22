@@ -131,7 +131,10 @@ namespace StateFunctions
     // Function that helps orient the robot after jumping.
     int orientForwardIMU(Drive *drive, IMU *imu, float refYaw);
     // 
-    // State that searches for the destination.
+    // State that searches for the destination by driving parallel to the wall and looking to its right.
+    int locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox);
+    //
+    // State that searches for the destination by driving parallel to the ramp and looking to its left.
     int locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox);
     //
     // State that drives to destination
