@@ -309,12 +309,12 @@ bool atDesitinationHelper(IMU* imu, bool isUpsideDown)
     return false;
 }
 
-int locateDriveHelper(Drive *drive, float curDist, float setDist)
+int StateFunctions::locateDriveHelper(Drive *drive, float curDist, float setDist)
 {
-    // static PID distPID(LOCATE_P, LOCATE_I, LOCATE_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);
-    // float cmd = 0;
-    // cmd = distPID.getCmd(setDist, curDist);
-    // drive->setOmega(cmd);
+    static PID distPID(LOCATE_P, LOCATE_I, LOCATE_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);
+    float cmd = 0;
+    cmd = distPID.getCmd(setDist, curDist);
+    drive->setOmega(cmd);
     drive->update();
     return 0;
 }

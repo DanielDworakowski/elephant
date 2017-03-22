@@ -107,6 +107,9 @@ namespace StateFunctions
     // Help create the approach curve.
     int curveHelper(Drive *drive, uint32_t time);
     // 
+    // Help follow a wall.
+    int locateDriveHelper(Drive *drive, float curDist, float setDist);
+    // 
     // Approach the wall by a set distance.
     int approachAndStop(Drive *drive, VL53L0X* prox);
     // 
