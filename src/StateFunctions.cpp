@@ -294,13 +294,21 @@ int StateFunctions::checkUpsideDown(Drive *drive, VL53L0X *prox)
     return 0;
 }
 
-bool atDesitinationHelper(IMU* imu)
+bool atDesitinationHelper(IMU* imu, bool isUpsideDown)
 {   
-    static const float destinationYTol = -0.15;
-
+    float destinationYTol = -0.15;
+    // 
+    // Keep reading until success.
     while (imu->read() != 0) {};
-    if (imu->getGlobalY() < destinationYTol) {
-        return true;
+    if (!isUpsideDown) {
+        if (imu->getGlobalY() < destinationYTol) {
+            return true;
+        }
+    }
+    else {
+        if (imu->getGlobalY() > -destinationYTol) {
+            return true;
+        } 
     }
     return false;
 }
@@ -457,8 +465,11 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     return 0;
 }
 
-int StateFunctions::driveToDest(Drive *drive, IMU *imu)
+int StateFunctions::driveToDest(Drive *drive, IMU *imu, VL53L0X* prox)
 {   
+    //
+    // Check whether the robot is upside down. 
+    bool isUpsideDown = prox->isUpsideDown();
     // 
     // Start moving the robot. 
     drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
@@ -474,7 +485,7 @@ int StateFunctions::driveToDest(Drive *drive, IMU *imu)
         dprint(" newY: ");
         dprintln(imu->getGlobalY());
         delay(30);
-    } while (!atDesitinationHelper(imu));
+    } while (!atDesitinationHelper(imu, isUpsideDown));
     drive->stop();
     return 0;
 }
