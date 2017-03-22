@@ -129,7 +129,7 @@ namespace StateFunctions
     int locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox);
     //
     // State that drives to destination
-    int driveToDest(Drive *drive, IMU *imu);
+    int driveToDest(Drive *drive, IMU *imu, VL53L0X* prox);
     //
     // State that searches for destination using general algorithm
     int poleSearchGeneral(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox);

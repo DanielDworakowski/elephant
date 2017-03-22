@@ -230,18 +230,14 @@ int StateFunctions::orient(Drive *drive, VL53L0X *prox, Ultrasonic* ultrasonicL,
 
     long wallData[WALL_ORIENT_READ_COUNT];
     long wallCurrentData;
-    long wallLastData;
 
     long distanceToWall;
     long numberOfTurns = 360.0 / WALL_ORIENT_ANGLE;
     int turnCount = 0;
     int readCount = 0;
-    uint32_t startTime;
-
     //
     // Check if the robot is upside down. 
     isUpsideDown = prox->isUpsideDown();
-
     //
     //Determine which sensor is looking for pole.
     if (isUpsideDown) {
@@ -507,12 +503,7 @@ int StateFunctions::poleSearchGeneral(Drive *drive, Ultrasonic *ultrasonicLeft, 
     Ultrasonic *temp;
     int initIterations = 10;
     int multiplier = 1;
-    float leftValue;
-    float rightValue;
-    float previousLeftValue;
-    float previousRightValue;
     uint32_t startTime = millis();
-    uint32_t runTime = 10000;
     Serial.println("Pole Searching now");
     //
     //Determine which sensor is looking for pole.
