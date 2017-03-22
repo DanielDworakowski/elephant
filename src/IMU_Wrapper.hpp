@@ -25,6 +25,8 @@ class IMU {
         // 
         // Accelerometer information.
         float getGlobalZ(); // in G.
+        float getGlobalY(); // in G.
+        float getGlobalX(); // in G.
         bool isUpsideDown(); // Return if the robot is upside down.
         float getGravityX();
         float getGravityY();

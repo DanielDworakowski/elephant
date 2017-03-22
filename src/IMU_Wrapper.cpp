@@ -152,6 +152,16 @@ float IMU::getGlobalZ()
     return acelWorld_.z / accScale_;
 }
 
+float IMU::getGlobalY()
+{
+    return acelWorld_.y / accScale_;
+}
+
+float IMU::getGlobalX()
+{
+    return acelWorld_.x / accScale_;
+}
+
 bool IMU::isUpsideDown()
 {
     return (gravity_.z < 0.0f);
