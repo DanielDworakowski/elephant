@@ -97,6 +97,10 @@ int StateFunctions::curveHelper(Drive *drive, uint32_t turnTimer)
 int StateFunctions::approachAndStop(Drive *drive, VL53L0X* prox)
 {
     float meas[3];
+    uint32_t startTime = 0;
+    const uint32_t ignoreMeasTime = 500;
+    //
+    // Fill up the median filter. 
     for (int x = 0; x < 3; ++x) {
         meas[x] = prox->readRangeContinuousMillimeters();
     }
@@ -104,6 +108,12 @@ int StateFunctions::approachAndStop(Drive *drive, VL53L0X* prox)
     // 
     // Set the reference to be constant. 
     drive->setReference(-ROBOT_SPEED_MAX / 3.0, 0);
+    startTime = millis();
+    while (millis() - startTime < ignoreMeasTime) {
+        drive->update();
+    }
+    // 
+    // Begin checking for the wall, assumed to be in steady state and not wobling.
     while (measDist > WALL_JUMP_DIST_0_VEL) {
         meas[0] = meas[1];
         meas[1] = meas[2];
@@ -313,9 +323,15 @@ int StateFunctions::locateDriveHelper(Drive *drive, float curDist, float setDist
 {
     // static PID distPID(LOCATE_P, LOCATE_I, LOCATE_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);
     // float cmd = 0;
-    // cmd = distPID.getCmd(setDist, curDist);
+    // cmd = -distPID.getCmd(setDist, curDist);
     // drive->setOmega(cmd);
     drive->update();
+    // Serial.print("curDist: ");
+    // Serial.print(curDist);
+    // Serial.print(" setDist: ");
+    // Serial.print(setDist);
+    // Serial.print(" cmd: ");
+    // Serial.println(cmd);
     return 0;
 }
 
@@ -349,9 +365,9 @@ long readUltrasonic(Ultrasonic *sensor, long *data)
 long flushUltrasonicDataBuffer(Ultrasonic *sensor, long *data)
 {
     readUltrasonic(sensor, data);
-    delay(30);
+    // delay(30);
     readUltrasonic(sensor, data);
-    delay(30);
+    // delay(30);
     return readUltrasonic(sensor, data);
 }
 
@@ -479,7 +495,7 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
             sleepTime = DRIVE_SLEEP_TIME - (millis() - startTime);
             sleepTime = sleepTime > 0 ? sleepTime : 0;
             delay(sleepTime);
-        } while (abs(poleCurrentData - poleLastData) < POLE_DELTA_TOLERANCE || poleCurrentData > POLE_NOISE_CEIL);
+        } while (poleCurrentData - poleLastData > -POLE_DELTA_TOLERANCE || poleCurrentData > POLE_NOISE_CEIL);
         //
         // Do confirmation check on the pole measurement.
         drive->stop();
@@ -490,11 +506,14 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
             // 
             // Check if the measurement was not a mistake through a tolerance.
             // Note that this uses raw data instead of median filter as it is verifying the raw data.
-            if (abs(readUltrasonic(poleSensor, poleData) - poleCurrentData) <= POLE_CONFIRMATION_TOLERANCE) {
+            long meas = readUltrasonic(poleSensor, poleData);
+            dprint("Meas check: ");
+            dprintln(meas);
+            if (abs(meas - poleCurrentData) <= POLE_CONFIRMATION_TOLERANCE) {
                 confirmationCheckPassed++;
             }
             confirmationCheckCount--;
-            delay(30);
+            // delay(30);
         }
     } while (confirmationCheckPassed < POLE_CONFIRMATION_CHECK_COUNT - POLE_CONFIRMATION_CHECK_FAIL_TOLERANCE);
     // 

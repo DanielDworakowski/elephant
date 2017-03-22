@@ -26,7 +26,7 @@
 #define ORIENT_D 0.0f
 // 
 // PID parameters for location control.
-#define LOCATE_P 0.05f
+#define LOCATE_P 0.01f
 #define LOCATE_I 0.0f
 #define LOCATE_D 0.0f
 // 
@@ -49,10 +49,10 @@
 #define HEI_TOL 0.06f
 //
 // The tolerance of change in distance to count as finding the pole.
-#define POLE_DELTA_TOLERANCE 15.0f
+#define POLE_DELTA_TOLERANCE 10.0f
 // 
 // The ceiling of the noise.
-#define POLE_NOISE_CEIL 200.0f
+#define POLE_NOISE_CEIL 230.0f
 //
 // The tolerance of change in distance between the measured data and subsequent measurements that counts as the same.
 #define POLE_CONFIRMATION_TOLERANCE 15.0
@@ -61,7 +61,7 @@
 #define POLE_CONFIRMATION_CHECK_COUNT 3
 //
 // The number of times the confirmation check can fail (false negative).
-#define POLE_CONFIRMATION_CHECK_FAIL_TOLERANCE 1
+#define POLE_CONFIRMATION_CHECK_FAIL_TOLERANCE 0
 //
 // The angle for the robot to turn each time it's orienting
 #define WALL_ORIENT_ANGLE 5.0f
