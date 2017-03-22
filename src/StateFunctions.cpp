@@ -292,7 +292,7 @@ int StateFunctions::checkUpsideDown(Drive *drive, VL53L0X *prox)
 
 bool atDesitinationHelper(IMU* imu, bool isUpsideDown)
 {   
-    float destinationYTol = -0.15;
+    float destinationYTol = -0.25;
     // 
     // Keep reading until success.
     while (imu->read() != 0) {};

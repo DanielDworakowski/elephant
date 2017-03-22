@@ -77,7 +77,7 @@
 #define WALL_ORIENT_ULTRASONIC_TOLERANCE 25.0f
 //
 // Maximum distance to a wall when landed.
-#define WALL_MAX_DISTANCE 30.0f
+#define WALL_MAX_DISTANCE 50.0f
 // 
 // The tolerance of change between measured data and subsequent measurements that counts as ramp
 #define RAMP_CONFIRMATION_TOLERANCE 15.0f
