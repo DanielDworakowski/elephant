@@ -382,7 +382,6 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     // Compute median.
     poleCurrentData = max(min(poleData[0], poleData[1]), min(max(poleData[0], poleData[1]), poleData[2]));
     wallCurrentData = max(min(wallData[0], wallData[1]), min(max(wallData[0], wallData[1]), wallData[2]));
-    initialLDist = wallCurrentData;
 
     // Turn until it is parallel to some wall.
     do {
@@ -421,11 +420,14 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
         wallCurrentData = max(min(wallData[0], wallData[1]), min(max(wallData[0], wallData[1]), wallData[2]));
         dprintln(wallCurrentData);
     } 
-
+    // 
     // Undo the last turn. Should be parallel to the wall now.
     drive->reset(30);
     drive->turnTheta(10);
-    
+    // 
+    // Save the distance we want to keep using the PID
+    //  PUT CODE HERE.
+    initialLDist = wallCurrentData;
     //
     // This outer while loop runs until the pole has been confirmed to be found.
     // If the confirmation check fails, it will loop back to going forward and searching (inner loop).
