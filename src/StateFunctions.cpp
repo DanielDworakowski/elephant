@@ -566,7 +566,7 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
     }
     //
     // Get current data.
-    sensor = flushUltrasonicDataBuffer(sensor, data);
+    currentData = flushUltrasonicDataBuffer(sensor, data);
     //
     // Turn until it is parallel to some wall.
     do {
