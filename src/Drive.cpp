@@ -61,23 +61,23 @@ int Drive::update()
     }
     rMotorCommand_ = -1 * rVelocity_.getCmd(w_r_, calcR);
     lMotorCommand_ = -1 * lVelocity_.getCmd(w_l_, calcL);
-    // Serial.print(calcL);
-    // Serial.print("\t");
-    // Serial.print(calcR);
-    // Serial.print("\t");
-    // Serial.print(actYaw_);
-    // Serial.print("\t");
-    // Serial.print(desYaw_);
-    // Serial.print("\t");
-    // Serial.print(deltaT);
-    // Serial.print("\t");
-    // Serial.print(lastL_);
-    // Serial.print("\t");
-    // Serial.print(lastR_);
-    // Serial.print("\t");
-    // Serial.print(lMotorCommand_);
-    // Serial.print("\t");
-    // Serial.println(rMotorCommand_);
+    Serial.print(calcL);
+    Serial.print("\t");
+    Serial.print(calcR);
+    Serial.print("\t");
+    Serial.print(actYaw_);
+    Serial.print("\t");
+    Serial.print(desYaw_);
+    Serial.print("\t");
+    Serial.print(deltaT);
+    Serial.print("\t");
+    Serial.print(lastL_);
+    Serial.print("\t");
+    Serial.print(lastR_);
+    Serial.print("\t");
+    Serial.print(lMotorCommand_);
+    Serial.print("\t");
+    Serial.println(rMotorCommand_);
 
     return setMotorSpeeds(lMotorCommand_, rMotorCommand_);
 }

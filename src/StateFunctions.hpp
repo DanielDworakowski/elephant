@@ -100,9 +100,6 @@
 // 
 // The tolerance of change between measured data and subsequent measurements that counts as ramp
 #define RAMP_CONFIRMATION_TOLERANCE 15.0f
-// 
-// The outer limit tolerance of change between measured data and subsequent measurements that counts as pole
-#define RAMP_CONFIRMATION_TOLERANCE 30.0f
 //
 // Time for the IMU to stablize, in milliseconds.
 #define IMU_STABLIZE_TIME 2000

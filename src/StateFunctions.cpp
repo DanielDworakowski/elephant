@@ -322,6 +322,8 @@ bool atDesitinationHelper(IMU* imu, bool isUpsideDown)
 
 int StateFunctions::locateDriveHelper(Drive *drive, float curDist, float setDist)
 {
+    (void) curDist;
+    (void) setDist;
     // static PID distPID(LOCATE_P, LOCATE_I, LOCATE_D, ROBOT_SPEED_MAX, ROBOT_SPEED_MIN);
     // float cmd = 0;
     // cmd = -distPID.getCmd(setDist, curDist);
@@ -551,9 +553,9 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
     int initIterations = 10;
     uint32_t startTime = millis();
     int32_t sleepTime = 0;
-    float initialLDist = 0;
     int confirmationCheckCount = POLE_CONFIRMATION_CHECK_COUNT_ALTERNATIVE;
     int confirmationCheckPassed = 0;
+    const int32_t stepSize = 8;
 
     dprintln("//// State - enter locateDest.");
 
@@ -582,7 +584,7 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
     // Turn until it is parallel to some wall.
     do {
         drive->reset(30);
-        drive->turnTheta(10);
+        drive->turnTheta(stepSize);
         //
         // Have to flush the buffer again since this is facing a different direction now.
         // Want to apply the median filter only on values measured at this direction.
@@ -593,7 +595,7 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
     // Turn back and run the minimization algorithm backwards to ensure we are actually facing the minimum distance point.
     while (currentData - lastData > 0 || currentData > WALL_MAX_DISTANCE) {
         drive->reset(30);
-        drive->turnTheta(-10);
+        drive->turnTheta(-stepSize);
         //
         // Flushing the buffer for the same reason above.
         lastData = currentData;
@@ -602,18 +604,23 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
     // 
     // Undo the last turn. Should be parallel to the wall now.
     drive->reset(30);
-    drive->turnTheta(10);
+    drive->turnTheta(stepSize);
     //
     // Turn perpenticular to the wall.
     drive->reset(30);
-    drive->turnTheta(-90);
+    if (!isUpsideDown) {
+        drive->turnTheta(-92); // 92 to accomodate for backlash.
+    }
+    else {
+        drive->turnTheta(-85);
+    }
     //
     // This outer while loop runs until the pole has been confirmed to be found.
     // If the confirmation check fails, it will loop back to going forward and searching (inner loop).
     do {
         // 
         // Start moving.
-        drive->setReference(ROBOT_SPEED_MAX / 3.0, 0.0f);
+        drive->setReference(ROBOT_SPEED_MAX / 4.0, 0.0f);
         drive->update();
         //
         // Fill data buffer with latest data by flushing the buffer.
@@ -666,6 +673,8 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
     // 
     // May need to implement something to check if crashed. Also may need better method of handling false negative, maybe backing up.
     dprintln("Pole found.");
+#pragma message("Check if this is needed.")
+    drive->reset(30);
     drive->turnTheta(90);
     dprintln("//// State - exit locateDest.");
     return 0;
@@ -673,9 +682,10 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
 
 int StateFunctions::driveToDest(Drive *drive, VL53L0X* prox)
 {   
+    (void) prox;
     //
     // Check whether the robot is upside down. 
-    bool isUpsideDown = prox->isUpsideDown();
+    // bool isUpsideDown = prox->isUpsideDown();
     // 
     // Start moving the robot. 
     drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
@@ -724,106 +734,105 @@ long readUltrasonic(Ultrasonic *ultrasonic, int numberOfReadings)
     return max(min(reading[0], reading[1]), min(max(reading[0], reading[1]), reading[2]));
 }
 
-int StateFunctions::poleSearchGeneral(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox)
-{
-    Ultrasonic *temp;
-    int initIterations = 10;
-    int multiplier = 1;
-    uint32_t startTime = millis();
-    Serial.println("Pole Searching now");
-    //
-    //Determine which sensor is looking for pole.
-    if (prox->isUpsideDown()) {
-        temp = ultrasonicLeft;
-        ultrasonicLeft = ultrasonicRight;
-        ultrasonicRight = temp;
-        multiplier = -1;
-        Serial.println("UpsideDown");
-    }
-    else {
-        Serial.println("Not UpsideDown");
-    }
+// int StateFunctions::poleSearchGeneral(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox)
+// {
+//     Ultrasonic *temp;
+//     int initIterations = 10;
+//     uint32_t startTime = millis();
+//     Serial.println("Pole Searching now");
+//     //
+//     //Determine which sensor is looking for pole.
+//     if (prox->isUpsideDown()) {
+//         temp = ultrasonicLeft;
+//         ultrasonicLeft = ultrasonicRight;
+//         ultrasonicRight = temp;
+//         multiplier = -1;
+//         Serial.println("UpsideDown");
+//     }
+//     else {
+//         Serial.println("Not UpsideDown");
+//     }
 
-    // 
-    // The first few measurements of the sensor usually is very off.
-    // "Warm up" the sensor by measuring a few times.
-    while (--initIterations > 0) {
-        ultrasonicLeft->distanceMeasure();
-        ultrasonicRight->distanceMeasure();
+//     // 
+//     // The first few measurements of the sensor usually is very off.
+//     // "Warm up" the sensor by measuring a few times.
+//     while (--initIterations > 0) {
+//         ultrasonicLeft->distanceMeasure();
+//         ultrasonicRight->distanceMeasure();
 
-        delay(30);
-    }
+//         delay(30);
+//     }
 
-    //
-    // 2 solutions. 
-    // 1st is to follow wall, similar to method above
-    // 1a is to rotate till robot is parallel with side (can be either)
-    // Serial.println("Orient");
+//     //
+//     // 2 solutions. 
+//     // 1st is to follow wall, similar to method above
+//     // 1a is to rotate till robot is parallel with side (can be either)
+//     // Serial.println("Orient");
 
-    // do {
-    //     leftValue = readUltrasonic(ultrasonicLeft, WALL_ORIENT_READ_COUNT);
-    //     rightValue = readUltrasonic(ultrasonicRight, WALL_ORIENT_READ_COUNT);
-    //     drive->turnTheta(-3.0);
-    //     delay(50);
-    // } while (leftValue + rightValue - 240 > WALL_ORIENT_ULTRASONIC_TOLERANCE);
+//     // do {
+//     //     leftValue = readUltrasonic(ultrasonicLeft, WALL_ORIENT_READ_COUNT);
+//     //     rightValue = readUltrasonic(ultrasonicRight, WALL_ORIENT_READ_COUNT);
+//     //     drive->turnTheta(-3.0);
+//     //     delay(50);
+//     // } while (leftValue + rightValue - 240 > WALL_ORIENT_ULTRASONIC_TOLERANCE);
 
-    // Serial.println("Oriented");
-    // // 1b is to go straight till robot cant move anymore means either hit wall or boundary
-    // // Problems with running into the boundary on side with ramp
+//     // Serial.println("Oriented");
+//     // // 1b is to go straight till robot cant move anymore means either hit wall or boundary
+//     // // Problems with running into the boundary on side with ramp
 
-    // // Once oriented, go follow
+//     // // Once oriented, go follow
 
-    // drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
-    // drive->update();
-    // delay(8000);
+//     // drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
+//     // drive->update();
+//     // delay(8000);
 
-    // drive->turnTheta(180);
+//     // drive->turnTheta(180);
 
-    // leftValue = readUltrasonic(ultrasonicLeft, WALL_ORIENT_READ_COUNT);
-    // rightValue = readUltrasonic(ultrasonicRight, WALL_ORIENT_READ_COUNT);
+//     // leftValue = readUltrasonic(ultrasonicLeft, WALL_ORIENT_READ_COUNT);
+//     // rightValue = readUltrasonic(ultrasonicRight, WALL_ORIENT_READ_COUNT);
 
-    // do {
-    //     drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
-    //     drive->update();
+//     // do {
+//     //     drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
+//     //     drive->update();
 
-    //     previousLeftValue = leftValue;
-    //     previousRightValue = rightValue;
-    // } while (abs(previousLeftValue - leftValue) < RAMP_CONFIRMATION_TOLERANCE)
+//     //     previousLeftValue = leftValue;
+//     //     previousRightValue = rightValue;
+//     // } while (abs(previousLeftValue - leftValue) < RAMP_CONFIRMATION_TOLERANCE)
 
-    // TEST: Back up to wall
+//     // TEST: Back up to wall
 
-    // Drive straight for 10s
-    Serial.print("driving for 10s");
-    drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
-    drive->update();
+//     // Drive straight for 10s
+//     Serial.print("driving for 10s");
+//     drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
+//     drive->update();
 
-    startTime = millis();
-    do {
-        drive->update();
-        delay(30);
-    } while (millis() - startTime < 7000);
+//     startTime = millis();
+//     do {
+//         drive->update();
+//         delay(30);
+//     } while (millis() - startTime < 7000);
     
-    drive->setReference(-1.0 * ROBOT_SPEED_MAX / 2.0, 0.0f);
-    drive->update();
+//     drive->setReference(-1.0 * ROBOT_SPEED_MAX / 2.0, 0.0f);
+//     drive->update();
 
-    startTime = millis();
-    do {
-        drive->update();
-        delay(30);
-    } while (millis() - startTime < 2000);
+//     startTime = millis();
+//     do {
+//         drive->update();
+//         delay(30);
+//     } while (millis() - startTime < 2000);
 
-    // Turn 90 deg
-    Serial.println("Turning 90 degress");
-    drive->turnTheta(-90);
+//     // Turn 90 deg
+//     Serial.println("Turning 90 degress");
+//     drive->turnTheta(-90);
 
-    // Drive straight for 10s
-    drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
-    drive->update();
+//     // Drive straight for 10s
+//     drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
+//     drive->update();
 
-    startTime = millis();
-    do {
-        drive->update();
-        delay(30);
-    } while (millis() - startTime < 7000);
-    return 0;
-}
+//     startTime = millis();
+//     do {
+//         drive->update();
+//         delay(30);
+//     } while (millis() - startTime < 7000);
+//     return 0;
+// }

@@ -131,18 +131,19 @@ void loop()
 { 
     // 
     // Define objects.
-    VL53L0X prox;
     Adafruit_MotorShield motorShield;
     Drive drive(&gRightEncoderTicks, &gLeftEncoderTicks, motorShield.getMotor(2), motorShield.getMotor(1));
     motorShield.begin();
     drive.stop();
+    VL53L0X prox;
     // IMU imu(PIN::imuInterruptPin);
-    Ultrasonic ultrasonicRight(PIN::leftUltrasonicTrigPin, PIN::leftUltrasonicEchoPin);
-    Ultrasonic ultrasonicLeft(PIN::rightUltrasonicTrigPin, PIN::rightUltrasonicEchoPin);
+    Ultrasonic ultrasonicLeft(PIN::leftUltrasonicTrigPin, PIN::leftUltrasonicEchoPin);
+    Ultrasonic ultrasonicRight(PIN::rightUltrasonicTrigPin, PIN::rightUltrasonicEchoPin);
     // 
     // Begin sensing.
     setupProximity(prox);
     prox.startContinuous();
+    Serial.println("Before state-machine.");
     // 
     // Pole detection testing. 
     // {
@@ -171,22 +172,33 @@ void loop()
         // 
         // Begin the state machine.
         while (1) {
+            // 
+            // Wait for start.
             StateFunctions::waitForStartButton(motorShield.getMotor(3));
             drive.reset(30);
-            StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 5000);
-            drive.turnTheta(-90);
-            StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 1800);
-            drive.turnTheta(90);
-            StateFunctions::approachAndStop(&drive, &prox);
-            StateFunctions::jump(motorShield.getMotor(3), &drive);
             // 
-            // From this point on the robot is in a different configuration.
-            // The tunings of the controllers must reflect this. 
-            // drive.setPoleSearch();
-            // StateFunctions::checkUpsideDown(&drive, &prox);
-            // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
-            // drive.reset(30);
-            // StateFunctions::driveToDest(&drive, &imu, &prox);
+            // First half of course
+            {
+                // StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 5000);
+                // drive.turnTheta(-90);
+                // StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 1800);
+                // drive.turnTheta(90);
+                // StateFunctions::approachAndStop(&drive, &prox);
+                // StateFunctions::jump(motorShield.getMotor(3), &drive);
+            }
+            {
+                // 
+                // From this point on the robot is in a different configuration.
+                // The tunings of the controllers must reflect this. 
+                drive.setPoleSearch();
+                StateFunctions::checkUpsideDown(&drive, &prox);
+                StateFunctions::locateDestAlternative(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
+                // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
+                // drive.reset(30);
+                StateFunctions::driveToDest(&drive, &prox);
+            }
+            //
+            // Course complete.
             drive.stop();
         }
         
