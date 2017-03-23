@@ -661,7 +661,23 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
     return 0;
 }
 
-int StateFunctions::driveToDest(Drive *drive, IMU *imu, VL53L0X* prox)
+int StateFunctions::driveToDest(Drive *drive, VL53L0X* prox)
+{   
+    //
+    // Check whether the robot is upside down. 
+    bool isUpsideDown = prox->isUpsideDown();
+    // 
+    // Start moving the robot. 
+    drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
+    drive->update();
+    while (1) {
+        drive->update();
+        delay(30);
+    }
+    return 0;
+}
+
+int StateFunctions::driveToDestIMU(Drive *drive, IMU *imu, VL53L0X* prox)
 {   
     //
     // Check whether the robot is upside down. 
