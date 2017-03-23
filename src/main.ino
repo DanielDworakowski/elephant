@@ -187,17 +187,20 @@ void loop()
                 StateFunctions::jump(motorShield.getMotor(3), &drive);
             }
             {
-                // // 
-                // // From this point on the robot is in a different configuration.
-                // // The tunings of the controllers must reflect this. 
-                // drive.setPoleSearch();
-                // // StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 5000);
 
-                // StateFunctions::checkUpsideDown(&drive, &prox);
-                // StateFunctions::locateDestAlternative(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
-                // // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
-                // drive.reset(30);
-                // StateFunctions::driveToDest(&drive, &prox);
+                // 
+                // From this point on the robot is in a different configuration.
+                // The tunings of the controllers must reflect this. 
+                // Wait for 2 seconds to settle.
+                delay(2000);
+                drive.setPoleSearch();
+                // StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 5000);
+
+                StateFunctions::checkUpsideDown(&drive, &prox);
+                StateFunctions::locateDestAlternative(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
+                // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
+                drive.reset(30);
+                StateFunctions::driveToDest(&drive, &prox);
             }
             //
             // Course complete.
