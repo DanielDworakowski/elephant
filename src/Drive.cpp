@@ -91,6 +91,11 @@ int Drive::reset(uint32_t tDiff)
     actYaw_ = 0;
     *lEncoderCount_ = 0;
     *rEncoderCount_ = 0;
+    return resetControllers(tDiff);
+}
+
+int Drive::resetControllers(uint32_t tDiff)
+{
     lVelocity_.reset(tDiff);
     rVelocity_.reset(tDiff);
     yawControl_.reset(tDiff);

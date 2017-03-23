@@ -466,7 +466,6 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
         poleCurrentData = flushUltrasonicDataBuffer(poleSensor, poleData);
         wallLastData = wallCurrentData;
         wallCurrentData = flushUltrasonicDataBuffer(wallSensor, wallData);
-
         //
         // This inner loop drives and takes measurements until something that appears to be the pole is detected.
         do {
@@ -533,7 +532,6 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
     // May need to implement something to check if crashed. Also may need better method of handling false negative, maybe backing up.
     dprintln("Pole found.");
     drive->turnTheta(-90);
-
     dprintln("//// State - exit locateDest.");
     return 0;
 }
@@ -555,7 +553,7 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
     int32_t sleepTime = 0;
     int confirmationCheckCount = POLE_CONFIRMATION_CHECK_COUNT_ALTERNATIVE;
     int confirmationCheckPassed = 0;
-    const int32_t stepSize = 8;
+    const int32_t stepSize = 10;
 
     dprintln("//// State - enter locateDest.");
 
@@ -609,11 +607,12 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
     // Turn perpenticular to the wall.
     drive->reset(30);
     if (!isUpsideDown) {
-        drive->turnTheta(-92); // 92 to accomodate for backlash.
+        drive->turnTheta(-88); // 92 to accomodate for backlash.
     }
     else {
         drive->turnTheta(-85);
     }
+    drive->resetControllers(30);
     //
     // This outer while loop runs until the pole has been confirmed to be found.
     // If the confirmation check fails, it will loop back to going forward and searching (inner loop).

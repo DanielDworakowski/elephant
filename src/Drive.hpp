@@ -58,7 +58,7 @@
 // 
 // Tolerance for the rotation
 // #define YAW_TOLERANCE (5.0f * M_PI / 180.0f) // 2 degree tolerance.
-#define YAW_TOLERANCE 3.0f
+#define YAW_TOLERANCE 5.0f
 // 
 // The maximum and minimum motor speeds.
 // Given we have a 11.1V LiPo divide 255 max by 2.
@@ -92,6 +92,9 @@ class Drive {
         // 
         // Resets the time to now - tDiff, this prevents integration error.
         int reset(uint32_t tDiff);
+        // 
+        // Reset the controllers only (timing).
+        int resetControllers(uint32_t tDiff);
         // 
         // Make the robot drive straight from the current trajectory.
         int goStraight();
