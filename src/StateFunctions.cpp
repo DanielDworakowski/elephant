@@ -172,6 +172,7 @@ int StateFunctions::jump(Adafruit_DCMotor *jumpMotor, Drive* drive)
         drive->update();
     } while (millis() - startMotorRun < motorRunTime);
     jumpMotor->setSpeed(0);
+    drive->stop();
     return 0;
 }
 

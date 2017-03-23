@@ -127,19 +127,6 @@ void setup()
     setupPins();
 }
 
-
-// 
-// 
-// 
-// Add ramp up for the driving to the ramp
-// add ramp up for driving parallel to wall for testing.
-// test with other sensor to ensure that wall driving is doable. 
-// 
-// 
-// 
-
-
-
 void loop()
 { 
     // 
@@ -149,7 +136,7 @@ void loop()
     Drive drive(&gRightEncoderTicks, &gLeftEncoderTicks, motorShield.getMotor(2), motorShield.getMotor(1));
     motorShield.begin();
     drive.stop();
-    IMU imu(PIN::imuInterruptPin);
+    // IMU imu(PIN::imuInterruptPin);
     Ultrasonic ultrasonicRight(PIN::leftUltrasonicTrigPin, PIN::leftUltrasonicEchoPin);
     Ultrasonic ultrasonicLeft(PIN::rightUltrasonicTrigPin, PIN::rightUltrasonicEchoPin);
     // 
@@ -157,26 +144,52 @@ void loop()
     setupProximity(prox);
     prox.startContinuous();
     // 
-    // Begin the state machine.
-    while (1) {
-        StateFunctions::waitForStartButton(motorShield.getMotor(3));
-        drive.reset(30);
-        // StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 4000);
-        // drive.turnTheta(-90);
-        // StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 1500);
-        // drive.turnTheta(90);
-        // drive.goStraight();
-        StateFunctions::approachAndStop(&drive, &prox);
-        StateFunctions::jump(motorShield.getMotor(3), &drive);
+    // Pole detection testing. 
+    // {
+    //     while (1) {
+    //         StateFunctions::waitForStartButton(motorShield.getMotor(3));
+    //         drive.reset(30);
+    //         drive.setPoleSearch();
+    //         uint32_t setDist = 30;
+    //         uint32_t curDist = 0;
+    //         for (int x = 0; x < 20; ++x) {
+    //             ultrasonicLeft.distanceMeasure();
+    //             setDist = ultrasonicLeft.microsecondsToCentimeters();
+    //         }
+    //         drive.setReference(ROBOT_SPEED_MAX / 3.0f, 0);
+    //         while (1) {
+    //             ultrasonicLeft.distanceMeasure();
+    //             curDist = ultrasonicLeft.microsecondsToCentimeters();
+    //             StateFunctions::locateDriveHelper(&drive, curDist, setDist);
+    //             delay(30);
+    //         }
+    //     }
+    // }
+    // 
+    // End to end.
+    {
         // 
-        // From this point on the robot is in a different configuration.
-        // The tunings of the controllers must reflect this. 
-        drive.setPoleSearch();
-        StateFunctions::checkUpsideDown(&drive, &prox);
-        // drive.setPoleSearch();
-        // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
-        // StateFunctions::driveToDest(&drive, &imu);
-        drive.stop();
+        // Begin the state machine.
+        while (1) {
+            StateFunctions::waitForStartButton(motorShield.getMotor(3));
+            drive.reset(30);
+            StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 5000);
+            drive.turnTheta(-90);
+            StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 1800);
+            drive.turnTheta(90);
+            StateFunctions::approachAndStop(&drive, &prox);
+            StateFunctions::jump(motorShield.getMotor(3), &drive);
+            // 
+            // From this point on the robot is in a different configuration.
+            // The tunings of the controllers must reflect this. 
+            // drive.setPoleSearch();
+            // StateFunctions::checkUpsideDown(&drive, &prox);
+            // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
+            // drive.reset(30);
+            // StateFunctions::driveToDest(&drive, &imu, &prox);
+            drive.stop();
+        }
+        
     }
 }
  
