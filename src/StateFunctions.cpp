@@ -473,6 +473,11 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
             // Measure data and shift down data buffer.
             poleLastData = poleCurrentData;
             poleCurrentData = readUltrasonic(poleSensor, poleData);
+            //
+            // If the value is larger than the noise ceiling, disregard it and use previous value.
+            if (poleCurrentData > POLE_NOISE_CEIL) {
+                poleCurrentData = poleLastData;
+            }
             // 
             // Update the drive if needed.
             if ((millis() - startTime) > DRIVE_SLEEP_TIME){
@@ -482,6 +487,11 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
             // Measure and evaluate the right sensor.
             wallLastData = wallCurrentData;
             wallCurrentData = readUltrasonic(wallSensor, wallData);
+            //
+            // If the value is larger than the noise ceiling, disregard it and use previous value.
+            if (wallCurrentData > POLE_NOISE_CEIL) {
+                wallCurrentData = wallLastData;
+            }
             //
             // Use PID to drive parallel to the wall.
             locateDriveHelper(drive, wallCurrentData, initialLDist); // Drive->update() is called in here.
@@ -618,6 +628,11 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
             // Measure data and shift down data buffer.
             lastData = currentData;
             currentData = readUltrasonic(sensor, data);
+            //
+            // If the value is larger than the noise ceiling, disregard it and use previous value.
+            if (currentData > POLE_NOISE_CEIL_ALTERNATIVE) {
+                currentData = lastData;
+            }
             // 
             // Left right ultrasonics. 
             dprint("Pole: ");
@@ -628,7 +643,7 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
             sleepTime = DRIVE_SLEEP_TIME - (millis() - startTime);
             sleepTime = sleepTime > 0 ? sleepTime : 0;
             delay(sleepTime);
-        } while (currentData - lastData > -POLE_DELTA_TOLERANCE_ALTERNATIVE || currentData > POLE_NOISE_CEIL_ALTERNATIVE);
+        } while (currentData - lastData > -POLE_DELTA_TOLERANCE_ALTERNATIVE);
         //
         // Do confirmation check on the pole measurement.
         drive->stop();
