@@ -47,21 +47,40 @@
 // 
 // The tolerance for height detection.
 #define HEI_TOL 0.06f
-//
-// The tolerance of change in distance to count as finding the pole.
-#define POLE_DELTA_TOLERANCE 10.0f
 // 
-// The ceiling of the noise.
-#define POLE_NOISE_CEIL 230.0f
-//
-// The tolerance of change in distance between the measured data and subsequent measurements that counts as the same.
-#define POLE_CONFIRMATION_TOLERANCE 15.0
-//
-// The number of times to verify the pole search measurements before confirming there is indeed a pole there.
-#define POLE_CONFIRMATION_CHECK_COUNT 3
-//
-// The number of times the confirmation check can fail (false negative).
-#define POLE_CONFIRMATION_CHECK_FAIL_TOLERANCE 0
+// The non-alternative pole algorithm.
+    //
+    // The tolerance of change in distance to count as finding the pole.
+    #define POLE_DELTA_TOLERANCE 30.0f
+    // 
+    // The ceiling of the noise.
+    #define POLE_NOISE_CEIL 230.0f
+    //
+    // The tolerance of change in distance between the measured data and subsequent measurements that counts as the same.
+    #define POLE_CONFIRMATION_TOLERANCE 15.0
+    //
+    // The number of times to verify the pole search measurements before confirming there is indeed a pole there.
+    #define POLE_CONFIRMATION_CHECK_COUNT 3
+    //
+    // The number of times the confirmation check can fail (false negative).
+    #define POLE_CONFIRMATION_CHECK_FAIL_TOLERANCE 0
+// 
+// For alternative algorithm.
+    //
+    // The tolerance of change in distance to count as finding the pole.
+    #define POLE_DELTA_TOLERANCE_ALTERNATIVE 30.0f
+    // 
+    // The ceiling of the noise.
+    #define POLE_NOISE_CEIL_ALTERNATIVE 170.0f
+    //
+    // The tolerance of change in distance between the measured data and subsequent measurements that counts as the same.
+    #define POLE_CONFIRMATION_TOLERANCE_ALTERNATIVE 15.0
+    //
+    // The number of times to verify the pole search measurements before confirming there is indeed a pole there.
+    #define POLE_CONFIRMATION_CHECK_COUNT_ALTERNATIVE 5
+    //
+    // The number of times the confirmation check can fail (false negative).
+    #define POLE_CONFIRMATION_CHECK_FAIL_TOLERANCE_ALTERNATIVE 2
 //
 // The angle for the robot to turn each time it's orienting
 #define WALL_ORIENT_ANGLE 5.0f

@@ -227,7 +227,7 @@ int Drive::setMotorSpeeds(float lCmd, float rCmd)
 int Drive::setUpsideDown(bool upsideDown)
 {
     upsideDown_ = upsideDown ? -1.0 : 1.0;
-    setSpeed_ *= -1.0f;
+    setSpeed_ *= upsideDown_;
     return 0;
 }
 

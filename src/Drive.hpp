@@ -29,7 +29,7 @@
 // 
 // Right motor tuning.
 #define POLE_RIGHT_MOTOR_P 10.0f
-#define POLE_RIGHT_MOTOR_I 0.0f
+#define POLE_RIGHT_MOTOR_I 1.5f // 0.0f
 #define POLE_RIGHT_MOTOR_D 0.0f
 // 
 // Yaw control tuning.

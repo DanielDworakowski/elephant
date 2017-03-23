@@ -26,12 +26,12 @@ enum PIN: byte
     alignButtonPin = 53,
     //
     // SR04 Ultrasonic Sensor (left) --- NEEDS TO BE DEFINED
-    leftUltrasonicTrigPin = 7,
-    leftUltrasonicEchoPin = 6,
+    rightUltrasonicTrigPin = 7,
+    rightUltrasonicEchoPin = 6,
     //
     // RB90 Ultrasonic Sensor (right) --- NEEDS TO BE DEFINED
-    rightUltrasonicTrigPin = 4,
-    rightUltrasonicEchoPin = 3,
+    leftUltrasonicTrigPin = 4,
+    leftUltrasonicEchoPin = 3,
 };
 
 #endif

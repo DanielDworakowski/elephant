@@ -542,7 +542,7 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
     uint32_t startTime = millis();
     int32_t sleepTime = 0;
     float initialLDist = 0;
-    int confirmationCheckCount = POLE_CONFIRMATION_CHECK_COUNT;
+    int confirmationCheckCount = POLE_CONFIRMATION_CHECK_COUNT_ALTERNATIVE;
     int confirmationCheckPassed = 0;
 
     dprintln("//// State - enter locateDest.");
@@ -619,24 +619,20 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
             lastData = currentData;
             currentData = readUltrasonic(sensor, data);
             // 
-            // Update the drive if needed.
-            if ((millis() - startTime) > DRIVE_SLEEP_TIME){
-                drive->update();
-            }
-            // 
             // Left right ultrasonics. 
             dprint("Pole: ");
             dprintln(currentData);
+            drive->update();
             //
             // Calculate how much to sleep to keep controller stable.
             sleepTime = DRIVE_SLEEP_TIME - (millis() - startTime);
             sleepTime = sleepTime > 0 ? sleepTime : 0;
             delay(sleepTime);
-        } while (currentData - lastData > -POLE_DELTA_TOLERANCE || currentData > POLE_NOISE_CEIL);
+        } while (currentData - lastData > -POLE_DELTA_TOLERANCE_ALTERNATIVE || currentData > POLE_NOISE_CEIL_ALTERNATIVE);
         //
         // Do confirmation check on the pole measurement.
         drive->stop();
-        confirmationCheckCount = POLE_CONFIRMATION_CHECK_COUNT;
+        confirmationCheckCount = POLE_CONFIRMATION_CHECK_COUNT_ALTERNATIVE;
         confirmationCheckPassed = 0;
 
         while (confirmationCheckCount > 0) {
@@ -646,17 +642,16 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
             long meas = readUltrasonic(sensor, data);
             dprint("Meas check: ");
             dprintln(meas);
-            if (abs(meas - currentData) <= POLE_CONFIRMATION_TOLERANCE) {
+            if (abs(meas - currentData) <= POLE_CONFIRMATION_TOLERANCE_ALTERNATIVE) {
                 confirmationCheckPassed++;
             }
             confirmationCheckCount--;
         }
-    } while (confirmationCheckPassed < POLE_CONFIRMATION_CHECK_COUNT - POLE_CONFIRMATION_CHECK_FAIL_TOLERANCE);
+    } while (confirmationCheckPassed < POLE_CONFIRMATION_CHECK_COUNT_ALTERNATIVE - POLE_CONFIRMATION_CHECK_FAIL_TOLERANCE_ALTERNATIVE);
     // 
     // May need to implement something to check if crashed. Also may need better method of handling false negative, maybe backing up.
     dprintln("Pole found.");
     drive->turnTheta(90);
-
     dprintln("//// State - exit locateDest.");
     return 0;
 }
