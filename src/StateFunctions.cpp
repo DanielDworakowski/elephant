@@ -607,10 +607,10 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
     // Turn perpenticular to the wall.
     drive->reset(30);
     if (!isUpsideDown) {
-        drive->turnTheta(-88); // 92 to accomodate for backlash.
+        drive->turnTheta(-78); // 92 to accomodate for backlash.
     }
     else {
-        drive->turnTheta(-85);
+        drive->turnTheta(-75);
     }
     drive->resetControllers(30);
     //
@@ -736,102 +736,289 @@ long readUltrasonic(Ultrasonic *ultrasonic, int numberOfReadings)
 // int StateFunctions::poleSearchGeneral(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox)
 // {
 //     Ultrasonic *temp;
+//     Ultrasonic *tracker;
+//     float trackerValue;
+//     float previousTrackerValue;
 //     int initIterations = 10;
+//     int multiplier = 1;
+//     int numberOfSteps = 3;
+//     int turnCount = 0;
+//     int sampleSize = 10;
+//     float distanceToWall;
+//     float leftValue;
+//     float leftValueData[WALL_ORIENT_READ_COUNT];
+//     float rightValue;
+//     float previousLeftValue;
+//     float previousRightValue;
+//     float rotationAngle = -30;
+//     float diff = 0;
+//     float totalLength = 0;
+//     float samples[sampleSize];
+//     float minSample;
+//     long numberOfTurns = 360.0 / WALL_ORIENT_ANGLE;
 //     uint32_t startTime = millis();
+//     uint32_t sleepTime = millis();
+//     uint32_t runTime = 10000;
+//     bool ramp = false;
 //     Serial.println("Pole Searching now");
 //     //
 //     //Determine which sensor is looking for pole.
-//     if (prox->isUpsideDown()) {
-//         temp = ultrasonicLeft;
-//         ultrasonicLeft = ultrasonicRight;
-//         ultrasonicRight = temp;
-//         multiplier = -1;
-//         Serial.println("UpsideDown");
+//     if (isUpsideDown) {
+//         sensor = ultrasonicRight;
 //     }
 //     else {
-//         Serial.println("Not UpsideDown");
+//         sensor = ultrasonicLeft;
 //     }
-
 //     // 
 //     // The first few measurements of the sensor usually is very off.
 //     // "Warm up" the sensor by measuring a few times.
 //     while (--initIterations > 0) {
-//         ultrasonicLeft->distanceMeasure();
-//         ultrasonicRight->distanceMeasure();
-
+//         sensor->distanceMeasure();
 //         delay(30);
 //     }
 
-//     //
-//     // 2 solutions. 
-//     // 1st is to follow wall, similar to method above
-//     // 1a is to rotate till robot is parallel with side (can be either)
-//     // Serial.println("Orient");
+//     // Rotate while finding minima, taking in both sensor values. If sum < 240 & minima, then it's either wall or ramp.
+//     // If sum > 
+
+//     // for (turnCount = 0; turnCount < numberOfTurns; turnCount++) {
+//     //     drive->turnTheta(WALL_ORIENT_ANGLE);
+
+//     //     leftValue = readUltrasonic(ultrasonicLeft, WALL_ORIENT_READ_COUNT);
+//     //     distanceToWall = min(leftValue, distanceToWall);
+//     // }
+
+//     // do {
+//     //     drive->turnTheta(WALL_ORIENT_ANGLE);
+//     //     leftValue = readUltrasonic(ultrasonicLeft, WALL_ORIENT_READ_COUNT);
+//     // } while (abs(distanceToWall - leftValue) < WALL_ORIENT_TOLERANCE);
+
+//     // Finished turning
+
+
+
+//     drive->poleSearchTurn(-360, ultrasonicLeft, ultrasonicRight);
+
+
 
 //     // do {
 //     //     leftValue = readUltrasonic(ultrasonicLeft, WALL_ORIENT_READ_COUNT);
+//     //     rightValue = readUltrasonic(ultrasonicRight, WALL_ORIENT_READ_COUNT); 
+//     //     drive->turnTheta(-10);
+//     //     drive->reset(30);
+//     //     Serial.print(leftValue);
+//     //     Serial.print(" ");
+//     //     Serial.print(rightValue);
+//     //     Serial.println();
+//     // } while (leftValue + rightValue > 150);
+//     // Serial.println("FOUND");
+
+
+//     // leftValue = readUltrasonic(ultrasonicLeft, WALL_ORIENT_READ_COUNT);
+
+//     // minSample = leftValue;
+//     // rightValue = readUltrasonic(ultrasonicRight, WALL_ORIENT_READ_COUNT);
+
+//     // while (leftValue + rightValue > 150) {
+//     //     drive->turnTheta(-7);
+//     //     drive->update();
+
+//     //     leftValue = readUltrasonic(ultrasonicLeft, WALL_ORIENT_READ_COUNT);
 //     //     rightValue = readUltrasonic(ultrasonicRight, WALL_ORIENT_READ_COUNT);
-//     //     drive->turnTheta(-3.0);
-//     //     delay(50);
-//     // } while (leftValue + rightValue - 240 > WALL_ORIENT_ULTRASONIC_TOLERANCE);
+//     //     delay(30);
+//     // }
 
-//     // Serial.println("Oriented");
-//     // // 1b is to go straight till robot cant move anymore means either hit wall or boundary
-//     // // Problems with running into the boundary on side with ramp
+//     // // TEST: Back up to wall
 
-//     // // Once oriented, go follow
+//     // // Drive straight for 7s
+//     // Serial.print("driving for 3s");
+//     // drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
+//     // drive->update();
+
+//     // startTime = millis();
+//     // do {
+//     //     drive->update();
+//     //     delay(30);
+//     // } while (millis() - startTime < 6000);
+    
+//     // drive->reset(30);
+
+//     // Serial.println("going backwards");
+//     // drive->setReference(-ROBOT_SPEED_MAX / 2.0, 0.0f);
+//     // drive->update();
+
+//     // startTime = millis();
+//     // do {
+//     //     drive->update();
+//     //     delay(30);
+//     // } while (millis() - startTime < 1000);
+
+//     // // Turn 90 deg
+//     // Serial.println("Turning 90 degress");
+//     // drive->turnTheta(-90);
+
+//     // // Drive straight for 7s
+//     // Serial.println("driving for 3s");
 
 //     // drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
 //     // drive->update();
-//     // delay(8000);
 
-//     // drive->turnTheta(180);
+//     // startTime = millis();
+//     // do {
+//     //     drive->update();
+//     //     delay(30);
+//     // } while (millis() - startTime < 6000);
 
 //     // leftValue = readUltrasonic(ultrasonicLeft, WALL_ORIENT_READ_COUNT);
 //     // rightValue = readUltrasonic(ultrasonicRight, WALL_ORIENT_READ_COUNT);
 
+//     // if (leftValue < rightValue) {
+//     //     // left sensor next to edge
+//     //     tracker = ultrasonicRight;
+//     //     if (rightValue < 230) {
+//     //         if (rightValue < 140) {
+//     //             Serial.print("Under ramp");
+//     //             ramp = true;
+//     //         }
+//     //         else {
+//     //             if (rightValue > 200) {
+//     //                 Serial.print("Safe");
+//     //             }
+//     //             else {
+//     //                 Serial.print("Over ramp");
+//     //                 ramp = true;
+//     //             }
+//     //         }
+//     //     }
+//     //     else {
+//     //         Serial.print("Over ramp2");
+//     //         ramp = true;
+//     //     }
+//     // }
+//     // else {
+//     //     // right sensor next to edge
+//     //     tracker = ultrasonicLeft;
+//     //     if (leftValue < 230) {
+//     //         if (leftValue < 140) {
+//     //             Serial.print("Under ramp");
+//     //             ramp = true;
+//     //         }
+//     //         else {
+//     //             if (leftValue > 200) {
+//     //                 Serial.print("Safe");
+//     //             }
+//     //             else {
+//     //                 Serial.print("Over ramp");
+//     //                 ramp = true;
+//     //             }
+//     //         }
+//     //     }
+//     //     else {
+//     //         Serial.print("Over ramp2");
+//     //         ramp = true;
+//     //     }
+//     // }
+//     // Serial.print(" ");
+//     // Serial.print(rightValue);
+//     // Serial.println();
+//     // delay(3000);
+//     // drive->reset(30);
+//     // drive->setReference(-ROBOT_SPEED_MAX / 2.0, 0.0f);
+//     // drive->update();
+
+//     // startTime = millis();
 //     // do {
-//     //     drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
 //     //     drive->update();
-
-//     //     previousLeftValue = leftValue;
-//     //     previousRightValue = rightValue;
-//     // } while (abs(previousLeftValue - leftValue) < RAMP_CONFIRMATION_TOLERANCE)
-
-//     // TEST: Back up to wall
-
-//     // Drive straight for 10s
-//     Serial.print("driving for 10s");
-//     drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
-//     drive->update();
-
-//     startTime = millis();
-//     do {
-//         drive->update();
-//         delay(30);
-//     } while (millis() - startTime < 7000);
+//     //     delay(30);
+//     // } while (millis() - startTime < 1000);
+//     // drive->reset(30);
     
-//     drive->setReference(-1.0 * ROBOT_SPEED_MAX / 2.0, 0.0f);
-//     drive->update();
+//     // drive->turnTheta(180);
+//     // drive->stop();
+//     // drive->update();
+//     // drive->reset(30);
+//     // drive->update();
 
-//     startTime = millis();
-//     do {
-//         drive->update();
-//         delay(30);
-//     } while (millis() - startTime < 2000);
 
-//     // Turn 90 deg
-//     Serial.println("Turning 90 degress");
-//     drive->turnTheta(-90);
+//     // for (int i = 0; i < numberOfSteps; i++) {
+//     //     drive->setReference(ROBOT_SPEED_MAX / (numberOfSteps - i), 0.0f);
+//     //     drive->update();
+//     //     startTime = millis();
+//     //     do {
+//     //         delay(30);
+//     //     } while (millis() - startTime < 500);
+//     //     drive->reset(30);
+//     // }
 
-//     // Drive straight for 10s
-//     drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
-//     drive->update();
+//     // drive->setReference(ROBOT_SPEED_MAX / 2.0, 0.0f);
+//     // drive->update();
 
-//     startTime = millis();
-//     do {
-//         drive->update();
-//         delay(30);
-//     } while (millis() - startTime < 7000);
-//     return 0;
+//     // trackerValue = readUltrasonic(tracker, WALL_ORIENT_READ_COUNT);
+//     // do {
+//     //     drive->update();
+//     //     previousTrackerValue = trackerValue;
+//     //     trackerValue = readUltrasonic(tracker, WALL_ORIENT_READ_COUNT);
+//     //     if (ramp) {
+//     //         startTime = millis();
+//     //         do {
+//     //             drive->update();
+//     //             delay(30);
+//     //         } while (millis() - startTime < 2000);
+
+//     //         ramp = false;
+//     //     }
+//     //     delay(30);
+//     // } while (abs(previousTrackerValue - trackerValue) < WALL_ORIENT_ANGLE);
+//     // drive->reset(30);
+//     // rotationAngle = atan((trackerValue + 15.0f) / (ULTRASONIC_SEPARATION_DISTANCE / 2)) * 180 / M_PI;
+//     // Serial.print("FOUND. Rotation angle: ");
+//     // Serial.println(rotationAngle);
+//     // Serial.println("Rotating now");
+//     // drive->turnTheta(rotationAngle);
+//     // Serial.println("Finished rotating");
+
+    
+
+
+//     // // 2. Rotate robot 360 deg till pole is found, then turn X degree to that and go straight to it
+//     // rightValue = readUltrasonic(ultrasonicRight, WALL_ORIENT_READ_COUNT);
+
+//     // Serial.println("Start searching");
+
+//     // do {
+//     //     Serial.println(readUltrasonic(ultrasonicRight, WALL_ORIENT_READ_COUNT));
+//     //     delay(400);
+//     // } while (1);
+
+//     // do {
+//     //     Serial.print("Searching");
+//     //     drive->turnTheta(8);
+//     //     Serial.print(" Turned ");
+//     //     startTime = millis();
+        
+//     //     previousRightValue = rightValue;
+//     //     rightValue = readUltrasonic(ultrasonicRight, WALL_ORIENT_READ_COUNT);
+//     //     Serial.print(previousRightValue);
+//     //     Serial.print(" ");
+//     //     Serial.print(rightValue);
+//     //     if (millis() - startTime > DRIVE_SLEEP_TIME){
+//     //         drive->update();
+//     //     }
+//     //     Serial.print(" ");
+//     //     Serial.print(previousRightValue - rightValue);
+//     //     Serial.println();
+//     //     diff = previousRightValue - rightValue;
+//     // } while (abs(diff) < 15.0f);
+
+
+//     // rotationAngle = atan((rightValue + 15.0f) / (ULTRASONIC_SEPARATION_DISTANCE / 2)) * 180 / M_PI;
+//     // Serial.print("Pole found. Rotation Angle:");
+//     // Serial.print(rotationAngle);
+//     // Serial.println();
+//     // startTime = millis();
+
+//     // sleepTime = DRIVE_SLEEP_TIME - (millis() - startTime);
+//     // sleepTime = sleepTime > 0 ? sleepTime : 0;
+//     // delay(sleepTime);
+//     // // drive->turnTheta(rotationAngle);
+//     // Serial.println("Finished turning");
 // }

@@ -175,12 +175,13 @@ void loop()
             // 
             // Wait for start.
             StateFunctions::waitForStartButton(motorShield.getMotor(3));
+            delay(1000);
             drive.reset(30);
             // 
             // First half of course
             {
                 StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 5000);
-                drive.turnTheta(-90);
+                drive.turnTheta(-80);
                 StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 1800);
                 drive.turnTheta(90);
                 StateFunctions::approachAndStop(&drive, &prox);
