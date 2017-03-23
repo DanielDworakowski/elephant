@@ -180,23 +180,20 @@ void loop()
             // 
             // First half of course
             {
-                StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 5000);
-                drive.turnTheta(-80);
-                StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 1800);
-                drive.turnTheta(90);
-                StateFunctions::approachAndStop(&drive, &prox);
-                StateFunctions::jump(motorShield.getMotor(3), &drive);
+                // StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 5000);
+                // drive.turnTheta(-80);
+                // StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 1500);
+                // drive.turnTheta(85);
+                // StateFunctions::approachAndStop(&drive, &prox);
+                // StateFunctions::jump(motorShield.getMotor(3), &drive);
             }
             {
-
                 // 
                 // From this point on the robot is in a different configuration.
                 // The tunings of the controllers must reflect this. 
                 // Wait for 2 seconds to settle.
-                delay(2000);
+                // delay(2000);
                 drive.setPoleSearch();
-                // StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3, 5000);
-
                 StateFunctions::checkUpsideDown(&drive, &prox);
                 StateFunctions::locateDestAlternative(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
                 // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);

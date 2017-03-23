@@ -607,12 +607,19 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
     // Turn perpenticular to the wall.
     drive->reset(30);
     if (!isUpsideDown) {
-        drive->turnTheta(-78); // 92 to accomodate for backlash.
+        drive->turnTheta(-90); // 92 to accomodate for backlash.
     }
     else {
-        drive->turnTheta(-75);
+        drive->turnTheta(-85);
     }
-    drive->resetControllers(30);
+    drive->reset(30);
+    startTime = millis();
+    drive->setReference(-ROBOT_SPEED_MAX / 4.0f, 0);
+    while (millis() - startTime < 3000) {
+        drive->update();
+        delay(30);
+    }
+    drive->reset(30);
     //
     // This outer while loop runs until the pole has been confirmed to be found.
     // If the confirmation check fails, it will loop back to going forward and searching (inner loop).
