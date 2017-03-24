@@ -129,7 +129,7 @@ int Drive::driveDist(float setSpeed, float setOmega, float driveDist)
     while (abs(distToTravel) > driveDistTol) {
         // 
         // Check if we have missed the target.
-        distToTravel = driveDist - getDistTravelled();
+        distToTravel = driveDist - upsideDown_ * getDistTravelled();
         if (distToTravel > driveDistTol && setSpeed < 0) {
             break;
         }
