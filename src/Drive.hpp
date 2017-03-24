@@ -128,6 +128,12 @@ class Drive {
         // 
         // Set whether the robot is upside down to invert control. 
         int setUpsideDown(bool upsideDown);
+        // 
+        // Get the distance that has been travelled.
+        float getDistTravelled();
+        // 
+        // Drive for a set distance. 
+        int driveDist(float setSpeed, float setOmega, float driveDist);
 
     private:
         // 

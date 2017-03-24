@@ -98,6 +98,7 @@ int StateFunctions::approachAndStop(Drive *drive, VL53L0X* prox)
 {
     float meas[3];
     uint32_t startTime = 0;
+    uint32_t sleepTime = 0;
     const uint32_t ignoreMeasTime = 500;
     //
     // Fill up the median filter. 
@@ -107,19 +108,27 @@ int StateFunctions::approachAndStop(Drive *drive, VL53L0X* prox)
     float measDist = max(min(meas[0], meas[1]), min(max(meas[0], meas[1]), meas[2]));
     // 
     // Set the reference to be constant. 
-    drive->setReference(-ROBOT_SPEED_MAX / 3.0, 0);
+    drive->setReference(-ROBOT_SPEED_MAX / 3.5f, 0);
     startTime = millis();
     while (millis() - startTime < ignoreMeasTime) {
         drive->update();
+        delay(30);
     }
     // 
     // Begin checking for the wall, assumed to be in steady state and not wobling.
     while (measDist > WALL_JUMP_DIST_0_VEL) {
+        startTime = millis();
         meas[0] = meas[1];
         meas[1] = meas[2];
         meas[2] = prox->readRangeContinuousMillimeters();
         measDist = max(min(meas[0], meas[1]), min(max(meas[0], meas[1]), meas[2]));
         drive->update();
+        Serial.print("Update time: ");
+        Serial.println(millis() - startTime);
+        // sleepTime = DRIVE_SLEEP_TIME - (millis() - startTime);
+        // sleepTime = sleepTime > 0 ? sleepTime : 0;
+        // delay(sleepTime);
+        // delay(30);
     }
     drive->stop();
     delay(3000);
@@ -165,7 +174,7 @@ int StateFunctions::jump(Adafruit_DCMotor *jumpMotor, Drive* drive)
     // Run the motor forwards until acceleration is detected.
     jumpMotor->run(BACKWARD);
     jumpMotor->setSpeed(255);
-    delay(700);
+    delay(1100);
     drive->setReference(ROBOT_SPEED_MAX, 0.0f);
     startMotorRun = millis();
     do {
