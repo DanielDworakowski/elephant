@@ -550,7 +550,7 @@ int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultraso
  *  Continues driving until either of the ultrasonics detect a large difference in measurement.
  *  Then the robot turns and runs perpenticular to the ramp.
  */
-int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox)
+int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox, uint32_t &poleDist)
 {   
     Ultrasonic *sensor;
     bool isUpsideDown;
@@ -691,6 +691,9 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
 #pragma message("Check if this is needed.")
     drive->reset(30);
     drive->turnTheta(90);
+    // 
+    // Save the current pole distance to pass to the next state.
+    poleDist = currentData;
     dprintln("//// State - exit locateDest.");
     return 0;
 }

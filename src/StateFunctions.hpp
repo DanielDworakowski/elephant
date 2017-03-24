@@ -151,7 +151,7 @@ namespace StateFunctions
     int locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox);
     //
     // State that searches for the destination by driving parallel to the ramp and looking to its left.
-    int locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox);
+    int locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox, uint32_t &poleDist);
     //
     // State that drives to destination
     int driveToDest(Drive *drive, VL53L0X* prox);
