@@ -132,6 +132,7 @@ void loop()
     // 
     // Define objects.
     Adafruit_MotorShield motorShield;
+    uint32_t poleDist = 0;
     Drive drive(&gRightEncoderTicks, &gLeftEncoderTicks, motorShield.getMotor(2), motorShield.getMotor(1));
     motorShield.begin();
     drive.stop();
@@ -179,28 +180,28 @@ void loop()
             drive.reset(30);
             // 
             // First half of course
-            // {    
-                drive.driveDist(ROBOT_SPEED_MAX / 4.0f, 0.0f, 100);
-            //     StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3.0f, 5000);
-            //     drive.turnTheta(-90);
-            //     StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3.0f, 1500);
-            //     drive.turnTheta(90);
-            //     StateFunctions::approachAndStop(&drive, &prox);
-            //     StateFunctions::jump(motorShield.getMotor(3), &drive);
-            // }
-            // {
-            //     // 
-            //     // From this point on the robot is in a different configuration.
-            //     // The tunings of the controllers must reflect this. 
-            //     // Wait for 2 seconds to settle.
-            //     delay(2000);
-            //     drive.setPoleSearch();
-            //     StateFunctions::checkUpsideDown(&drive, &prox);
-            //     StateFunctions::locateDestAlternative(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
-            //     // StateFunctions::locateDest(&drive, &ultrasonicLeft, &ultrasonicRight, &prox);
-            //     drive.reset(30);
-            //     StateFunctions::driveToDest(&drive, &prox);
-            // }
+            {    
+                StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3.0f, 5000);
+                drive.turnTheta(-90);
+                StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3.0f, 1500);
+                drive.turnTheta(90);
+                StateFunctions::approachAndStop(&drive, &prox);
+            }
+// 
+// !!!!!IMPORTANT CODE!!!!!
+StateFunctions::jump(motorShield.getMotor(3), &drive);
+            {
+                // <3
+                // From this point on the robot is in a different configuration.
+                // The tunings of the controllers must reflect this. 
+                // Wait for 2 seconds to settle.
+                delay(2000);
+                drive.setPoleSearch();
+                StateFunctions::checkUpsideDown(&drive, &prox);
+                StateFunctions::locateDestAlternative(&drive, &ultrasonicLeft, &ultrasonicRight, &prox, poleDist);
+                drive.reset(30);
+                drive.driveDist(ROBOT_SPEED_MAX / 2.0, 0, poleDist + 5.0);
+            }
             //
             // Course complete.
             drive.stop();
