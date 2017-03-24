@@ -172,6 +172,7 @@ int StateFunctions::jump(Adafruit_DCMotor *jumpMotor, Drive* drive)
     uint32_t startMotorRun = 0;
     // 
     // Run the motor forwards until acceleration is detected.
+    drive->reset(30);
     jumpMotor->run(BACKWARD);
     jumpMotor->setSpeed(255);
     delay(1100);

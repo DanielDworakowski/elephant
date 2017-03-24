@@ -176,6 +176,7 @@ void loop()
             // 
             // Wait for start.
             StateFunctions::waitForStartButton(motorShield.getMotor(3));
+            drive.setUpsideDown(false);
             delay(1000);
             drive.reset(30);
             // 
@@ -187,20 +188,26 @@ void loop()
                 drive.turnTheta(90);
                 StateFunctions::approachAndStop(&drive, &prox);
             }
+
+
+
 // 
 // !!!!!IMPORTANT CODE!!!!!
 StateFunctions::jump(motorShield.getMotor(3), &drive);
+//
+// From this point on the robot is in a different configuration.
+// The tunings of the controllers must reflect this. 
+// Wait for 2 seconds to settle.
+delay(2000);
+drive.reset(30);
+
+
             {
-                // <3
-                // From this point on the robot is in a different configuration.
-                // The tunings of the controllers must reflect this. 
-                // Wait for 2 seconds to settle.
-                delay(2000);
                 drive.setPoleSearch();
                 StateFunctions::checkUpsideDown(&drive, &prox);
                 StateFunctions::locateDestAlternative(&drive, &ultrasonicLeft, &ultrasonicRight, &prox, poleDist);
                 drive.reset(30);
-                drive.driveDist(ROBOT_SPEED_MAX / 2.0, 0, poleDist + 5.0);
+                drive.driveDist(ROBOT_SPEED_MAX / 2.0, 0, poleDist + 8.0);
             }
             //
             // Course complete.
