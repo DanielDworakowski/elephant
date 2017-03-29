@@ -1,0 +1,170 @@
+% uw-wkrpt-ece.tex - An example work report that uses uw-wkrpt.cls
+% Copyright (C) 2002,2003  Simon Law
+% 
+% This program is free software; you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation; either version 2 of the License, or
+% (at your option) any later version.
+% 
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+% 
+% You should have received a copy of the GNU General Public License
+% along with this program; if not, write to the Free Software
+% Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[ece]{uw-wkrpt}
+
+\usepackage{graphicx} % Include graphic importing
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+\let\oldsection\section
+\renewcommand\section{\clearpage\oldsection}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% IMPORTANT INFORMATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Final Design Report}
+
+% Authors.
+\author{Daniel Dworakowski}
+\uwid{Rae Jeong}
+\email{Nhat Le}
+\authortwo{Ji-Won Park}
+\authorthree{Fan Zhang}
+\employer{MTE 380 – Mechatronics Engineering Design Workshop}
+\school{University of Waterloo}
+\faculty{Mechatronics Engineering}
+\term{3B}
+\program{Mechatronics Engineering}
+\address{University of Waterloo,\\*
+        Waterloo, ON\ \ N2L 3G1}
+\employeraddress{}
+\chair{Dr. Bill Owen}
+\chairaddress{University of Waterloo,\\*
+        Waterloo, ON\ \ N2L 3G1}
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% FRONT MATTER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frontmatter
+
+% After this, we must create a letter of submission.
+\begin{letter}
+Group 12, consisting of D. Dworakowski, R. Jeong, N. Le, J. Park, F. Zhang, is submitting this report for review.
+
+Members are responsible to work collaboratively and competitively, applying the design process to fulfill the project’s goal. The goal this term involves designing and building a device to go over a wall and delivering a package. The detailed design analysis, selection of material and parts, and final CAD drawings are outlined in this report. The purpose of this report is to present the detailed design and the analysis of the robot.
+
+In this project, the group aims to study and apply the design process in a multidisciplinary environment. Members will make decisions and evaluate trade-offs by applying knowledge from different courses. Likewise, students will develop further interpersonal skills, such as leadership and teamwork. This engineering challenge will give group members the experience they need to go through a full design process. This ultimately provides an opportunity to produce a useful and interesting product.
+
+Group 12 believes that this project provides an opportunity to gain the skills required to be an effective engineer. To that end, all the students in group 12 are aware of the University of Waterloo’s academic integrity policy 71 – ‘student discipline’ and have been and will be following it throughout this project. Non-original ideas will be credited and cited to the original author.
+
+\end{letter}
+
+\section{Executive Summary}\label{sec:summary}
+Citizens live in the region between the inner and outer walls, making them vulnerable to attacks from monsters beyond the wall. The inner city needs a safe, efficient, and autonomous method to deliver supplies over a wall to those in need in case of emergency. This report outlines the design analysis and parts selection to build a device capable of solving this problem. The report explores design analysis in the fields of mechanical, electrical and controls engineering of a robot capable of jumping over obstacles. Engineering design analysis techniques such as stress analysis, differential dynamics modelling, kinematic analysis and simulations facilitate analysis and evaluation of design choices. Project management techniques such as work breakdown structure divides a complex problem into small and solvable tasks. Using the bill of materials, a budget of 500 Canadian dollars is requested. Responsibility of design analysis and calculations are shared by discussing the strengths and interests of each team member. Gantt charts aid in prioritizing those tasks to meet important milestones along the project. Given the progress of the project so far, estimates were made for important milestones to project completion, including a construction check in week 9, with completion being projected in week 12. Currently, an initial prototype has been created and tested to ensure the viability of the project. In conclusion, the team makes detailed engineering design decisions that are either theoretically guaranteed to perform correctly or are experimentally tested to ensure the proper functionality.
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% REPORT BODY
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\mainmatter
+
+\section{Introduction and Background}
+
+\subsection{General Background}
+
+\subsection{Problem Forumulation}
+
+\subsubsection{Problem Definition}
+
+\subsubsection{Desired Functions and Goals}
+
+% 
+% How are our objectives and contraints met + restate?
+\subsubsection{Constraints}
+
+\subsubsection{Objectives}
+
+% 
+% Needed? 
+\subsubsection{Design Selection Criteria}
+
+% 
+% What worked and what didnt?
+\subsection{Review of the Selected Design}
+
+\section{Project Management}
+
+% 
+% Was it complete on time? why?
+\subsection{Schedule}
+
+% 
+% Was it under budget? why?
+\subsection{Budget}
+
+\subsubsection{Bill of Material}
+
+\subsubsection{Cost analysis}
+
+
+\section{Final Design}
+
+\subsection{Mechanical}
+
+\subsubsection{Key Features}
+\subsubsection{Design Exploration}
+\subsubsection{Testing}
+\subsubsection{Predicted Results Vs. Actual}
+\subsubsection{Lessons Learned}
+
+\subsection{Electrical}
+
+\subsubsection{Key Features}
+\subsubsection{Design Exploration}
+\subsubsection{Testing}
+\subsubsection{Predicted Results Vs. Actual}
+\subsubsection{Lessons Learned}
+
+\subsection{Control}
+
+\subsubsection{Key Features}
+\subsubsection{Design Exploration}
+\subsubsection{Testing}
+\subsubsection{Predicted Results Vs. Actual}
+\subsubsection{Lessons Learned}
+
+\section{Competition Result Analysis}
+
+\section{Conclusions}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% BACK MATTER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begingroup
+\raggedright
+\sloppy
+\bibliography{uw-wkrpt-bib}
+\endgroup
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% APPENDICES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+
+\end{document}
