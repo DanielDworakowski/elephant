@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  28 MAR 2017 20:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  29 MAR 2017 00:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -272,11 +272,11 @@ Missing character: There is no â in font cmr12!
 Missing character: There is no € in font cmr12!
 Missing character: There is no ™ in font cmr12!
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 71.
+(Font)              <12> on input line 72.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 71.
+(Font)              <8> on input line 72.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 71.
+(Font)              <6> on input line 72.
 
 [2
 
@@ -312,37 +312,64 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
 ] [4
 
-] [5
+]
+<res/380ModelForWheel.pdf, id=41, 767.86874pt x 262.9825pt>
+File: res/380ModelForWheel.pdf Graphic file (type pdf)
 
-] [6
+<use res/380ModelForWheel.pdf>
+Package pdftex.def Info: res/380ModelForWheel.pdf used on input line 145.
+(pdftex.def)             Requested size: 397.48499pt x 136.1337pt.
+ <res/diagram.png, id=42, 794.97pt x 614.295pt>
+File: res/diagram.png Graphic file (type png)
 
-] [7
+<use res/diagram.png>
+Package pdftex.def Info: res/diagram.png used on input line 155.
+(pdftex.def)             Requested size: 397.48499pt x 307.15611pt.
+ [5
+
+ <./res/380ModelForWheel.pdf>] [6 <./res/diagram.png>]
+<res/yawController.pdf, id=59, 728.7225pt x 184.69pt>
+File: res/yawController.pdf Graphic file (type pdf)
+
+<use res/yawController.pdf>
+Package pdftex.def Info: res/yawController.pdf used on input line 182.
+(pdftex.def)             Requested size: 397.48499pt x 100.73999pt.
+ [7 <./res/yawController.pdf>] [8] [9] [10
+
+] [11
+
+]
+[12
 
 ] (./finalReport.bbl
 
 LaTeX Warning: Empty `thebibliography' environment on input line 3.
 
-) [8
+) [13
 
 
 ] (./finalReport.aux) ) 
 Here is how much of TeX's memory you used:
- 2835 strings out of 493089
- 40620 string characters out of 6134842
- 113861 words of memory out of 5000000
- 6275 multiletter control sequences out of 15000+600000
+ 2856 strings out of 493089
+ 41054 string characters out of 6134842
+ 113885 words of memory out of 5000000
+ 6291 multiletter control sequences out of 15000+600000
  9456 words of font info for 33 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  37i,6n,23p,1628b,277s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/a
 msfonts/cm/cmbx12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmcsc10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmr12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmr17.pfb>
-Output written on finalReport.pdf (15 pages, 62818 bytes).
+sfonts/cm/cmex10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmmi12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmmi8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmr12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmr17.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmsy10.pfb>
+Output written on finalReport.pdf (20 pages, 190882 bytes).
 PDF statistics:
- 69 PDF objects out of 1000 (max. 8388607)
- 47 compressed objects within 1 object stream
+ 112 PDF objects out of 1000 (max. 8388607)
+ 77 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 16 words of extra memory for PDF output out of 10000 (max. 10000000)
 
