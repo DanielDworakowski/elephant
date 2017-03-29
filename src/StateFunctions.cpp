@@ -387,168 +387,6 @@ long flushUltrasonicDataBuffer(Ultrasonic *sensor, long *data)
 /*
  *  Parameters: pointer to drive motor interface instance, pointer to left and right ultrasonic interface.
  *  Continues driving until either of the ultrasonics detect a large difference in measurement.
- *  Then the robot turns in that direction and looks for the pole on the right side.
- */
-int StateFunctions::locateDest(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox)
-{   
-    Ultrasonic *poleSensor;
-    Ultrasonic *wallSensor;
-    bool isUpsideDown;
-    long poleData[3] = {0, 0, 0};
-    long poleCurrentData;
-    long poleLastData;
-    long wallData[3] = {0, 0, 0};
-    long wallCurrentData;
-    long wallLastData;
-    int initIterations = 10;
-    uint32_t startTime = millis();
-    int32_t sleepTime = 0;
-    float initialLDist = 0;
-    int confirmationCheckCount = POLE_CONFIRMATION_CHECK_COUNT;
-    int confirmationCheckPassed = 0;
-
-    dprintln("//// State - enter locateDest.");
-
-    //
-    // Check if the robot is upside down. 
-    isUpsideDown = prox->isUpsideDown();
-    //
-    //Determine which sensor is looking for pole.
-    if (isUpsideDown) {
-        poleSensor = ultrasonicLeft;
-        wallSensor = ultrasonicRight;
-    }
-    else {
-        poleSensor = ultrasonicRight;
-        wallSensor = ultrasonicLeft;
-    }
-    // 
-    // The first few measurements of the sensor usually is very off.
-    // "Warm up" the sensor by measuring a few times.
-    while (--initIterations > 0) {
-        wallSensor->distanceMeasure();
-        poleSensor->distanceMeasure();
-        delay(30);
-    }
-    //
-    // Get current data.
-    wallCurrentData = flushUltrasonicDataBuffer(wallSensor, wallData);
-    poleCurrentData = flushUltrasonicDataBuffer(poleSensor, poleData);
-    //
-    // Turn until it is parallel to some wall.
-    do {
-        drive->reset(30);
-        drive->turnTheta(10);
-        //
-        // Have to flush the buffer again since this is facing a different direction now.
-        // Want to apply the median filter only on values measured at this direction.
-        wallLastData = wallCurrentData;
-        wallCurrentData = flushUltrasonicDataBuffer(wallSensor, wallData);
-    } while (wallCurrentData - wallLastData < 0 || wallCurrentData > WALL_MAX_DISTANCE);
-
-    // Turn back and run the minimization algorithm backwards to ensure we are actually facing the minimum distance point.
-    while (wallCurrentData - wallLastData > 0 || wallCurrentData > WALL_MAX_DISTANCE) {
-        drive->reset(30);
-        drive->turnTheta(-10);
-        //
-        // Flushing the buffer for the same reason above.
-        wallLastData = wallCurrentData;
-        wallCurrentData = flushUltrasonicDataBuffer(wallSensor, wallData);
-    } 
-    // 
-    // Undo the last turn. Should be parallel to the wall now.
-    drive->reset(30);
-    drive->turnTheta(10);
-    // 
-    // Save the distance we want to keep using the PID. Take 3 new measurements and get the median.
-    initialLDist = flushUltrasonicDataBuffer(wallSensor, wallData);
-    //
-    // This outer while loop runs until the pole has been confirmed to be found.
-    // If the confirmation check fails, it will loop back to going forward and searching (inner loop).
-    do {
-        // 
-        // Start moving.
-        drive->setReference(ROBOT_SPEED_MAX / 3.0, 0.0f);
-        drive->update();
-        //
-        // Fill data buffer with latest data by flushing the buffer.
-        poleLastData = poleCurrentData;
-        poleCurrentData = flushUltrasonicDataBuffer(poleSensor, poleData);
-        wallLastData = wallCurrentData;
-        wallCurrentData = flushUltrasonicDataBuffer(wallSensor, wallData);
-        //
-        // This inner loop drives and takes measurements until something that appears to be the pole is detected.
-        do {
-            startTime = millis();
-            // 
-            // Measure data and shift down data buffer.
-            poleLastData = poleCurrentData;
-            poleCurrentData = readUltrasonic(poleSensor, poleData);
-            //
-            // If the value is larger than the noise ceiling, disregard it and use previous value.
-            if (poleCurrentData > POLE_NOISE_CEIL) {
-                poleCurrentData = poleLastData;
-            }
-            // 
-            // Update the drive if needed.
-            if ((millis() - startTime) > DRIVE_SLEEP_TIME){
-                drive->update();
-            }
-            // 
-            // Measure and evaluate the right sensor.
-            wallLastData = wallCurrentData;
-            wallCurrentData = readUltrasonic(wallSensor, wallData);
-            //
-            // If the value is larger than the noise ceiling, disregard it and use previous value.
-            if (wallCurrentData > POLE_NOISE_CEIL) {
-                wallCurrentData = wallLastData;
-            }
-            //
-            // Use PID to drive parallel to the wall.
-            locateDriveHelper(drive, wallCurrentData, initialLDist); // Drive->update() is called in here.
-            // 
-            // Left right ultrasonics. 
-            dprint("Pole: ");
-            dprint(poleCurrentData);
-            dprint(" Wall: ");
-            dprintln(wallCurrentData);
-            //
-            // Calculate how much to sleep to keep controller stable.
-            sleepTime = DRIVE_SLEEP_TIME - (millis() - startTime);
-            sleepTime = sleepTime > 0 ? sleepTime : 0;
-            delay(sleepTime);
-        } while (poleCurrentData - poleLastData > -POLE_DELTA_TOLERANCE || poleCurrentData > POLE_NOISE_CEIL);
-        //
-        // Do confirmation check on the pole measurement.
-        drive->stop();
-        confirmationCheckCount = POLE_CONFIRMATION_CHECK_COUNT;
-        confirmationCheckPassed = 0;
-
-        while (confirmationCheckCount > 0) {
-            // 
-            // Check if the measurement was not a mistake through a tolerance.
-            // Note that this uses raw data instead of median filter as it is verifying the raw data.
-            long meas = readUltrasonic(poleSensor, poleData);
-            dprint("Meas check: ");
-            dprintln(meas);
-            if (abs(meas - poleCurrentData) <= POLE_CONFIRMATION_TOLERANCE) {
-                confirmationCheckPassed++;
-            }
-            confirmationCheckCount--;
-            // delay(30);
-        }
-    } while (confirmationCheckPassed < POLE_CONFIRMATION_CHECK_COUNT - POLE_CONFIRMATION_CHECK_FAIL_TOLERANCE);
-    // 
-    // May need to implement something to check if crashed. Also may need better method of handling false negative, maybe backing up.
-    dprintln("Pole found.");
-    drive->turnTheta(-90);
-    dprintln("//// State - exit locateDest.");
-    return 0;
-}
-
-/*
- *  Parameters: pointer to drive motor interface instance, pointer to left and right ultrasonic interface.
- *  Continues driving until either of the ultrasonics detect a large difference in measurement.
  *  Then the robot turns and runs perpenticular to the ramp.
  */
 int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLeft, Ultrasonic *ultrasonicRight, VL53L0X *prox, uint32_t &poleDist)
@@ -564,6 +402,14 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
     int confirmationCheckCount = POLE_CONFIRMATION_CHECK_COUNT_ALTERNATIVE;
     int confirmationCheckPassed = 0;
     const int32_t stepSize = 10;
+
+
+
+
+    uint32_t wallMaxDist = 50;
+    uint32_t turnCount = 0;
+
+
 
     dprintln("//// State - enter locateDest.");
 
@@ -598,10 +444,16 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
         // Want to apply the median filter only on values measured at this direction.
         lastData = currentData;
         currentData = flushUltrasonicDataBuffer(sensor, data);
-    } while (currentData - lastData < 0 || currentData > WALL_MAX_DISTANCE);
+
+        ++turnCount;
+        wallMaxDist += static_cast<uint32_t>(turnCount / 36) * 25;
+        if (turnCount >= 36) {
+            turnCount = 0;
+        }
+    } while (currentData - lastData < 0 || currentData > wallMaxDist);
 
     // Turn back and run the minimization algorithm backwards to ensure we are actually facing the minimum distance point.
-    while (currentData - lastData > 0 || currentData > WALL_MAX_DISTANCE) {
+    while (currentData - lastData > 0 || currentData > wallMaxDist) {
         drive->reset(30);
         drive->turnTheta(-stepSize);
         //
@@ -617,7 +469,7 @@ int StateFunctions::locateDestAlternative(Drive *drive, Ultrasonic *ultrasonicLe
     // Turn perpenticular to the wall.
     drive->reset(30);
     if (!isUpsideDown) {
-        drive->turnTheta(-90); // 92 to accomodate for backlash.
+        drive->turnTheta(-85); // 92 to accomodate for backlash.
     }
     else {
         drive->turnTheta(-85);

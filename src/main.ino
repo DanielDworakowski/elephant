@@ -182,10 +182,18 @@ void loop()
             // 
             // First half of course
             {    
-                StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3.0f, 5000);
+                drive.driveDist(-ROBOT_SPEED_MAX / 3.0, 0, -100.0f);
+                // StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 2.5f, 5000);
+                drive.reset(30);
                 drive.turnTheta(-90);
+                drive.reset(30);
+                // delay(1000);
+                // drive.driveDist(-ROBOT_SPEED_MAX / 3.0, 0, -40.0f);
+                
                 StateFunctions::driveStraight(&drive, -ROBOT_SPEED_MAX / 3.0f, 1500);
                 drive.turnTheta(90);
+                drive.reset(30);
+                // delay(1000);
                 StateFunctions::approachAndStop(&drive, &prox);
             }
 

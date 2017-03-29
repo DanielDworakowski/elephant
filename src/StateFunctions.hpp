@@ -34,7 +34,7 @@
 #define WALL_JUMP_DIST_INIT_VEL 500.0f
 // 
 // The set distance with no initial velocity.
-#define WALL_JUMP_DIST_0_VEL 300.0f
+#define WALL_JUMP_DIST_0_VEL 350.0f
 //
 // Time in ms to get off the platform
 #define DRIVE_OFF_PLATFORM_TIME 2000
@@ -96,7 +96,7 @@
 #define WALL_ORIENT_ULTRASONIC_TOLERANCE 25.0f
 //
 // Maximum distance to a wall when landed.
-#define WALL_MAX_DISTANCE 50.0f
+// #define WALL_MAX_DISTANCE 80.0f
 // 
 // The tolerance of change between measured data and subsequent measurements that counts as ramp
 #define RAMP_CONFIRMATION_TOLERANCE 15.0f
