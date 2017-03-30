@@ -134,6 +134,10 @@
   \newcommand{\@authorthree}{\ClassError{uw-wkrpt}%
     {No \noexpand\authorthree given}{}}
 
+\newcommand{\group}[1]{\renewcommand{\@group}{#1}}
+  \newcommand{\@group}{\ClassError{uw-wkrpt}%
+    {No \noexpand\group given}{}}
+
 \newcommand{\term}[1]{\renewcommand{\@term}{\textsc{\lowercase{#1}}}}
   \newcommand{\@term}{\ClassError{uw-wkrpt}%
     {No \noexpand\term given}{}}
@@ -158,6 +162,7 @@
 \newcommand{\thefaculty}{\@faculty}
 \newcommand{\theuserid}{\@userid}
 \newcommand{\theemail}{\@email}
+\newcommand{\thegroup}{\@group}
 \newcommand{\theauthortwo}{\@authortwo}
 \newcommand{\theauthorthree}{\@authorthree}
 \newcommand{\theterm}{\@term}
@@ -190,10 +195,11 @@
     \ifthenelse{\boolean{uwwkrpt@se}}{\normalsize}{\large}
     \ifthenelse{\boolean{uwwkrpt@se}}{\textbf{Prepared by}\\}{Prepared by\\}
       \begin{tabular}[t]{c}%
+        \@group\\
         \@author\\
         \ifthenelse{\boolean{uwwkrpt@se}}
           {Student ID: \@uwid\\ User ID: \@userid\\}{\@uwid\\ \@email\\ \@authortwo\\ \@authorthree\\}
-        \@term{} \@program
+        \\*\@term{} \@program
       \end{tabular}\par}%
     {\ifthenelse{\not \boolean{uwwkrpt@se}}{\large}{} \@date \par}%
   \end{center}
@@ -218,7 +224,7 @@
   \ifthenelse{\boolean{uwwkrpt@math}}
     {\raggedright}{}
   \@blockletter%
-  \singlespacing%
+  \onehalfspacing%
   \noindent\@address\par\noindent%
   \@@date \par\noindent%
   \ifthenelse{\boolean{uwwkrpt@se}}
@@ -278,6 +284,9 @@
 
   \global\let\authorthree\relax
   \global\let\@authorthree\@empty
+
+  \global\let\group\relax
+  \global\let\@group\@empty
 
   \global\let\employer\relax
   \global\let\@employer\@empty

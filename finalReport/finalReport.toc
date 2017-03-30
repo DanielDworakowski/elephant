@@ -1,44 +1,47 @@
-\contentsline {section}{Executive Summary}{iii}
-\contentsline {section}{\numberline {1} \phantom {}Introduction and Background}{1}
-\contentsline {subsection}{\numberline {1.1} \phantom {}General Background}{1}
-\contentsline {subsection}{\numberline {1.2} \phantom {}Problem Forumulation}{1}
-\contentsline {subsubsection}{\numberline {1.2.1} \phantom {}Problem Definition}{1}
-\contentsline {subsubsection}{\numberline {1.2.2} \phantom {}Desired Functions and Goals}{1}
-\contentsline {subsubsection}{\numberline {1.2.3} \phantom {}Constraints}{1}
-\contentsline {subsubsection}{\numberline {1.2.4} \phantom {}Objectives}{1}
-\contentsline {subsubsection}{\numberline {1.2.5} \phantom {}Design Selection Criteria}{1}
-\contentsline {subsection}{\numberline {1.3} \phantom {}Review of the Selected Design}{1}
-\contentsline {section}{\numberline {2} \phantom {}Project Management}{2}
-\contentsline {subsection}{\numberline {2.1} \phantom {}Schedule}{2}
-\contentsline {subsection}{\numberline {2.2} \phantom {}Budget}{2}
-\contentsline {subsubsection}{\numberline {2.2.1} \phantom {}Bill of Material}{2}
-\contentsline {subsubsection}{\numberline {2.2.2} \phantom {}Cost analysis}{2}
-\contentsline {section}{\numberline {3} \phantom {}Final Mechanical Design}{3}
-\contentsline {subsubsection}{\numberline {3.0.1} \phantom {}Key Features}{3}
-\contentsline {subsubsection}{\numberline {3.0.2} \phantom {}Design Exploration}{3}
-\contentsline {subsubsection}{\numberline {3.0.3} \phantom {}Testing}{3}
-\contentsline {subsubsection}{\numberline {3.0.4} \phantom {}Predicted Results Vs. Actual}{3}
-\contentsline {subsubsection}{\numberline {3.0.5} \phantom {}Lessons Learned}{3}
-\contentsline {section}{\numberline {4} \phantom {}Final Electrical Design}{4}
-\contentsline {subsection}{\numberline {4.1} \phantom {}General Electrical Design}{4}
-\contentsline {subsubsection}{\numberline {4.1.1} \phantom {}Key Features}{4}
-\contentsline {subsubsection}{\numberline {4.1.2} \phantom {}Design Exploration}{4}
-\contentsline {subsubsection}{\numberline {4.1.3} \phantom {}Testing}{4}
-\contentsline {subsubsection}{\numberline {4.1.4} \phantom {}Predicted Results Vs. Actual}{4}
-\contentsline {subsubsection}{\numberline {4.1.5} \phantom {}Lessons Learned}{4}
-\contentsline {section}{\numberline {5} \phantom {}Final Control Design}{5}
-\contentsline {subsection}{\numberline {5.1} \phantom {}Robot Position and Velocity Control}{5}
-\contentsline {subsubsection}{\numberline {5.1.1} \phantom {}Design Exploration}{6}
-\contentsline {subsubsection}{\numberline {5.1.2} \phantom {}Key Features}{7}
-\contentsline {subsubsection}{\numberline {5.1.3} \phantom {}Testing}{8}
-\contentsline {subsubsection}{\numberline {5.1.4} \phantom {}Lessons Learned}{8}
-\contentsline {subsection}{\numberline {5.2} \phantom {}Pole Location Algorithm}{9}
-\contentsline {subsubsection}{\numberline {5.2.1} \phantom {}Key Features}{9}
-\contentsline {subsubsection}{\numberline {5.2.2} \phantom {}Design Exploration}{9}
-\contentsline {subsubsection}{\numberline {5.2.3} \phantom {}Testing}{9}
-\contentsline {subsubsection}{\numberline {5.2.4} \phantom {}Predicted Results Vs. Actual}{9}
-\contentsline {subsubsection}{\numberline {5.2.5} \phantom {}Lessons Learned}{9}
-\contentsline {section}{\numberline {6} \phantom {}Competition Result Analysis}{10}
-\contentsline {section}{\numberline {7} \phantom {}Conclusions}{11}
-\contentsline {section}{\numberline {8} \phantom {}Forth Year Design Project Proposal}{12}
-\contentsline {section}{References}{13}
+\contentsline {section}{\numberline {1}Executive Summary}{iii}
+\contentsline {section}{\numberline {2}Introduction and Background}{1}
+\contentsline {subsection}{\numberline {2.1}General Background}{1}
+\contentsline {subsection}{\numberline {2.2}Problem Formulation}{1}
+\contentsline {subsubsection}{\numberline {2.2.1}Problem Definition}{1}
+\contentsline {subsubsection}{\numberline {2.2.2}Desired Functions and Goals}{1}
+\contentsline {subsubsection}{\numberline {2.2.3}Constraints}{2}
+\contentsline {subsubsection}{\numberline {2.2.4}Objectives}{2}
+\contentsline {subsubsection}{\numberline {2.2.5}Design Selection Criteria}{2}
+\contentsline {subsection}{\numberline {2.3}Review of the Selected Design}{3}
+\contentsline {section}{\numberline {3}Project Management}{4}
+\contentsline {subsection}{\numberline {3.1}Schedule}{4}
+\contentsline {subsection}{\numberline {3.2}Budget}{4}
+\contentsline {subsubsection}{\numberline {3.2.1}Bill of Material}{5}
+\contentsline {subsubsection}{\numberline {3.2.2}Cost analysis}{5}
+\contentsline {section}{\numberline {4}Final Mechanical Design}{6}
+\contentsline {subsubsection}{\numberline {4.0.1}Key Modifications}{6}
+\contentsline {subsubsection}{\numberline {4.0.2}Key Features}{11}
+\contentsline {subsubsection}{\numberline {4.0.3}Testing}{12}
+\contentsline {subsubsection}{\numberline {4.0.4}Predicted Results Vs. Actual}{12}
+\contentsline {subsubsection}{\numberline {4.0.5}Lessons Learned}{13}
+\contentsline {section}{\numberline {5}Final Electrical Design}{14}
+\contentsline {subsection}{\numberline {5.1}General Electrical Design}{14}
+\contentsline {subsubsection}{\numberline {5.1.1}Key Features}{14}
+\contentsline {subsubsection}{\numberline {5.1.2}Design Exploration}{15}
+\contentsline {subsubsection}{\numberline {5.1.3}Testing}{15}
+\contentsline {subsubsection}{\numberline {5.1.4}Predicted Results Vs. Actual}{15}
+\contentsline {subsubsection}{\numberline {5.1.5}Lessons Learned}{15}
+\contentsline {section}{\numberline {6}Final Control Design}{16}
+\contentsline {subsection}{\numberline {6.1}Robot Position and Velocity Control}{16}
+\contentsline {subsubsection}{\numberline {6.1.1}Design Exploration}{17}
+\contentsline {subsubsection}{\numberline {6.1.2}Key Features}{18}
+\contentsline {subsubsection}{\numberline {6.1.3}Testing}{19}
+\contentsline {subsubsection}{\numberline {6.1.4}Lessons Learned}{19}
+\contentsline {subsection}{\numberline {6.2}Pole Location Algorithm}{20}
+\contentsline {subsubsection}{\numberline {6.2.1}Key Features}{20}
+\contentsline {paragraph}{\numberline {6.2.1.1}Localization}{20}
+\contentsline {paragraph}{\numberline {6.2.1.2}Search}{21}
+\contentsline {paragraph}{\numberline {6.2.1.3}Sensor Filtering and False Positive Prevention}{22}
+\contentsline {subsubsection}{\numberline {6.2.2}Design Exploration}{22}
+\contentsline {paragraph}{\numberline {6.2.2.1}Constrained Search Algorithm}{23}
+\contentsline {paragraph}{\numberline {6.2.2.2}Generalized Search Algorithm}{24}
+\contentsline {subsubsection}{\numberline {6.2.3}Testing}{25}
+\contentsline {subsubsection}{\numberline {6.2.4}Predicted Results Vs. Actual}{25}
+\contentsline {subsubsection}{\numberline {6.2.5}Lessons Learned}{26}
+\contentsline {section}{\numberline {7}Competition Result Analysis}{27}
+\contentsline {section}{\numberline {8}Conclusions}{28}
