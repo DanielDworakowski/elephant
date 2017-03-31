@@ -265,7 +265,7 @@ Figure \ref{fig:mech1} shows how the motor encoders were exposed in the original
     \label{fig:mech3}
 \end{figure}
 
-As seen in Figure \ref{fig:mech3} the sensors are placed such that they are far from the ground. This means it will provide enough space so it will not detect the ground. The new geometry of the robot means that both the encoders and ultrasonic sensors are protected from impact, regardless of the orientation the robot falls in. The chassis expansion also provided extra real estate to store the payload inside the robot while improving structural integrity.
+As seen in Figure \ref{fig:mech3} the sensors are placed such that they are far from the ground. This means it will provide enough space so it will not detect the ground. The new geometry of the robot means that both the encoders and ultrasonic sensors are protected from impact, regardless of the orientation the robot falls in. This also ensures that the ultrasonic sensors are positioned symmetric to the robot in such a way that it will work regardless of the orientation that the robot falls in. The chassis expansion also provided extra real estate to store the payload inside the robot while improving structural integrity.
 
 The second modification was the latching/compression mechanism. One major problem with the previous mechanism was that it was not energy efficient, the actual jumping height was under half the calculated values due to unforeseen mechanical losses. Moreover, the winching motor had failed, thus requiring a more robust solution. The team conceptualized a latching mechanism similar to how doors work, pictured in Figure \ref{fig:mech4}. The notch latches onto a shaft that has two orthogonal flat faces as shown in Figure \ref{fig:mech5}. The system would unlatch as the shaft is actuated/rotated by a DC motor. Nevertheless, this sacrificed a key feature of the robot. The robot was no longer able to compress the springs without assistance and thus is no longer able to jump multiple times without human intervention. Nevertheless, the robustness and energy efficiency of the new system outweighed the sacrifices. Moreover, it prevented possible damage to the motor that might have resulted from releasing the latch since the motor is no longer providing any torque to hold the latch in place. It was more energy efficient as the robot did not have to lift the weight of the jumping mechanism, nor did it damage any components holding the shaft in place. 
 
@@ -446,12 +446,12 @@ The individual speed where determined through kinematic equations related indivi
     \label{fig:kinematicModel}
 \end{figure}
 
-With this model the following equations can be derived, full details are found in the previous report. V and $\omega$ describe the global tangential and rotational velocities desired. It is important to note the assumptions that were made obtain these results. Mainly, that no slip exists between the wheels and the ground, and that all components within the drive train are always in contact.
+With this model the following equations can be derived, full details are found in the previous report. V and $\omega$ describe the global tangential and rotational velocities desired. It is important to note the assumptions that were made to obtain these results. Mainly, that no slip exists between the wheels and the ground, and that all components within the drive train are always in contact, hence ignoring the backlash.
 
 \[\omega_l = \frac{2V-\omega L}{2R},\omega_r = \frac{2V+\omega L}{2R}\]
 \[V=\frac{R}{2}(\omega_l+\omega_r),  \omega=\frac{R}{L}(\omega_r-\omega_l)\]
 
-It was assumed if the wheels were individually capable of maintaining speed the robot overall would be able to follow a straight track accurately. However, this left the issue that the true variable that was desired to be controller was open loop, and error from either motor in terms of speed would result in the integration of error. The process that was used to overcome this issue is described below.
+It was assumed if the wheels were individually capable of maintaining its speed, the robot overall would be able to follow a straight track accurately. However, this left the issue that the true variable that was desired to be controller was open loop, and error from either motor in terms of speed would result in the integration of error. The process that was used to overcome this issue is described below.
 
 \subsubsection{Design Exploration}
 
@@ -501,7 +501,7 @@ One of the key lessons learned from the implementation described is to ensure th
 
 In terms of control, a key take-away is that different orientation can cause significant dynamic changes to the system and that significantly differing gains are required for stability. 
 
-Lastly, while the describe system achieves high accuracy and robustness a large amount of time was devoted to tuning the controllers to achieve these results. That is, a better method of tuning, perhaps by using the serial to set the tuning values would be beneficial. 
+Lastly, while the described system achieves high accuracy and robustness, a large amount of time was devoted to tuning the controllers to achieve these results. That is, a better method of tuning, perhaps by using the serial to set the tuning values real time would be beneficial. 
 
 \subsection{Pole Location Algorithm}
 
