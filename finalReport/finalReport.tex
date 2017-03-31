@@ -167,7 +167,6 @@ Ease of Development & Downtime between trials in minutes, lower is better & 10 \
 \label{tab:designSelection}
 \end{table}
 
-
 The most important criteria are time to deliver and reliability, because they are critical qualities the robot must have these to complete the mission. The next most important criteria are the mass and ease of repair. The least important criteria, given weights of 10, are the cost and ease of development. These are nice-to-haves and do not affect the design’s ability to complete the mission.
 
 \subsection{Review of the Selected Design}
@@ -205,7 +204,7 @@ The bill of materials from Report 2 had to be revised for the final design, due 
 
 \begin{table}[!htb]
   \centering
-    \caption[Bill of Materials]
+    \caption[Bill of materials]
     {Bill of Materials.}
     \begin{tabular}{ | l | l | }
         \hline
@@ -232,7 +231,7 @@ Based on the bill of materials, it can be clearly seen that majority of the budg
 
 The following section describes the final mechanical design of the robot as well as how the predicted results compared with real life results.
 
-\subsubsection{Key Modifications}
+\subsection{Key Modifications}
 
 Many mechanical modifications were needed after unforeseen complications. Such difficulties included but were not limited to: motor encoders not being protected by the chassis, the robot not jumping high enough, plastic deformation of dimension sensitive components, and mechanical disturbances interfering with driving.  
 
@@ -241,8 +240,8 @@ Figure \ref{fig:mech1} shows how the motor encoders were exposed in the original
 \begin{figure}[!htb]
     \centering
     \includegraphics[width=3.5in]{res/mech1}
-    \caption[Side-view of the Robot showing the motor encoder]
-          {Side-view of the Robot showing the motor encoder sticking out.}
+    \caption[Side-view of the robot showing the motor encoder]
+          {Side-view of the robot showing the motor encoder sticking out.}
     \label{fig:mech1}
 \end{figure}
 
@@ -251,8 +250,8 @@ Figure \ref{fig:mech1} shows how the motor encoders were exposed in the original
 \begin{figure}[!htb]
     \centering
     \includegraphics[width=4.5in]{res/mech2}
-    \caption[Possible Ultrasonic Sensor placement]
-          {Possible Ultrasonic Sensor placement.}
+    \caption[Possible ultrasonic sensor placement]
+          {Possible ultrasonic sensor placement.}
     \label{fig:mech2}
 \end{figure}
 
@@ -291,7 +290,7 @@ After changing the latching mechanism, the team realized the foot was plasticall
     \centering
     \includegraphics[width=3.0in]{res/mech6}
     \caption[Cross section of the Foot]
-          {Cross-Sectional Area of the Foot.}
+          {Cross-sectional area of the foot.}
     \label{fig:mech6}
 \end{figure}
 
@@ -299,7 +298,7 @@ After changing the latching mechanism, the team realized the foot was plasticall
     \centering
     \includegraphics[width=5.5in]{res/mech7}
     \caption[Comparison of changes in mechanical design of foot]
-          {New Foot (Left) against Old Foot (Right).}
+          {From left to right: new foot, old foot.}
     \label{fig:mech7}
 \end{figure}
 
@@ -308,7 +307,7 @@ Another add-on to the foot is the guiding ski as pictured in Figure \ref{fig:mec
 \begin{figure}
     \centering
     \includegraphics[width=3.0in]{res/mech8}
-    \caption[Guiding Foot]
+    \caption[Guiding foot]
           {Guiding Foot.}
     \label{fig:mech8}
 \end{figure}
@@ -316,16 +315,16 @@ Another add-on to the foot is the guiding ski as pictured in Figure \ref{fig:mec
 \begin{figure}
     \centering
     \includegraphics[width=3.0in]{res/mech9}
-    \caption[Vertical Driving Configuration]
-          {Vertical Driving Configuration.}
+    \caption[Vertical driving configuration]
+          {Vertical driving configuration.}
     \label{fig:mech9}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=3.0in]{res/mech10}
-    \caption[The Bent Guiding Foot]
-          {The Bent Guiding Foot.}
+    \caption[The bent guiding foot]
+          {The bent guiding foot.}
     \label{fig:mech10}
 \end{figure}
 
@@ -336,8 +335,8 @@ After all the previous modification, the mass of the robot drastically increased
 \begin{figure}
     \centering
     \includegraphics[width=4in]{res/mech11}
-    \caption[Parallel Spring Configuration]
-          {Parallel Spring Configuration.}
+    \caption[Parallel spring configuration]
+          {Parallel spring configuration.}
     \label{fig:mech11}
 \end{figure}
 
@@ -347,17 +346,17 @@ Lastly, a foam board gate was constructed to aid the robot to get off the starti
     \centering
     \includegraphics[width=5.5in]{res/mech12}
     \caption[Launch platform]
-          {Left to Right: Closed Gate. Opened Gate, and Foot getting stuck on the platform.}
+          {From left to right: closed gate, opened gate, and foot getting stuck on the platform.}
     \label{fig:mech12}
 \end{figure}
 
-\subsubsection{Key Features}
+\subsection{Key Features}
 
 The key mechanical feature of the robot is sturdiness. The robot was designed to take multiple impacts equivalent to a 1 m fall. The chassis was built from aluminum sheet metal which provided rigidity but also flexibility so it does not break under impact while absorbing energy. The geometry of the robot also made sure all the electrical components were protected. Although the wheel shafts did noticeably bend, the PID controller was robust enough to make the robot drive in the desired directions. At no point during testing did the mechanical components break, except the plastic bevel gears. Fortunately, the team had extra bevel gears as backup.
 
 Another feature is that the jumping height could easily be adjusted by adding and removing washers to change the compression displacement of the springs. This gives more flexibility in the application of the robot should it be further developed to make it more efficient in the course by jumping earlier and with initial velocity to save time.
 
-\subsubsection{Testing}
+\subsection{Testing}
 
 The final stages of testing involved running the course in different section. Mechanically, the team wanted to minimize disturbances that would affect robot control, and the robot could withstand repeated impacts from falling and crashing. It was very costly to carry out a full test (start from the platform to finding the pole), as the springs had to be manually compressed and it was physically straining to the designated robot compression member. End to end testing was minimized to reduce wear, and filming from multiple angles prevented the requirement of retesting the same parameters. 
 
@@ -373,11 +372,11 @@ There was significant plastic deformation in the chassis, the wheel shafts, and 
     \label{fig:mech13}
 \end{figure}
 
-\subsubsection{Predicted Results Vs. Actual}
+\subsection{Predicted Results Vs. Actual}
 
 In the calculations made in the last report, the wheel shaft was not expected to plastically deform. However, the parameters from the calculations were different from the final robot. One major factor was the mass of the robot, which increased from 1.5 kg to more than 2.5 kg. Thus, the deflection from wheels, chassis, and shafts were greater than expected. Nevertheless, most of the mechanical system did not break during testing. One component that did break was a bevel gear. A tooth broke off of the gear during testing which caused skipping while driving. However, the problem was easily solved as replacement parts were available. In the previous report, the safety factor for the bevel gears was 1.5 for driving conditions. However, the team suspects that the gear broke because the team did not consider how the chassis flex stresses the wheel/driving mechanism or additional torque while landing.
 
-\subsubsection{Lessons Learned}
+\subsection{Lessons Learned}
 
 There were several lessons learned during this project. Firstly, switching mechanism designs halfway through development of the robot brings a plethora of new problems. Since mechanical components are interconnected and affect each other, one change is usually followed by many other modifications. Thus, it is better mechanical design practice to foresee as many problems as possible before designing and manufacturing the final product. The team also realized the machining limitations brought issues in the final construction. Misaligned holes made it impossible to align the drive gears. Thus, the mating would not be perfect, which meant that a controller was vital for driving. 
 
@@ -389,8 +388,6 @@ Overall, the mechanical system was robust enough to prevent breakage. Neverthele
 
 The following section will describe the general electrical design from a high level and key components that may have change since the second report. 
 
-\subsection{General Electrical Design}
-
 In terms of the general electrical design, comparing to the detailed design report submitted as Report \#2, there was a few changes, with the primary one being that a Time of Flight (TOF) sensor was added. On the final design of the robot, different pins are used for a lot of the components to ease construction. Below, in Figure \ref{fig:wiring}, the electrical wiring diagram of the robot is displayed. 
 
 \begin{figure}
@@ -401,23 +398,23 @@ In terms of the general electrical design, comparing to the detailed design repo
     \label{fig:wiring}
 \end{figure}
 
-\subsubsection{Key Features}
+\subsection{Key Features}
 
 Due to the relatively low complexity of the electrical design for the robot, the main objective of the electrical design is for low assembly complexity and ease of cable management. The wires were hot glued to the pins to prevent disconnection while testing the jumping and impact capabilities.
 
-\subsubsection{Design Exploration} 
+\subsection{Design Exploration} 
 
 Initially the robot was assembled according to the electrical wiring diagram as shown in report \#2. However, it was quickly seen that there was a large amount of wires which are simply plugged into the Arduino board. Due to this, changes were made to move some of the pins to the motor shield connections, which would allow the team to solder the connections directly to the board, reducing the risk of disconnecting while landing. As such, through the course of robot assembly and construction, the wiring diagrams were changed and the final result can be seen in Figure \ref{fig:wiring} above.
 
-\subsubsection{Testing} 
+\subsection{Testing} 
 
 As testing of the robot commenced, it was observed that the friction provided by the mechanical connections was not sufficient to prevent disconnection. Steps were taken to strengthen the common connections. As such, the connections were all soldered together, then electrical tape was used to insulate against potential shorting. In some cases, electrical tape was used to secure the connections to the sensors, to ensure they will not become unplugged. Hot glue was also used as a removable but secure method of fastening.
 
-\subsubsection{Predicted Results Vs. Actual} 
+\subsection{Predicted Results Vs. Actual} 
 
 Overall, few modifications were required. Testing mainly revealed that further fastening was required to ensure system stability.
 
-\subsubsection{Lessons Learned}
+\subsection{Lessons Learned}
 
 Through working on the electrical design, several lessons were observed. The first is that even though the complexity of the actual electrical circuits was low, there are still several key functionality issues, ranging from how the connections will perform against shock and chances of short-circuits. The first point was observed several times, where strange behavior was a result of poor connection from a sensor being unplugged. As such, the electrical design needs to be done in such a way that after impact the connections can still be trusted. 
 
@@ -431,8 +428,8 @@ The overall design of the robot's position and velocity controller has changed t
 \begin{figure}
     \centering
     \includegraphics[width=5.5in]{res/380ModelForWheel}
-    \caption[Controller for an individual Wheel]
-          {Controller for an individual Wheel.}
+    \caption[Controller for an individual wheel]
+          {Controller for an individual wheel.}
     \label{fig:singleWheelController}
 \end{figure}
 
