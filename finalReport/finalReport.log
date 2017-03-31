@@ -1,19 +1,17 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  30 MAR 2017 19:36
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6100 64-bit) (preloaded format=pdflatex 2017.1.15)  30 MAR 2017 20:51
 entering extended mode
- restricted \write18 enabled.
- %&-line parsing enabled.
-**finalReport.tex
-(./finalReport.tex
-LaTeX2e <2015/01/01>
-Babel <3.9l> and hyphenation patterns for 79 languages loaded.
-(./uw-wkrpt.cls
+**./finalReport.tex
+(finalReport.tex
+LaTeX2e <2016/03/31> patch level 3
+Babel <3.9r> and hyphenation patterns for 75 language(s) loaded.
+(uw-wkrpt.cls
 Document Class: uw-wkrpt 2012/04/24 v2.8 U. of Waterloo work reports
-(/usr/local/texlive/2015/texmf-dist/tex/latex/base/ifthen.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\ifthen.sty"
 Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 )
-(/usr/local/texlive/2015/texmf-dist/tex/latex/base/article.cls
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\article.cls"
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
-(/usr/local/texlive/2015/texmf-dist/tex/latex/base/size12.clo
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\size12.clo"
 File: size12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
@@ -32,22 +30,21 @@ File: size12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 \marginr=\skip44
 \margintb=\skip45
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/geometry/geometry.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\geometry\geometry.sty"
 Package: geometry 2010/09/12 v5.6 Page Geometry
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/keyval.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks14
 )
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ifpdf.sty
-Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
-Package ifpdf Info: pdfTeX in PDF mode is detected.
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifpdf.sty"
+Package: ifpdf 2016/05/14 v3.1 Provides the ifpdf switch
 )
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ifvtex.sty
-Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifvtex.sty"
+Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
 Package ifvtex Info: VTeX not detected.
 )
-(/usr/local/texlive/2015/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+("C:\Program Files\MiKTeX 2.9\tex\generic\ifxetex\ifxetex.sty"
 Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 )
 \Gm@cnth=\count87
@@ -62,52 +59,53 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 \Gm@layouthoffset=\dimen109
 \Gm@layoutvoffset=\dimen110
 \Gm@dimlist=\toks15
-)
-(/usr/local/texlive/2015/texmf-dist/tex/latex/setspace/setspace.sty
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\geometry\geometry.cfg"))
+("C:\Program Files\MiKTeX 2.9\tex\latex\setspace\setspace.sty"
 Package: setspace 2011/12/19 v6.7a set line spacing
 )
 \uwwkrpt@parskip=\skip46
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/url/url.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\url\url.sty"
 \Urlmuskip=\muskip10
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
-(/usr/local/texlive/2015/texmf-dist/tex/latex/textcase/textcase.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\textcase\textcase.sty"
 Package: textcase 2004/10/07 v0.07 Text only upper/lower case changing (DPC)
 ))
-(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/graphicx.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
 Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/graphics.sty
-Package: graphics 2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
+Package: graphics 2016/07/10 v1.0t Standard LaTeX Graphics (DPC,SPQR)
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/trig.sty
-Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\trig.sty"
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 )
-(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/graphics.cfg
-File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics-cfg\graphics.cfg"
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
-Package graphics Info: Driver file: pdftex.def on input line 94.
+Package graphics Info: Driver file: pdftex.def on input line 99.
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/pdftex-def/pdftex.def
-File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics-def\pdftex.def"
+File: pdftex.def 2016/07/10 v0.06j Graphics/color for pdfTeX
 
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/infwarerr.sty
-Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty"
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
 )
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
-Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
 )
 \Gread@gobject=\count90
 ))
 \Gin@req@height=\dimen111
 \Gin@req@width=\dimen112
 )
-(/usr/local/texlive/2015/texmf-dist/tex/latex/algorithms/algorithm.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\algorithms\algorithm.sty"
 Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
 nment
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/float/float.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\float\float.sty"
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \c@float@type=\count91
 \float@exts=\toks16
@@ -118,10 +116,10 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \@float@every@algorithm=\toks18
 \c@algorithm=\count92
 )
-(/usr/local/texlive/2015/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\algorithmicx\algpseudocode.sty"
 Package: algpseudocode 
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\algorithmicx\algorithmicx.sty"
 Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
 
 Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
@@ -137,18 +135,18 @@ Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
 \ALG@tmplength=\skip49
 )
 Document Style - pseudocode environments for use with the `algorithmicx' style
-) (/usr/local/texlive/2015/texmf-dist/tex/latex/xcolor/xcolor.sty
-Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+) ("C:\Program Files\MiKTeX 2.9\tex\latex\xcolor\xcolor.sty"
+Package: xcolor 2016/05/11 v2.12 LaTeX color extensions (UK)
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/color.cfg
-File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics-cfg\color.cfg"
+File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package xcolor Info: Driver file: pdftex.def on input line 225.
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/colortbl/colortbl.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\colortbl\colortbl.sty"
 Package: colortbl 2012/02/13 v1.0a Color table columns (DPC)
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/tools/array.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\tools\array.sty"
 Package: array 2014/10/28 v2.4c Tabular extension package (FMi)
 \col@sep=\dimen113
 \extrarowheight=\dimen114
@@ -160,18 +158,18 @@ Package: array 2014/10/28 v2.4c Tabular extension package (FMi)
 \minrowclearance=\skip52
 )
 \rownum=\count100
-Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
-Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
-Package xcolor Info: Model `RGB' extended on input line 1353.
-Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
-Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
-Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
-Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
-Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
-Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1348.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1352.
+Package xcolor Info: Model `RGB' extended on input line 1364.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1366.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1367.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
 )
-(/usr/local/texlive/2015/texmf-dist/tex/latex/titlesec/titlesec.sty
-Package: titlesec 2011/12/15 v2.10.0 Sectioning titles
+("C:\Program Files\MiKTeX 2.9\tex\latex\titlesec\titlesec.sty"
+Package: titlesec 2016/03/21 v2.10.2 Sectioning titles
 \ttl@box=\box28
 \beforetitleunit=\skip53
 \aftertitleunit=\skip54
@@ -182,12 +180,12 @@ Package: titlesec 2011/12/15 v2.10.0 Sectioning titles
 \titlewidthlast=\dimen118
 \titlewidthfirst=\dimen119
 )
-(/usr/local/texlive/2015/texmf-dist/tex/latex/caption/caption.sty
-Package: caption 2013/05/02 v3.3-89 Customizing captions (AR)
+("C:\Program Files\MiKTeX 2.9\tex\latex\caption\caption.sty"
+Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/caption/caption3.sty
-Package: caption3 2013/05/02 v1.6-88 caption3 kernel (AR)
-Package caption3 Info: TeX engine: e-TeX on input line 57.
+("C:\Program Files\MiKTeX 2.9\tex\latex\caption\caption3.sty"
+Package: caption3 2016/05/22 v1.7-166 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 67.
 \captionmargin=\dimen120
 \captionmargin@=\dimen121
 \captionwidth=\dimen122
@@ -199,7 +197,7 @@ Package caption3 Info: TeX engine: e-TeX on input line 57.
 \c@ContinuedFloat=\count101
 Package caption Info: float package is loaded.
 )
-(./finalReport.aux)
+(finalReport.aux)
 \openout1 = `finalReport.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 42.
@@ -249,7 +247,7 @@ LaTeX Font Info:    ... okay on input line 42.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-(/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
+("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count102
 \scratchdimen=\dimen127
@@ -262,12 +260,12 @@ LaTeX Font Info:    ... okay on input line 42.
 \MPnumerator=\count106
 \makeMPintoPDFobject=\count107
 \everyMPtoPDFconversion=\toks23
-) (/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
-Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+) ("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\pdftexcmds.sty"
+Package: pdftexcmds 2016/05/21 v0.22 Utility functions of pdfTeX for LuaTeX (HO
 )
 
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ifluatex.sty
-Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifluatex.sty"
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
 Package ifluatex Info: LuaTeX not detected.
 )
 Package pdftexcmds Info: LuaTeX not detected.
@@ -275,37 +273,35 @@ Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
 )
-(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
-Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\epstopdf-base.sty"
+Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/grfext.sty
-Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
+("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\grfext.sty"
+Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
 
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
-Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\kvdefinekeys.sty"
+Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
 ))
-(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/kvoptions.sty
-Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
+("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\kvoptions.sty"
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
 
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
-Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\kvsetkeys.sty"
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
 
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/etexcmds.sty
-Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\etexcmds.sty"
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
 Package etexcmds Info: Could not find \expanded.
 (etexcmds)             That can mean that you are not using pdfTeX 1.50 or
 (etexcmds)             that some package has redefined \expanded.
 (etexcmds)             In the latter case, load this package earlier.
 )))
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+38.
 Package grfext Info: Graphics extension search list:
 (grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
 G,.JBIG2,.JB2,.eps]
-(grfext)             \AppendGraphicsExtensions on input line 452.
-
-(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
-e
-))
+(grfext)             \AppendGraphicsExtensions on input line 456.
+)
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 Missing character: There is no ‚ in font cmr12!
@@ -315,23 +311,10 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <14.4> on input line 66.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 66.
-
-[1
+ [1
 ([ece] Electrical and Computer Engineering report)
 
-{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ô in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ô in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ì in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ò in font cmr12!
+{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}]
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ô in font cmr12!
@@ -341,30 +324,30 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 84.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 84.
-
-[2
+ [2
 
 ] [3
 
-] (./finalReport.toc [4
+] (finalReport.toc
+[4
 
 
 ])
 \tf@toc=\write3
 \openout3 = `finalReport.toc'.
 
- [5] (./finalReport.lof)
+ [5] (finalReport.lof)
 \tf@lof=\write4
 \openout4 = `finalReport.lof'.
 
  [6
 
 
-] (./finalReport.lot)
+] (finalReport.lot)
 \tf@lot=\write5
 \openout5 = `finalReport.lot'.
 
-[7
+ [7
 
 
 ]
@@ -377,7 +360,7 @@ Missing character: There is no ô in font cmr12!
 ]
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 157.
+               Default added (so using `tbp') on input line 153.
 
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
@@ -389,137 +372,132 @@ Missing character: There is no ô in font cmr12!
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ô in font cmr12!
- [3] <res/gantChart.pdf, id=41, 469.755pt x 265.99374pt>
+ [3] <res/gantChart.pdf, id=40, 469.755pt x 265.99374pt>
 File: res/gantChart.pdf Graphic file (type pdf)
 
 <use res/gantChart.pdf>
-Package pdftex.def Info: res/gantChart.pdf used on input line 194.
+Package pdftex.def Info: res/gantChart.pdf used on input line 190.
 (pdftex.def)             Requested size: 397.48499pt x 225.07294pt.
  [4
 
- <./res/gantChart.pdf>]
-
-LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 210.
-
-[5] <res/mech1.pdf, id=58, 226.8475pt x 204.765pt>
+ <./res/gantChart.pdf>] [5]
+<res/mech1.pdf, id=57, 226.8475pt x 204.765pt>
 File: res/mech1.pdf Graphic file (type pdf)
  <use res/mech1.pdf>
-Package pdftex.def Info: res/mech1.pdf used on input line 246.
+Package pdftex.def Info: res/mech1.pdf used on input line 243.
 (pdftex.def)             Requested size: 252.94499pt x 228.32289pt.
-
-<res/mech2.pdf, id=59, 268.00125pt x 247.92625pt>
-File: res/mech2.pdf Graphic file (type pdf)
- <use res/mech2.pdf>
-Package pdftex.def Info: res/mech2.pdf used on input line 254.
-(pdftex.def)             Requested size: 325.215pt x 300.85422pt.
-
-<res/mech3.pdf, id=60, 468.75125pt x 133.49875pt>
-File: res/mech3.pdf Graphic file (type pdf)
- <use res/mech3.pdf>
-Package pdftex.def Info: res/mech3.pdf used on input line 263.
-(pdftex.def)             Requested size: 397.48499pt x 113.20148pt.
  [6
 
- <./res/mech1.pdf>] [7 <./res/mech2.pdf> <./res/mech3.pdf>]
-<res/mech4.pdf, id=97, 281.05pt x 81.30376pt>
+ <./res/mech1.pdf>] <res/mech2.pdf, id=72, 268.00125pt x 247.92625pt>
+File: res/mech2.pdf Graphic file (type pdf)
+
+<use res/mech2.pdf>
+Package pdftex.def Info: res/mech2.pdf used on input line 253.
+(pdftex.def)             Requested size: 325.215pt x 300.85422pt.
+ <res/mech3.pdf, id=73, 468.75125pt x 133.49875pt>
+File: res/mech3.pdf Graphic file (type pdf)
+
+<use res/mech3.pdf>
+Package pdftex.def Info: res/mech3.pdf used on input line 262.
+(pdftex.def)             Requested size: 397.48499pt x 113.20148pt.
+ [7 <./res/mech2.pdf> <./res/mech3.pdf>]
+<res/mech4.pdf, id=96, 281.05pt x 81.30376pt>
 File: res/mech4.pdf Graphic file (type pdf)
  <use res/mech4.pdf>
-Package pdftex.def Info: res/mech4.pdf used on input line 275.
+Package pdftex.def Info: res/mech4.pdf used on input line 274.
 (pdftex.def)             Requested size: 216.81pt x 62.71944pt.
 
-<res/mech5.png, id=98, 255.354pt x 221.1462pt>
+<res/mech5.png, id=97, 255.354pt x 221.1462pt>
 File: res/mech5.png Graphic file (type png)
  <use res/mech5.png>
-Package pdftex.def Info: res/mech5.png used on input line 283.
+Package pdftex.def Info: res/mech5.png used on input line 282.
 (pdftex.def)             Requested size: 216.81pt x 187.77267pt.
- [8 <./res/mech4.pdf> <./res/mech5.png>] <res/mech6.pdf, id=113, 224.84pt x 158
-.5925pt>
+
+<res/mech6.pdf, id=99, 224.84pt x 158.5925pt>
 File: res/mech6.pdf Graphic file (type pdf)
-
-<use res/mech6.pdf>
-Package pdftex.def Info: res/mech6.pdf used on input line 293.
+ <use res/mech6.pdf>
+Package pdftex.def Info: res/mech6.pdf used on input line 292.
 (pdftex.def)             Requested size: 216.81pt x 152.9343pt.
- <res/mech7.png, id=114, 469.755pt x 161.8848pt>
+
+<res/mech7.png, id=100, 469.755pt x 161.8848pt>
 File: res/mech7.png Graphic file (type png)
-
-<use res/mech7.png>
-Package pdftex.def Info: res/mech7.png used on input line 301.
+ <use res/mech7.png>
+Package pdftex.def Info: res/mech7.png used on input line 300.
 (pdftex.def)             Requested size: 397.48499pt x 136.98024pt.
- <res/mech8.pdf, id=115, 260.975pt x 164.615pt>
+ [8 <./res/mech4.pdf> <./res/mech5.png>] [9 <./res/mech6.pdf> <./res/mech7.png>
+]
+<res/mech8.pdf, id=128, 260.975pt x 164.615pt>
 File: res/mech8.pdf Graphic file (type pdf)
-
-<use res/mech8.pdf>
-Package pdftex.def Info: res/mech8.pdf used on input line 311.
+ <use res/mech8.pdf>
+Package pdftex.def Info: res/mech8.pdf used on input line 310.
 (pdftex.def)             Requested size: 216.81pt x 136.75851pt.
- <res/mech9.pdf, id=116, 232.87pt x 220.825pt>
+
+<res/mech9.pdf, id=129, 232.87pt x 220.825pt>
 File: res/mech9.pdf Graphic file (type pdf)
-
-<use res/mech9.pdf>
-Package pdftex.def Info: res/mech9.pdf used on input line 319.
+ <use res/mech9.pdf>
+Package pdftex.def Info: res/mech9.pdf used on input line 318.
 (pdftex.def)             Requested size: 216.81pt x 205.60434pt.
- <res/mech10.pdf, id=117, 244.915pt x 160.6pt>
+
+<res/mech10.pdf, id=130, 244.915pt x 160.6pt>
 File: res/mech10.pdf Graphic file (type pdf)
-
-<use res/mech10.pdf>
-Package pdftex.def Info: res/mech10.pdf used on input line 327.
+ <use res/mech10.pdf>
+Package pdftex.def Info: res/mech10.pdf used on input line 326.
 (pdftex.def)             Requested size: 216.81pt x 142.17386pt.
- <res/mech11.pdf, id=118, 400.49625pt x 183.68625pt>
+ [10 <./res/mech8.pdf> <./res/mech9.pdf>]
+<res/mech11.pdf, id=154, 400.49625pt x 183.68625pt>
 File: res/mech11.pdf Graphic file (type pdf)
-
-<use res/mech11.pdf>
-Package pdftex.def Info: res/mech11.pdf used on input line 337.
+ <use res/mech11.pdf>
+Package pdftex.def Info: res/mech11.pdf used on input line 338.
 (pdftex.def)             Requested size: 289.07999pt x 132.59311pt.
- [9 <./res/mech6.pdf> <./res/mech7.png>] [10 <./res/mech8.pdf> <./res/mech9.pdf
-> <./res/mech10.pdf>]
-<res/mech12.pdf, id=167, 468.75125pt x 156.585pt>
+
+<res/mech12.pdf, id=155, 468.75125pt x 156.585pt>
 File: res/mech12.pdf Graphic file (type pdf)
  <use res/mech12.pdf>
-Package pdftex.def Info: res/mech12.pdf used on input line 347.
+Package pdftex.def Info: res/mech12.pdf used on input line 348.
 (pdftex.def)             Requested size: 397.48499pt x 132.7777pt.
- [11 <./res/mech11.pdf> <./res/mech12.pdf>]
-<res/mech13.pdf, id=190, 190.7125pt x 289.08pt>
+ [11 <./res/mech10.pdf> <./res/mech11.pdf> <./res/mech12.pdf>]
+<res/mech13.pdf, id=188, 190.7125pt x 289.08pt>
 File: res/mech13.pdf Graphic file (type pdf)
  <use res/mech13.pdf>
-Package pdftex.def Info: res/mech13.pdf used on input line 369.
+Package pdftex.def Info: res/mech13.pdf used on input line 370.
 (pdftex.def)             Requested size: 144.54pt x 219.09877pt.
  [12]
+[13 <./res/mech13.pdf>]
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ô in font cmr12!
-
-[13 <./res/mech13.pdf>]
-<res/wiringDiagram.pdf, id=208, 469.755pt x 279.0425pt>
+ [14]
+<res/wiringDiagram.pdf, id=209, 469.755pt x 279.0425pt>
 File: res/wiringDiagram.pdf Graphic file (type pdf)
 
 <use res/wiringDiagram.pdf>
-Package pdftex.def Info: res/wiringDiagram.pdf used on input line 397.
+Package pdftex.def Info: res/wiringDiagram.pdf used on input line 398.
 (pdftex.def)             Requested size: 397.48499pt x 236.11426pt.
- [14
+ [15
 
- <./res/wiringDiagram.pdf>] [15]
-<res/380ModelForWheel.pdf, id=225, 767.86874pt x 262.9825pt>
+ <./res/wiringDiagram.pdf>] [16]
+<res/380ModelForWheel.pdf, id=226, 767.86874pt x 262.9825pt>
 File: res/380ModelForWheel.pdf Graphic file (type pdf)
 
 <use res/380ModelForWheel.pdf>
-Package pdftex.def Info: res/380ModelForWheel.pdf used on input line 436.
+Package pdftex.def Info: res/380ModelForWheel.pdf used on input line 433.
 (pdftex.def)             Requested size: 397.48499pt x 136.1337pt.
- <res/diagram.png, id=226, 794.97pt x 614.295pt>
+ <res/diagram.png, id=227, 794.97pt x 614.295pt>
 File: res/diagram.png Graphic file (type png)
 
 <use res/diagram.png>
-Package pdftex.def Info: res/diagram.png used on input line 446.
+Package pdftex.def Info: res/diagram.png used on input line 443.
 (pdftex.def)             Requested size: 397.48499pt x 307.15611pt.
- [16
+ [17
 
- <./res/380ModelForWheel.pdf>] [17 <./res/diagram.png>] <res/yawController.pdf,
- id=239, 728.7225pt x 184.69pt>
+ <./res/380ModelForWheel.pdf>] [18 <./res/diagram.png>] <res/yawController.pdf,
+ id=241, 728.7225pt x 184.69pt>
 File: res/yawController.pdf Graphic file (type pdf)
 
 <use res/yawController.pdf>
-Package pdftex.def Info: res/yawController.pdf used on input line 473.
+Package pdftex.def Info: res/yawController.pdf used on input line 470.
 (pdftex.def)             Requested size: 397.48499pt x 100.73999pt.
- [18 <./res/yawController.pdf>] [19] [20]
+ [19 <./res/yawController.pdf>] [20] [21]
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ú in font cmr12!
@@ -527,78 +505,76 @@ Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ù in font cmr12!
 
-<res/SA-example1.pdf, id=253, 367.3725pt x 372.39125pt>
+<res/SA-example1.pdf, id=254, 367.3725pt x 372.39125pt>
 File: res/SA-example1.pdf Graphic file (type pdf)
 
 <use res/SA-example1.pdf>
-Package pdftex.def Info: res/SA-example1.pdf used on input line 533.
+Package pdftex.def Info: res/SA-example1.pdf used on input line 529.
 (pdftex.def)             Requested size: 202.3529pt x 205.12265pt.
 
-<res/SA-example2.pdf, id=254, 367.3725pt x 372.39125pt>
+<res/SA-example2.pdf, id=255, 367.3725pt x 372.39125pt>
 File: res/SA-example2.pdf Graphic file (type pdf)
 
 <use res/SA-example2.pdf>
-Package pdftex.def Info: res/SA-example2.pdf used on input line 537.
+Package pdftex.def Info: res/SA-example2.pdf used on input line 533.
 (pdftex.def)             Requested size: 202.3529pt x 205.12265pt.
 
-<res/SA-example3.pdf, id=255, 367.3725pt x 372.39125pt>
+<res/SA-example3.pdf, id=256, 367.3725pt x 372.39125pt>
 File: res/SA-example3.pdf Graphic file (type pdf)
 
 <use res/SA-example3.pdf>
-Package pdftex.def Info: res/SA-example3.pdf used on input line 548.
+Package pdftex.def Info: res/SA-example3.pdf used on input line 544.
 (pdftex.def)             Requested size: 216.81pt x 219.77711pt.
- [21 <./res/SA-example1.pdf> <./res/SA-example2.pdf>]
+ [22 <./res/SA-example1.pdf> <./res/SA-example2.pdf>]
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ô in font cmr12!
 
-[22 <./res/SA-example3.pdf>]
-<res/SA-Areas.pdf, id=273, 367.3725pt x 372.39125pt>
+[23 <./res/SA-example3.pdf>]
+<res/SA-Areas.pdf, id=274, 367.3725pt x 372.39125pt>
 File: res/SA-Areas.pdf Graphic file (type pdf)
  <use res/SA-Areas.pdf>
-Package pdftex.def Info: res/SA-Areas.pdf used on input line 575.
+Package pdftex.def Info: res/SA-Areas.pdf used on input line 570.
 (pdftex.def)             Requested size: 216.81pt x 219.77711pt.
 
-[23] [24 <./res/SA-Areas.pdf>] [25]
-<res/SA-areaofdetection.pdf, id=289, 367.3725pt x 372.39125pt>
+[24] [25 <./res/SA-Areas.pdf>] [26]
+<res/SA-areaofdetection.pdf, id=290, 367.3725pt x 372.39125pt>
 File: res/SA-areaofdetection.pdf Graphic file (type pdf)
 
 <use res/SA-areaofdetection.pdf>
-Package pdftex.def Info: res/SA-areaofdetection.pdf used on input line 605.
+Package pdftex.def Info: res/SA-areaofdetection.pdf used on input line 600.
 (pdftex.def)             Requested size: 216.81pt x 219.77711pt.
- [26 <./res/SA-areaofdetection.pdf>]
+ [27 <./res/SA-areaofdetection.pdf>]
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ô in font cmr12!
- [27
+ [28
 
 ]
-[28
+[29
 
-] (./finalReport.aux) ) 
+] (finalReport.aux) ) 
 Here is how much of TeX's memory you used:
- 4850 strings out of 493089
- 72105 string characters out of 6134842
- 151004 words of memory out of 5000000
- 8244 multiletter control sequences out of 15000+600000
- 9456 words of font info for 33 fonts, out of 8000000 for 9000
+ 4882 strings out of 493333
+ 71964 string characters out of 3139197
+ 151427 words of memory out of 3000000
+ 8319 multiletter control sequences out of 15000+200000
+ 9757 words of font info for 34 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,11n,38p,1255b,346s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2015/texmf-dist/fonts/type1/public/a
-msfonts/cm/cmbx12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmcsc10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmex10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmmi12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmmi8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmr12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmr17.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmr8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/c
-msy10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-sy8.pfb>
-Output written on finalReport.pdf (35 pages, 4792976 bytes).
+ 41i,11n,39p,1287b,346s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
+m/cmbx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmcsc1
+0.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C
+:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Progra
+m Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/M
+iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9
+/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
+pe1/public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public
+/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfont
+s/cm/cmsy8.pfb>
+Output written on finalReport.pdf (36 pages, 4817953 bytes).
 PDF statistics:
- 337 PDF objects out of 1000 (max. 8388607)
- 235 compressed objects within 3 object streams
+ 336 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  116 words of extra memory for PDF output out of 10000 (max. 10000000)
 

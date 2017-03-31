@@ -15,33 +15,33 @@
 \contentsline {subsubsection}{\numberline {3.2.2}Cost analysis}{5}
 \contentsline {section}{\numberline {4}Final Mechanical Design}{6}
 \contentsline {subsubsection}{\numberline {4.0.1}Key Modifications}{6}
-\contentsline {subsubsection}{\numberline {4.0.2}Key Features}{11}
+\contentsline {subsubsection}{\numberline {4.0.2}Key Features}{12}
 \contentsline {subsubsection}{\numberline {4.0.3}Testing}{12}
-\contentsline {subsubsection}{\numberline {4.0.4}Predicted Results Vs. Actual}{12}
+\contentsline {subsubsection}{\numberline {4.0.4}Predicted Results Vs. Actual}{13}
 \contentsline {subsubsection}{\numberline {4.0.5}Lessons Learned}{13}
-\contentsline {section}{\numberline {5}Final Electrical Design}{14}
-\contentsline {subsection}{\numberline {5.1}General Electrical Design}{14}
-\contentsline {subsubsection}{\numberline {5.1.1}Key Features}{14}
+\contentsline {section}{\numberline {5}Final Electrical Design}{15}
+\contentsline {subsection}{\numberline {5.1}General Electrical Design}{15}
+\contentsline {subsubsection}{\numberline {5.1.1}Key Features}{15}
 \contentsline {subsubsection}{\numberline {5.1.2}Design Exploration}{15}
-\contentsline {subsubsection}{\numberline {5.1.3}Testing}{15}
-\contentsline {subsubsection}{\numberline {5.1.4}Predicted Results Vs. Actual}{15}
-\contentsline {subsubsection}{\numberline {5.1.5}Lessons Learned}{15}
-\contentsline {section}{\numberline {6}Final Control Design}{16}
-\contentsline {subsection}{\numberline {6.1}Robot Position and Velocity Control}{16}
-\contentsline {subsubsection}{\numberline {6.1.1}Design Exploration}{17}
-\contentsline {subsubsection}{\numberline {6.1.2}Key Features}{18}
-\contentsline {subsubsection}{\numberline {6.1.3}Testing}{19}
-\contentsline {subsubsection}{\numberline {6.1.4}Lessons Learned}{19}
-\contentsline {subsection}{\numberline {6.2}Pole Location Algorithm}{20}
-\contentsline {subsubsection}{\numberline {6.2.1}Key Features}{20}
-\contentsline {paragraph}{\numberline {6.2.1.1}Localization}{20}
-\contentsline {paragraph}{\numberline {6.2.1.2}Search}{21}
-\contentsline {paragraph}{\numberline {6.2.1.3}Sensor Filtering and False Positive Prevention}{22}
-\contentsline {subsubsection}{\numberline {6.2.2}Design Exploration}{22}
-\contentsline {paragraph}{\numberline {6.2.2.1}Constrained Search Algorithm}{23}
-\contentsline {paragraph}{\numberline {6.2.2.2}Generalized Search Algorithm}{24}
-\contentsline {subsubsection}{\numberline {6.2.3}Testing}{25}
-\contentsline {subsubsection}{\numberline {6.2.4}Predicted Results Vs. Actual}{25}
-\contentsline {subsubsection}{\numberline {6.2.5}Lessons Learned}{26}
-\contentsline {section}{\numberline {7}Competition Result Analysis}{27}
-\contentsline {section}{\numberline {8}Conclusions}{28}
+\contentsline {subsubsection}{\numberline {5.1.3}Testing}{16}
+\contentsline {subsubsection}{\numberline {5.1.4}Predicted Results Vs. Actual}{16}
+\contentsline {subsubsection}{\numberline {5.1.5}Lessons Learned}{16}
+\contentsline {section}{\numberline {6}Final Control Design}{17}
+\contentsline {subsection}{\numberline {6.1}Robot Position and Velocity Control}{17}
+\contentsline {subsubsection}{\numberline {6.1.1}Design Exploration}{18}
+\contentsline {subsubsection}{\numberline {6.1.2}Key Features}{19}
+\contentsline {subsubsection}{\numberline {6.1.3}Testing}{20}
+\contentsline {subsubsection}{\numberline {6.1.4}Lessons Learned}{20}
+\contentsline {subsection}{\numberline {6.2}Pole Location Algorithm}{21}
+\contentsline {subsubsection}{\numberline {6.2.1}Key Features}{21}
+\contentsline {paragraph}{\numberline {6.2.1.1}Localization}{21}
+\contentsline {paragraph}{\numberline {6.2.1.2}Search}{22}
+\contentsline {paragraph}{\numberline {6.2.1.3}Sensor Filtering and False Positive Prevention}{23}
+\contentsline {subsubsection}{\numberline {6.2.2}Design Exploration}{23}
+\contentsline {paragraph}{\numberline {6.2.2.1}Constrained Search Algorithm}{24}
+\contentsline {paragraph}{\numberline {6.2.2.2}Generalized Search Algorithm}{25}
+\contentsline {subsubsection}{\numberline {6.2.3}Testing}{26}
+\contentsline {subsubsection}{\numberline {6.2.4}Predicted Results Vs. Actual}{26}
+\contentsline {subsubsection}{\numberline {6.2.5}Lessons Learned}{27}
+\contentsline {section}{\numberline {7}Competition Result Analysis}{28}
+\contentsline {section}{\numberline {8}Conclusions}{29}

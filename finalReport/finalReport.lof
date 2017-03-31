@@ -8,15 +8,15 @@
 \contentsline {figure}{\numberline {8}{\ignorespaces Comparison of changes in mechanical design of foot}}{9}
 \contentsline {figure}{\numberline {9}{\ignorespaces Guiding Foot}}{10}
 \contentsline {figure}{\numberline {10}{\ignorespaces Vertical Driving Configuration}}{10}
-\contentsline {figure}{\numberline {11}{\ignorespaces The Bent Guiding Foot}}{10}
+\contentsline {figure}{\numberline {11}{\ignorespaces The Bent Guiding Foot}}{11}
 \contentsline {figure}{\numberline {12}{\ignorespaces Parallel Spring Configuration}}{11}
 \contentsline {figure}{\numberline {13}{\ignorespaces Launch platform}}{11}
 \contentsline {figure}{\numberline {14}{\ignorespaces Latch showing wear/tear from usage and filing}}{13}
-\contentsline {figure}{\numberline {15}{\ignorespaces Arduino wiring diagram}}{14}
-\contentsline {figure}{\numberline {16}{\ignorespaces Controller for an individual Wheel}}{16}
-\contentsline {figure}{\numberline {17}{\ignorespaces Kinematic model of the robot}}{17}
-\contentsline {figure}{\numberline {18}{\ignorespaces Robot yaw controller}}{18}
-\contentsline {figure}{\numberline {19}{\ignorespaces Example scenarios of pole detection}}{21}
-\contentsline {figure}{\numberline {20}{\ignorespaces Pole detection from right boundary}}{22}
-\contentsline {figure}{\numberline {21}{\ignorespaces Areas and methods in which each case would detect and arrive at the pole}}{24}
-\contentsline {figure}{\numberline {22}{\ignorespaces Probability of successful pole search based on landing position}}{26}
+\contentsline {figure}{\numberline {15}{\ignorespaces Arduino wiring diagram}}{15}
+\contentsline {figure}{\numberline {16}{\ignorespaces Controller for an individual Wheel}}{17}
+\contentsline {figure}{\numberline {17}{\ignorespaces Kinematic model of the robot}}{18}
+\contentsline {figure}{\numberline {18}{\ignorespaces Robot yaw controller}}{19}
+\contentsline {figure}{\numberline {19}{\ignorespaces Example scenarios of pole detection}}{22}
+\contentsline {figure}{\numberline {20}{\ignorespaces Pole detection from right boundary}}{23}
+\contentsline {figure}{\numberline {21}{\ignorespaces Areas and methods in which each case would detect and arrive at the pole}}{25}
+\contentsline {figure}{\numberline {22}{\ignorespaces Probability of successful pole search based on landing position}}{27}
