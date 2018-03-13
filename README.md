@@ -1,2 +1,3 @@
 # elephant
-MTE380 project
+
+Software for jumping robot. 
